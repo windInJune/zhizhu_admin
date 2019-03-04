@@ -931,7 +931,7 @@ export default {
         });
         return;
       }
-      if (this.mofangFrom.docfile2.length <= 0) {
+      if (this.mtitle == "添加任务" && this.mofangFrom.docfile2.length <= 0) {
         this.$notify({
           title: "警告",
           message: "请上传参数文件",
@@ -2000,7 +2000,7 @@ export default {
     }
     .detail-content {
       display: flex;
-      box-shadow: 0 0 8px #b4b4b4;
+      box-shadow: 0 0 1px #b4b4b4;
       padding: 20px 20px;
       width: 92%;
       margin: 0 auto;
@@ -2035,7 +2035,7 @@ export default {
       }
     }
     .detail-mofang {
-      box-shadow: 0 0 8px #b4b4b4;
+      box-shadow: 0 0 1px #b4b4b4;
       min-height: 500px;
       padding: 20px 20px 20px 20px;
       width: 92%;

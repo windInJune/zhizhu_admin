@@ -27,5 +27,25 @@ npm run e2e
 npm test
 ```
 
+
+<template>
+  <div class="superAdmin">
+ 
+  </div>
+</template>
+<script>
+export default{
+  components: {},
+  data () {
+    return {
+      msg: 'admin'
+    }
+  }
+}
+</script>
+<style scoped lang="less">
+
+</style>
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 "# zhizhu_admin" 

@@ -12,10 +12,10 @@
           <p>平台管理员</p>
         </div>
         <el-menu :default-active="routerPath" class="el-menu-vertical-demo">
-          <router-link :to="{path: '/manageAdmin/manageList' }">
+          <router-link :to="{path: '/manageAdmin/bigB' }">
             <el-menu-item index="1" class="list">
               <!-- <i class="el-icon-setting"></i> -->
-              <span slot="title">首页</span>
+              <span slot="title">大B平台管理</span>
             </el-menu-item>
           </router-link>
           <router-link :to="{path: '/manageAdmin/manageList' }">
@@ -57,8 +57,8 @@
 export default {
   computed: {
     routerPath () {
-      if (this.$route.path === '/manageAdmin/manageList') {
-        return '2'
+      if (this.$route.path === '/manageAdmin/bigB'|| this.$route.path === '/manageAdmin/addbigB') {
+        return '1'
       }
       if (this.$route.path === '/manageAdmin/manageList') {
         return '2'

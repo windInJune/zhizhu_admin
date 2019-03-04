@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Admin from '@/pages/admin/index'
+import BigB from '@/pages/admin/manageAdmin/components/bigB'
+import addBigB from '@/pages/admin/manageAdmin/components/addBigB'
 import SuperAdmin from '@/pages/admin/superAdmin/superAdmin'
 import ManageAdmin from '@/pages/admin/manageAdmin/manageAdmin'
 import AdminList from '@/pages/admin/superAdmin/components/adminList'
@@ -34,8 +36,18 @@ export default new Router({
       path: '/manageAdmin',
       name: 'ManageAdmin',
       component: ManageAdmin,
-      redirect: '/manageAdmin/manageList',
+      redirect: '/manageAdmin/bigB',
       children: [
+        {
+          path: 'addbigB',
+          name: 'addbigB',
+          component: addBigB
+        },
+        {
+          path: 'bigB',
+          name: 'bigB',
+          component: BigB
+        },
         {
           path: 'manageList',
           name: 'ManageList',

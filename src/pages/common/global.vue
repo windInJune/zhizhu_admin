@@ -3,6 +3,7 @@
 // const localAPI = 'http://121.40.210.226:4028'
 // const localAPI = 'http://172.16.1.103:8005'
 const localAPI = 'http://172.16.1.207:8005'
+const localAPIs = 'http://172.16.1.73:8005'
 // 登录
 const userlogin = localAPI + '/user/userLogin'
 // 超管端
@@ -25,7 +26,8 @@ const insertSchool = localAPI + '/school/insertSchool'
 const deleteSchool = localAPI + '/school/deleteSchool'
 const editSchool = localAPI + '/school/editSchool'
 const getDataStatistics = localAPI + '/school/getDataStatistics'
-
+// 大B平台
+const getSystembList = localAPIs + '/systermb/getSystembList'
 // ibox
 const getIboxList = localAPI + '/iboxInfo/getIboxList'
 const getIbox = localAPI + '/iboxInfo/getIbox'
@@ -52,6 +54,7 @@ const updateBoxtask = localAPI + '/boxtask/updateBoxtask'
 
 export default
 {
+  getSystembList,
   localAPI,
   userlogin,
   getUserList,
