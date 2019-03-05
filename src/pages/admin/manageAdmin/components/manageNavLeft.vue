@@ -12,10 +12,16 @@
           <p>平台管理员</p>
         </div>
         <el-menu :default-active="routerPath" class="el-menu-vertical-demo">
-          <router-link :to="{path: '/manageAdmin/bigB' }">
+          <router-link :to="{path: '/manageAdmin/bigb' }">
             <el-menu-item index="1" class="list">
               <!-- <i class="el-icon-setting"></i> -->
               <span slot="title">大B平台管理</span>
+            </el-menu-item>
+          </router-link>
+          <router-link :to="{path: '/manageAdmin/bigbadmin' }">
+            <el-menu-item index="7" class="list">
+              <!-- <i class="el-icon-setting"></i> -->
+              <span slot="title">大B管理员管理</span>
             </el-menu-item>
           </router-link>
           <router-link :to="{path: '/manageAdmin/manageList' }">
@@ -57,7 +63,7 @@
 export default {
   computed: {
     routerPath () {
-      if (this.$route.path === '/manageAdmin/bigB'|| this.$route.path === '/manageAdmin/addbigB') {
+      if (this.$route.path === '/manageAdmin/bigb'|| this.$route.path === '/manageAdmin/addbigb' || this.$route.path == '/manageAdmin/editbigb') {
         return '1'
       }
       if (this.$route.path === '/manageAdmin/manageList') {
@@ -74,6 +80,9 @@ export default {
       }
       if (this.$route.path === '/manageAdmin/courseList') {
         return '6'
+      }
+      if (this.$route.path === '/manageAdmin/bigbadmin') {
+        return '7'
       }
     }
   },

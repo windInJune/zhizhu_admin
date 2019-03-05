@@ -9,6 +9,16 @@
     </ul>
     <ul class="search">
       <li>
+        <el-select v-model="platform" @change="selectChange" placeholder="请选择管理平台">
+          <el-option
+            v-for="(item,index) in platformlist"
+            :key="index"
+            :label="item.systembName"
+            :value="item.systembId"
+          ></el-option>
+        </el-select>
+      </li>
+      <li>
         <el-select v-model="schoolValue" placeholder="全部机构" @change="schoolChange">
           <el-option
             v-for="item in schoolList"
@@ -32,7 +42,7 @@
       </li>
     </ul>
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
-      <el-table-column prop="userName" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="userName" label="姓名" width="100"></el-table-column>
       <el-table-column prop="userZhinum" label="知号"></el-table-column>
       <el-table-column prop="userSex" label="性别">
         <template slot-scope="scope">
@@ -41,24 +51,29 @@
           <span v-show="scope.row.userSex == 2">女</span>
         </template>
       </el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台"></el-table-column>
+
       <el-table-column prop="userNum" label="工号">
         <template slot-scope="scope">
           <span v-show="scope.row.userNum == ''">--</span>
           <span v-show="scope.row.userNum != ''">{{scope.row.userNum}}</span>
         </template>
       </el-table-column>
+      <el-table-column prop="userCard" label="身份证" width="180"></el-table-column>
+
       <el-table-column prop="userPhone" label="手机号码">
         <template slot-scope="scope">
           <span v-show="scope.row.userPhone == ''">--</span>
           <span v-show="scope.row.userPhone != ''">{{scope.row.userPhone}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="userEmial" label="邮箱">
+      <el-table-column prop="userPosition" label="职位"></el-table-column>
+      <!-- <el-table-column prop="userEmial" label="邮箱">
         <template slot-scope="scope">
           <span v-show="scope.row.userEmial == ''">--</span>
           <span v-show="scope.row.userEmial != ''">{{scope.row.userEmial}}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="userBirthday" label="生日">
         <template slot-scope="scope">
           <span v-show="scope.row.userBirthday == ''">--</span>
@@ -154,8 +169,14 @@
         <el-form-item label="机构" prop="schoolName">
           <el-input type="text" disabled v-model="detailData.schoolName"></el-input>
         </el-form-item>
+         <el-form-item label="职位" >
+          <el-input type="text" disabled v-model="detailData.userPosition"></el-input>
+        </el-form-item>
         <el-form-item label="工号" prop="userNum">
           <el-input type="text" disabled v-model="detailData.userNum"></el-input>
+        </el-form-item>
+        <el-form-item label="身份证" >
+          <el-input type="text" disabled v-model="detailData.userCard"></el-input>
         </el-form-item>
         <h2>个人信息</h2>
         <el-form-item label="性别" prop="userSex">
@@ -163,9 +184,6 @@
         </el-form-item>
         <el-form-item label="手机" prop="userPhone">
           <el-input type="text" disabled v-model="detailData.userPhone"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="userEmial">
-          <el-input type="text" disabled v-model="detailData.userEmial"></el-input>
         </el-form-item>
         <el-form-item label="生日" prop="userBirthday">
           <el-input type="text" disabled v-model="detailData.userBirthday"></el-input>
@@ -233,7 +251,10 @@ export default {
         { name: "全部状态", id: -1 }
       ],
       statusValue: "",
-      statusDetail: ""
+      statusDetail: "",
+       platform: "全部大B平台",
+      palatformId: -1,
+      platformlist: []
     };
   },
   computed: {
@@ -270,6 +291,10 @@ export default {
     }
   },
   methods: {
+     selectChange(val) {
+      this.palatformId = val;
+      this.loadData(val);
+    },
      headerClassFn(row, column, rowIndex, columnIndex){
       return "color:#434343;background:rgba(245,245,245,1);font-size:12px;"
     },
@@ -285,7 +310,7 @@ export default {
       this.$http
         .get(
           this.global.getCustomUserList +
-            `?userType=1&schoolId=${this.schoolValue}&userGradeid=${
+            `?userType=1&schoolId=${this.schoolValue}&systembId=${this.palatformId}&userGradeid=${
               this.GradeValue
             }&userClassid=${this.classValue}&isDisable=${
               this.statusValue
@@ -464,6 +489,20 @@ export default {
   created() {
     this.loadData();
     this.getSchools();
+     Vue.http.headers.common["userToken"] = getCookie("userToken");
+    this.$http.get(this.global.getSystembs).then(res => {
+      if (res.body.status === 200) {
+        this.platformlistold = res.body.resultObject;
+        this.platformlist = [
+          { systembId: -1, systembName: "全部大B平台" },
+          ...res.body.resultObject
+        ];
+      } else if (res.body.status === 511) {
+        this.$router.push({ path: "/" });
+      } else {
+        alert(res.body.errorMessage);
+      }
+    });
   }
 };
 </script>

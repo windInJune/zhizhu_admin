@@ -64,11 +64,11 @@ export default{
   methods:{
     addBigb(){
         this.$router.push({
-            path: '/manageAdmin/addBigb',query:{userToken: getCookie('userToken')}
+            path: '/manageAdmin/addbigb'
         })
     },
     headerClassFn(row, column, rowIndex, columnIndex){
-      return "color:#434343;font-size:12px;text-algin:center"
+      return "color:#434343;font-size:12px;text-algin:center;background:rgba(245,245,245,1);"
     },
     handleCurrentChange(currentPage) {
       this.currentPage = currentPage;
@@ -97,12 +97,41 @@ export default{
         });
     },
     changeInfo(index,row){
-        console.log(index)
-        console.log(row)
+        this.$router.push({
+          path: '/manageAdmin/editbigb',
+          query:{systemId: row.systembId}
+        })
     },
     schoolDelete(index,row){
-        console.log(index)
-        console.log(row)
+        let that = this;
+        this.$confirm('您确定删除此平台，删除后平台所有数据将同步删除。', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+           Vue.http.headers.common["userToken"] = getCookie("userToken");
+           that.$http
+            .post(
+              that.global.deleteSystembById,
+              { systemId: row.systembId },
+              { emulateJSON: true }
+            )
+            .then(
+              res => {
+                console.log(res);
+                 that.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+               that.loadData()
+              },
+              err => {
+                console.log(err);
+              }
+            );
+      
+        }).catch(() => {
+        });
     }
   },
   created(){

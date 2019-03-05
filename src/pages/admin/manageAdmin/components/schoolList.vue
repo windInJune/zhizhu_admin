@@ -9,6 +9,16 @@
     </ul>
     <ul class="search">
       <li>
+        <el-select v-model="platform" @change="selectChange" placeholder="请选择管理平台">
+          <el-option
+            v-for="(item,index) in platformlist"
+            :key="index"
+            :label="item.systembName"
+            :value="item.systembId"
+          ></el-option>
+        </el-select>
+      </li>
+      <li>
         <el-select v-model="schoolValue" placeholder="全部机构" @change="schoolChange">
           <el-option
             v-for="item in schoolList"
@@ -28,6 +38,7 @@
           <el-option v-for="item in classList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </li>
+
       <li>
         <el-select v-model="statusValue" placeholder="全部账号状态" @change="statusChange">
           <el-option v-for="item in statusList" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -48,7 +59,7 @@
       style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
       v-loading="loading"
     >
-      <el-table-column prop="userName" label="姓名" width="120"></el-table-column>
+      <el-table-column prop="userName" label="姓名" width="60"></el-table-column>
       <el-table-column prop="userZhinum" label="知号"></el-table-column>
       <el-table-column prop="userSex" label="性别" width="60">
         <template slot-scope="scope">
@@ -63,7 +74,10 @@
           <span v-show="scope.row.userNum != ''">{{scope.row.userNum}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="schoolName" label="机构" width="240">
+      <el-table-column prop="userCard" label="身份证" width="140"></el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台" width="100"></el-table-column>
+
+      <el-table-column prop="schoolName" label="机构" width="120">
         <template slot-scope="scope">
           <p>{{ scope.row.schoolName }}</p>
           <!-- <el-popover trigger="hover" placement="top">
@@ -179,6 +193,9 @@
         <el-form-item label="学号" prop="userNum">
           <el-input type="text" disabled v-model="detailData.userNum"></el-input>
         </el-form-item>
+        <el-form-item label="身份证号" prop="userNum">
+          <el-input type="text" disabled v-model="detailData.userCard"></el-input>
+        </el-form-item>
         <el-form-item label="年级" prop="gradeName">
           <el-input type="text" disabled v-model="detailData.gradeName"></el-input>
         </el-form-item>
@@ -264,7 +281,10 @@ export default {
         { name: "全部账号状态", id: -1 }
       ],
       statusValue: "",
-      statusDetail: ""
+      statusDetail: "",
+      platform: "全部大B平台",
+      palatformId: -1,
+      platformlist: []
     };
   },
   computed: {
@@ -301,6 +321,10 @@ export default {
     }
   },
   methods: {
+    selectChange(val) {
+      this.palatformId = val;
+      this.loadData(val);
+    },
     headerClassFn(row, column, rowIndex, columnIndex) {
       return "color:#434343;background:rgba(245,245,245,1);font-size:12px;";
     },
@@ -315,8 +339,8 @@ export default {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
-          this.global.getCustomUserList +
-            `?userType=2&schoolId=${this.schoolValue}&userGradeid=${
+          this.global.getCustomUserList +    
+            `?userType=2&schoolId=${this.schoolValue}&systembId=${this.palatformId}&userGradeid=${
               this.GradeValue
             }&userClassid=${this.classValue}&isDisable=${
               this.statusValue
@@ -516,6 +540,20 @@ export default {
   created() {
     this.loadData();
     this.getSchools();
+    Vue.http.headers.common["userToken"] = getCookie("userToken");
+    this.$http.get(this.global.getSystembs).then(res => {
+      if (res.body.status === 200) {
+        this.platformlistold = res.body.resultObject;
+        this.platformlist = [
+          { systembId: -1, systembName: "全部大B平台" },
+          ...res.body.resultObject
+        ];
+      } else if (res.body.status === 511) {
+        this.$router.push({ path: "/" });
+      } else {
+        alert(res.body.errorMessage);
+      }
+    });
   }
 };
 </script>
@@ -579,16 +617,16 @@ export default {
     width: 100%;
   }
   .green {
-    color: #30B44F;
+    color: #30b44f;
   }
-  .el-table{
+  .el-table {
     font-size: 12px;
   }
-  .iconfont-color-blue{
+  .iconfont-color-blue {
     font-size: 12px;
   }
-  .el-button--primary{
-    background: #0090FF;
+  .el-button--primary {
+    background: #0090ff;
   }
 }
 </style>

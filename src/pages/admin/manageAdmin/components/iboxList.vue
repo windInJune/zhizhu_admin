@@ -43,6 +43,16 @@
         </el-select>
       </li>
       <li>
+        <el-select v-model="platform" @change="selectChange" placeholder="请选择管理平台">
+          <el-option
+            v-for="(item,index) in platformlist"
+            :key="index"
+            :label="item.systembName"
+            :value="item.systembId"
+          ></el-option>
+        </el-select>
+      </li>
+      <li>
         <el-select v-model="schoolValue" placeholder="全部机构" @change="schoolChange">
           <el-option
             v-for="item in schoolList"
@@ -74,7 +84,8 @@
       <span>{{this.IBOXStatus[4]}}</span> 台，其中空闲
       <span class="green">{{this.IBOXStatus[0]}}</span>台，忙碌
       <span class="yellow">{{this.IBOXStatus[1]}}</span>台，离线
-      <span class="red">{{this.IBOXStatus[2]}}</span>台。
+      <span class="red">{{this.IBOXStatus[2]}}</span>台，警报
+      <span style="color:pink">{{this.IBOXStatus[3]}}</span>台。
       <div class="addSb" @click="creatEquip">＋&nbsp;&nbsp;新增设备</div>
       <!-- <el-button type="success"  @click="creatEquip"></el-button> -->
     </div>
@@ -115,6 +126,7 @@
           <span v-show="scope.row.iboxStatus == 0">空闲</span>
           <span v-show="scope.row.iboxStatus == 1">忙碌</span>
           <span v-show="scope.row.iboxStatus == 2">离线</span>
+          <span v-show="scope.row.iboxStatus == 3">警报</span>
         </template>
       </el-table-column>
       <el-table-column prop="useringTotalCount" label="使用人次">
@@ -156,14 +168,12 @@
           </el-button>
           <el-button
             size="small"
-            @click="detail2(scope.$index, scope.row)"
             class="iconfont-color-blue"
           >
             <i class="iconfont">&#xe77f;</i>监控
           </el-button>
           <el-button
             size="small"
-            @click="detail3(scope.$index, scope.row)"
             class="iconfont-color-blue"
           >
             <i class="iconfont">&#xe608;</i>设置
@@ -241,6 +251,18 @@
             v-show="this.detailData.equipNumTips"
           >{{this.detailData.equipNumTips}}</span>
         </el-form-item>
+        <el-form-item label="所属大B平台" style="text-align:left">
+          <el-select v-model="platformold" @change="selectChangeset" placeholder="请选择管理平台">
+            <el-option   v-for="(item,index) in platformlistold"
+                :key="index"
+                :label="item.systembName"
+                :value="item.systembId"></el-option>
+          </el-select>
+        </el-form-item>
+      
+
+
+
         <el-form-item label="所属机构" prop="schoolName" class="schoolname">
           <span class="must">*</span>
           <el-select
@@ -400,10 +422,23 @@ export default {
       version: [{ id: 1, title: "通用型" }],
       provinceId: "",
       cityId: "",
-      areaId: ""
+      areaId: "",
+      platform: "全部大B平台",
+      palatformId: -1,
+      platformlist: [],
+      platformlistold:[],
+      platformold:"",
+      platformoldId:null //编辑里面的平台选择id
     };
   },
   methods: {
+     selectChangeset(val){
+      this.platformoldId = val
+    },
+      selectChange(val) {
+      this.palatformId = val;
+      this.loadData(val);
+    },
         // 处理页号改变
     headerClassFn(row, column, rowIndex, columnIndex){
       return "color:#434343;font-size:12px;border-radius:0;"
@@ -422,7 +457,7 @@ export default {
           this.global.getIboxList +
             `?schoolId=${this.schoolValue}&iboxStatus=${
               this.statusValue
-            }&provinceId=${this.provinceId}&cityId=${this.cityId}&areaId=${
+            }&systembId=${this.palatformId}&provinceId=${this.provinceId}&cityId=${this.cityId}&areaId=${
               this.areaId
             }&searchText=${this.searchText}&pageNum=${
               this.currentPage
@@ -461,6 +496,8 @@ export default {
     // 重置
     resect() {
       this.detailData.equipName = "";
+        (this.platformoldId = null),
+
       this.detailData.equipNameTips = "";
       this.detailData.versionID = "";
       this.detailData.versionTitle = "";
@@ -609,6 +646,13 @@ export default {
       } else {
         this.detailData.versionTitleTips = "";
       }
+       if(!this.platformoldId){
+         this.$message({
+          message: '请选择管理平台',
+          type: 'warning'
+        });
+        return
+      }
       if (
         this.detailData.equipName &&
         this.detailData.versionTitle &&
@@ -638,7 +682,8 @@ export default {
               schoolId: this.detailData.schoolId,
               managerTel: this.detailData.phone,
               managerName: this.detailData.userName,
-              iboxRemark: this.detailData.schoolMark
+              iboxRemark: this.detailData.schoolMark,
+              systembId:this.platformoldId
             },
             { emulateJSON: true }
           )
@@ -666,6 +711,8 @@ export default {
       this.equipTitle = "编辑设备";
       this.editEquip = true;
       this.iboxId = row.iboxId;
+      this.platformoldId=row.systembId;
+      this.platformold=row.systembName;
       console.log(this.equipOperate);
       this.$http.get(this.global.getIbox + "?iboxId=" + row.iboxId).then(
         res => {
@@ -742,6 +789,20 @@ export default {
     this.getSchools();
     this.getSearchTexts();
     this.city = allCites;
+    Vue.http.headers.common["userToken"] = getCookie("userToken");
+    this.$http.get(this.global.getSystembs).then(res => {
+      if (res.body.status === 200) {
+        this.platformlistold = res.body.resultObject;
+        this.platformlist = [
+          { systembId: -1, systembName: "全部大B平台" },
+          ...res.body.resultObject
+        ];
+      } else if (res.body.status === 511) {
+        this.$router.push({ path: "/" });
+      } else {
+        alert(res.body.errorMessage);
+      }
+    });
   }
 };
 </script>

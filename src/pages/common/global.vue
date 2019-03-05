@@ -3,9 +3,11 @@
 // const localAPI = 'http://121.40.210.226:4028'
 // const localAPI = 'http://172.16.1.103:8005'
 const localAPI = 'http://172.16.1.207:8005'
-const localAPIs = 'http://172.16.1.73:8005'
+const localAPIs = 'http://172.16.1.207:8005'
 // 登录
 const userlogin = localAPI + '/user/userLogin'
+// 超管端
+const getSystemUserList = localAPI + '/user/getSystemUserList'
 // 超管端
 const getUserList = localAPI + '/user/getUserList'
 const insertUser = localAPI + '/user/insertUser'
@@ -28,6 +30,11 @@ const editSchool = localAPI + '/school/editSchool'
 const getDataStatistics = localAPI + '/school/getDataStatistics'
 // 大B平台
 const getSystembList = localAPIs + '/systermb/getSystembList'
+const insertSystemb = localAPIs + '/systermb/insertSystemb'
+const deleteSystembById = localAPIs + '/systermb/deleteSystembById'
+const getSystembById = localAPIs + '/systermb/getSystembById'
+const getSystembs = localAPIs + '/systermb/getSystembs'
+const updateSystembById = localAPIs + '/systermb/updateSystembById'
 // ibox
 const getIboxList = localAPI + '/iboxInfo/getIboxList'
 const getIbox = localAPI + '/iboxInfo/getIbox'
@@ -54,7 +61,13 @@ const updateBoxtask = localAPI + '/boxtask/updateBoxtask'
 
 export default
 {
+  getSystemUserList,
+  updateSystembById,
   getSystembList,
+  getSystembs,
+  insertSystemb,
+  getSystembById,
+  deleteSystembById,
   localAPI,
   userlogin,
   getUserList,

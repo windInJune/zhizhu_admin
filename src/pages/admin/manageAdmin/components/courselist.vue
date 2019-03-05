@@ -1,6 +1,17 @@
 <!-- eslint-disable -->
 <template>
   <div class="adminList">
+    <ul class="navlist">
+        <li class="active">知筑魔方云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+        <li>沃阿汇云平台</li>
+    </ul>
     <div class="topBox">
        <div class="sectionTitle" style="font-size: 14px;
       color: #434343;">课程列表
@@ -696,7 +707,8 @@ export default {
       submitGradeTips: "",
       renameGradeId: "",
       renameClassId: "",
-      addClassId: ""
+      addClassId: "",
+      systembId:null
     };
   },
   methods: {
@@ -723,7 +735,7 @@ export default {
       this.$http
         .get(
           this.global.getSysCourseList +
-            `?searchText=${this.searchText}&sectionId=${
+            `?searchText=${this.searchText}&systembId=${this.systembId}&sectionId=${
               this.sectionId
             }&professionId=${this.professionId}&pageNum=${
               this.currentPage
@@ -810,7 +822,7 @@ export default {
       this.mofangFrom.professionId = row.professionId;
       this.imageUrl = require("../../../../assets/images/detail.png");
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSysCourseById + "?id=" + row.id).then(
+      this.$http.get(this.global.getSysCourseById + "?id=" + row.id + "&systembId=" + this.systembId).then(
         res => {
           console.log(res.data.resultObject);
           this.detailFrom = res.data.resultObject;
@@ -822,7 +834,7 @@ export default {
       this.$http
         .get(
           this.global.getBoxtaskList +
-            `?syscourseId=${this.mofangFrom.id}&type=${
+            `?syscourseId=${this.mofangFrom.id}&systembId=${this.systembId}&type=${
               this.mofangFrom.type
             }&taskType=${this.mofangFrom.taskType}&sectionId=${
               this.mofangFrom.sectionId
@@ -845,7 +857,7 @@ export default {
       this.mInfo = true;
       this.mtitle = "编辑任务";
       this.mId = e;
-      this.$http.get(this.global.getBoxtaskById + "?id=" + e).then(
+      this.$http.get(this.global.getBoxtaskById + "?id=" + e + "&systembId=" + this.systembId).then(
         res => {
           console.log(res);
           this.innerVisible = true;
@@ -952,6 +964,7 @@ export default {
       this.formData2.append("docfile", this.mofangFrom.docfile);
       this.formData2.append("paramsFile", this.mofangFrom.docfile2);
       this.formData2.append("introduction", this.mofangFrom.introduction);
+      this.formData2.append("systembId", this.systembId);
       //
       if (
         this.mofangFrom.name &&
@@ -989,7 +1002,7 @@ export default {
                   this.global.getBoxtaskList +
                     `?syscourseId=${this.mofangFrom.id}&type=${
                       this.mofangFrom.type
-                    }&taskType=${this.mofangFrom.taskType}&sectionId=${
+                    }&taskType=${this.mofangFrom.taskType}&systembId=${this.systembId}&sectionId=${
                       this.mofangFrom.sectionId
                     }&professionId=${
                       this.mofangFrom.professionId
@@ -1034,13 +1047,13 @@ export default {
           console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
-            .post(this.global.deleteBoxtask, { id: e }, { emulateJSON: true })
+            .post(this.global.deleteBoxtask, { id: e,systembId:this.systembId }, { emulateJSON: true })
             .then(
               res => {
                 this.$http
                   .get(
                     this.global.getBoxtaskList +
-                      `?syscourseId=${this.mofangFrom.id}&type=${
+                      `?syscourseId=${this.mofangFrom.id}&systembId=${this.systembId}&type=${
                         this.mofangFrom.type
                       }&taskType=${this.mofangFrom.taskType}&sectionId=${
                         this.mofangFrom.sectionId
@@ -1134,7 +1147,7 @@ export default {
       this.editInfo = true;
       this.editTittle = "编辑课程";
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSysCourseById + "?id=" + row.id).then(
+      this.$http.get(this.global.getSysCourseById + "?id=" + row.id + '&systembId=' + this.systembId).then(
         res => {
           // console.log(res.data.resultObject)
           this.courseFrom.id = row.id;
@@ -1151,7 +1164,7 @@ export default {
             .get(
               this.global.getProfessionList +
                 "?parentId=" +
-                this.courseFrom.sectionId
+                this.courseFrom.sectionId + "&systembId=" + this.systembId
             )
             .then(
               res => {
@@ -1187,7 +1200,7 @@ export default {
           console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
-            .get(this.global.deleteSysCourseById + "?id=" + row.id)
+            .get(this.global.deleteSysCourseById + "?id=" + row.id +"&systembId=" + this.systembId)
             .then(
               res => {
                 console.log(res);
@@ -1347,6 +1360,7 @@ export default {
       this.formData.append("professionId", this.courseFrom.professionId);
       this.formData.append("introduction", this.courseFrom.introduction);
       this.formData.append("id", this.courseFrom.id);
+      this.formData.append("systembId", this.systembId);
       //
       if (
         this.courseFrom.name &&
@@ -1426,7 +1440,7 @@ export default {
     },
     getMajoy(e, i, m) {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getProfessionList + "?parentId=" + e).then(
+      this.$http.get(this.global.getProfessionList + "?parentId=" + e + "&systembId=" + this.systembId).then(
         res => {
           /*this.sectionList[i].majoy = res.data.resultObject.data
           this.sectionList=Object.assign({},this.sectionList)
@@ -1466,7 +1480,7 @@ export default {
         this.$http
           .post(
             this.global.insertSectionProfession,
-            { name: this.grade },
+            { name: this.grade,systembId:this.systembId },
             { emulateJSON: true }
           )
           .then(
@@ -1514,7 +1528,7 @@ export default {
         this.$http
           .post(
             this.global.updateSectionProfession,
-            { name: this.grade, id: this.renameGradeId },
+            { name: this.grade, id: this.renameGradeId,systembId:this.systembId },
             { emulateJSON: true }
           )
           .then(
@@ -1541,7 +1555,7 @@ export default {
         this.$http
           .post(
             this.global.updateSectionProfession,
-            { name: this.grade, id: this.renameClassId },
+            { name: this.grade, id: this.renameClassId,systembId:this.systembId },
             { emulateJSON: true }
           )
           .then(
@@ -1568,7 +1582,7 @@ export default {
         this.$http
           .post(
             this.global.insertSectionProfession,
-            { name: this.grade, parentId: this.addClassId },
+            { name: this.grade, parentId: this.addClassId,systembId:this.systembId },
             { emulateJSON: true }
           )
           .then(
@@ -1588,7 +1602,7 @@ export default {
     // 班级下拉显示和隐藏
     isShow(e, i) {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getProfessionList + "?parentId=" + e).then(
+      this.$http.get(this.global.getProfessionList + "?parentId=" + e + '&systembId=' + this.systembId).then(
         res => {
           /*this.sectionList[i].majoy = res.data.resultObject.data
           this.sectionList=Object.assign({},this.sectionList)
@@ -1618,12 +1632,11 @@ export default {
         type: "warning"
       })
         .then(() => {
-          console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .post(
               this.global.deleteSectionProfession,
-              { id: e },
+              { id: e,systembId:this.systembId },
               { emulateJSON: true }
             )
             .then(
@@ -1666,7 +1679,7 @@ export default {
           this.$http
             .post(
               this.global.deleteSectionProfession,
-              { id: e },
+              { id: e ,systembId:this.systembId},
               { emulateJSON: true }
             )
             .then(
@@ -1714,6 +1727,26 @@ export default {
     }
   },
   created() {
+     this.loading = true;
+      Vue.http.headers.common["userToken"] = getCookie("userToken");
+      this.$http
+        .get(this.global.getSystembs)
+        .then(res => {
+          console.log(res)
+          return
+          if (res.data.status === 200) {
+            this.pageData = res.data.resultObject.data;
+            this.currentPage = res.data.resultObject.currentPage;
+            this.total = res.data.resultObject.totalCount;
+            this.pageSize = res.data.resultObject.pageSize;
+            // const {items,currentPage} = res.data.resultObject
+          } else if (res.data.status === 511) {
+            this.$router.push({ path: "/" });
+          } else {
+            alert(res.data.errorMessage);
+          }
+          this.loading = false;
+        });
     this.loadData();
     this.getSectionList();
   }
@@ -1741,7 +1774,30 @@ export default {
       }
     }
   }
-
+  .navlist{
+    height: 50px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    text-align: left;
+    white-space: nowrap;
+    margin-bottom: 30px;
+    -moz-box-sizing: border-box;
+    border: 1px solid #E5E5E4;
+    li{
+      height: 100%;
+      line-height: 50px;
+      display:inline-block;
+      font-size: 14px;
+      padding: 0 30px;
+      cursor: pointer;
+      border-right: 1px solid #E5E5E4;
+      &.active{
+        color: #fff;
+        background: #0090FF;
+      }
+    }
+  }
   .content {
     display: flex;
     .content-left {

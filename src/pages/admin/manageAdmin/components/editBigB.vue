@@ -3,11 +3,11 @@
     <ul class="top">
       <li class="left">
         <span @click="$router.go(-1)">大B平台列表</span>
-        <i class="el-icon-caret-right"></i> 新建大B平台
+        <i class="el-icon-caret-right"></i> 编辑大B平台信息
       </li>
     </ul>
     <div class="detailBox">
-      <h2>新建大B平台</h2>
+      <h2>编辑大B平台信息</h2>
       <el-form
         :model="addBigBForm"
         :rules="rules"
@@ -88,7 +88,7 @@
           <el-input type="textarea" :rows="2" placeholder="不长于200字" :maxlength="200" v-model="addBigBForm.remarks"></el-input>
         </el-form-item>
         <div class="buttonBox">
-            <el-button type="primary" @click="submitForm('addBigBForms')">创建</el-button>
+            <el-button type="primary" @click="submitForm('addBigBForms')">保存</el-button>
             <el-button @click="resetForm('addBigBForms')">取消</el-button>
         </div>
       </el-form>
@@ -176,8 +176,44 @@ export default {
     };
   },
   created() {
-    console.log(allCites);
-    this.allCity = allCites;
+     Vue.http.headers.common["userToken"] = getCookie("userToken");
+      this.$http
+        .get(this.global.getSystembById + "?systembId=" + this.$route.query.systemId)
+        .then(
+          res => {
+            if(res.body.status == 200){
+              let _data = res.body.resultObject;
+              this.addBigBForm.systembName  = _data.systembName;
+              this.addBigBForm.systembDomain = _data.systembDomain;
+              this.addBigBForm.systembIndustry = _data.systembIndustry;
+              this.addBigBForm.systembCompany = _data.systembCompany;
+              this.addBigBForm.adress = _data.bAddress;
+              this.addBigBForm.managerName = _data.managerName;
+              this.addBigBForm.email = _data.bEmail;
+              this.addBigBForm.phone = _data.managerTel;
+              this.addBigBForm.introduction = _data.bIntroduction;
+              this.addBigBForm.remarks = _data.bMark;
+              this.allCity = allCites;
+              var pr = _data.provinceId;
+              var ci = _data.cityId;
+              var ar = _data.areaId;
+              /* 默认的联级选择 */
+              this.province = this.allCity[pr].name;
+              this.city = this.allCity[pr].child[ci].name;
+              this.myCity = this.allCity[pr].child[ci].name;
+              this.area = this.allCity[pr].child[ci].child[ar];
+              this.myArea = this.allCity[pr].child[ci].child[ar];
+              this.myProvince = this.allCity[pr].name;
+              this.cities = this.allCity[pr].child[ci].name;
+              this.areas = this.allCity[pr].child[ci].child[ar];
+            }else{
+              this.$router.go(-1);
+            }
+          },
+          err => {
+            console.log(err);
+          }
+        );
   },
   methods: {
     //地区选择
@@ -233,9 +269,9 @@ export default {
               )
               .then(res => {
                 if (res.body.status === 200) {
-                  this.$message('大B平台添加成功');
+                  this.$message('保存成功');
                   this.$refs[formName].resetFields();
-                  this.$router.push({ path: "/manageAdmin/bigb" });
+                  this.$router.push({ path: "/manageAdmin/bigB" });
                 } else if (res.status === 511) {
                   this.$router.push({ path: "/" });
                 } else {

@@ -1,12 +1,8 @@
 <template>
   <div class="adminList">
-    <ul class="adminlistTop">
-      <li>用户列表
-        <i class="el-icon-caret-right"></i>
-      </li>
-      <li>
-        <el-button type="primary" @click="dialogOpen">新增用户</el-button>
-      </li>
+    <ul class="top">
+      <li class="left">大B管理员列表</li>
+      <li class="right" @click="dialogOpen">新增用户</li>
     </ul>
     <!-- 表单信息 -->
     <el-table
@@ -21,6 +17,7 @@
       <el-table-column prop="userName" label="姓名" width="180"></el-table-column>
       <el-table-column prop="userLoginname" label="用户名"></el-table-column>
       <el-table-column prop="userSex" label="性别"></el-table-column>
+      <el-table-column prop="systembName" label="管理大B"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" class="creatTime" sortable></el-table-column>
       <el-table-column prop="isDisable" label="状态">
         <template slot-scope="scope" class="handle">
@@ -32,22 +29,22 @@
         <template slot-scope="scope" class="handle">
           <el-button
             size="small"
-            type="warning"
             @click="userFrozen(scope.$index, scope.row)"
             v-show="scope.row.isDisable == 1"
-          >恢复</el-button>
+            class="iconfont-color-blue"
+          ><i class="iconfont">&#xe61c;</i>恢复</el-button>
           <el-button
             size="small"
-            type="warning"
             @click="userFrozen(scope.$index, scope.row)"
+            class="iconfont-color-blue"
             v-show="scope.row.isDisable == 0"
-          >冻结</el-button>
+          ><i class="iconfont">&#xe61c;</i>冻结</el-button>
           <el-button
             size="small"
-            type="primary"
+            class="iconfont-color-blue"
             @click="changePassword(scope.$index, scope.row)"
-          >修改密码</el-button>
-          <el-button size="small" type="danger" @click="userDelete(scope.$index, scope.row)">删除</el-button>
+          ><i class="iconfont">&#xe60d;</i>修改密码</el-button>
+          <el-button size="small" class="iconfont-color-blue" @click="userDelete(scope.$index, scope.row)"><i class="iconfont">&#xe600;</i>删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,6 +61,14 @@
       <el-form status-icon label-width="100px" class="demo-ruleForm">
         <el-form-item label="身份">
           <p class="identity">平台管理员</p>
+        </el-form-item>
+        <el-form-item label="管理平台" style="text-align:left">
+           <el-select v-model="platform" placeholder="请选择管理平台">
+            <el-option   v-for="(item,index) in platformlist"
+                :key="index"
+                :label="item.systembName"
+                :value="item.systembId"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="性别">
           <div class="identity">
@@ -140,7 +145,9 @@ export default {
       userPwdTips: "",
       useId: "",
       repassword: "",
-      repasswordTips: ""
+      repasswordTips: "",
+      platform:"",
+      platformlist:""
     };
   },
   methods: {
@@ -158,8 +165,8 @@ export default {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
-          this.global.getSystemUserList +
-            `?userType=2&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
+          this.global.getUserList +
+            `?userType=0&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .then(res => {
           if (res.data.status === 200) {
@@ -224,6 +231,13 @@ export default {
       } else {
         this.userPwdTips = "";
       }
+      if(this.platform == ""){
+       this.$message({
+          message: '请选择管理平台',
+          type: 'warning'
+        });
+        return
+      }
       if (
         !this.nameTips &&
         !this.LoginnameTips &&
@@ -237,11 +251,12 @@ export default {
           .post(
             this.global.insertUser,
             {
-              userType: 2,
+              userType: 0,
               userName: this.name,
               userLoginname: this.userLoginname,
               userSex: this.sex,
-              userPwd: this.userPwd
+              userPwd: this.userPwd,
+              systembId:this.platform
             },
             { emulateJSON: true }
           )
@@ -387,33 +402,51 @@ export default {
   },
   created() {
     this.loadData();
+     Vue.http.headers.common["userToken"] = getCookie("userToken");
+      this.$http
+        .get(this.global.getSystembs)
+        .then(res => {
+          if (res.body.status === 200) {
+            this.platformlist = res.body.resultObject
+          } else if (res.body.status === 511) {
+            this.$router.push({ path: "/" });
+          } else {
+            alert(res.body.errorMessage);
+          }
+        });
   }
 };
 </script>
 <style scoped lang="less">
 .adminList {
-  ul {
+  .top {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    li {
+    align-items: center;
+    li.left {
       font-size: 14px;
+      color: #434343;
       font-weight: bold;
     }
-    li:first-child {
-      padding-top: 10px;
-      text-align: left;
-      font-weight: bolder;
+    li.right {
+      width: 120px;
+      font-size: 16px;
+      color: #fff;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      background: rgba(0, 144, 255, 1);
+      border-radius: 2px;
+      cursor: pointer;
     }
   }
   .el-table {
     margin-top: 15px;
-    // border-radius: 5px;
     .el-button {
       margin-left: 10px;
     }
     .green {
-      color: #67c23a;
+      color: #30b44f;
     }
     .yellow {
       color: #e6a23c;
@@ -421,6 +454,7 @@ export default {
   }
   .el-pagination {
     margin-top: 20px;
+    text-align: right;
   }
   .wrongTips {
     display: inline-block;

@@ -5,9 +5,9 @@
       <el-container>
         <el-aside width="200px"><adminNav/></el-aside>
         <el-main>
-          <keep-alive>
+          <!-- <keep-alive> -->
             <router-view></router-view>
-          </keep-alive>
+          <!-- </keep-alive> -->
         </el-main>
       </el-container>
       <Footer/>

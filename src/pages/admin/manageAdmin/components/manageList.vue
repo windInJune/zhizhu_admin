@@ -4,10 +4,19 @@
       <li class="left">机构列表</li>
       <li class="right" @click="dialogOpen">新建机构</li>
     </ul>
+    <div class="checkBox">
+        <el-select v-model="platform" @change="selectChange" placeholder="请选择管理平台">
+          <el-option   v-for="(item,index) in platformlist"
+              :key="index"
+              :label="item.systembName"
+              :value="item.systembId"></el-option>
+        </el-select>
+    </div>
     <!-- 表单信息 -->
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
       <el-table-column prop="schoolName" label="机构名称" width="165"></el-table-column>
       <el-table-column prop="schoolId" label="机构ID"></el-table-column>
+      <el-table-column prop="systembId" label="所属大B平台"></el-table-column>
       <el-table-column prop="schoolType" label="类型">
         <template slot-scope="scope">
           <span v-show="scope.row.schoolType == 1">公立</span>
@@ -107,6 +116,14 @@
             @change="shcoolNamePattern"
           ></el-input>
           <span class="wrongTips" v-show="this.schoolNameTips">{{this.schoolNameTips}}</span>
+        </el-form-item>
+        <el-form-item label="所属大B平台" style="text-align:left">
+        <el-select v-model="platformold" @change="selectChangeset" placeholder="请选择管理平台">
+          <el-option   v-for="(item,index) in platformlistold"
+              :key="index"
+              :label="item.systembName"
+              :value="item.systembId"></el-option>
+        </el-select>
         </el-form-item>
         <!-- 机构类型 -->
         <el-form-item label="机构类型">
@@ -311,26 +328,40 @@ export default {
       areaTips: "",
       editSchool: false,
       dialogInfo: false,
-      dataScreen: ""
+      dataScreen: "",
+      platform:"全部大B平台",
+      palatformId:-1,
+      platformlist:[],
+
+      platformlistold:[],
+      platformold:"",
+      platformoldId:null //编辑里面的平台选择id
     };
   },
   methods: {
+    selectChangeset(val){
+      this.platformoldId = val
+    },
+    selectChange(val){
+      this.palatformId = val
+      this.loadData(val)
+    },
     // 处理页号改变
     headerClassFn(row, column, rowIndex, columnIndex){
       return "color:#434343;background:rgba(245,245,245,1);font-size:12px;"
     },
     handleCurrentChange(currentPage) {
       this.currentPage = currentPage;
-      this.loadData();
+      this.loadData(this.palatformId);
     },
     // 加载分页数据
-    loadData() {
+    loadData(systembId) {
       this.loading = true;
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
           this.global.getSchoolList +
-            `?userType=2&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
+            `?userType=2&systembId=${systembId}&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .then(res => {
           if (res.data.status === 200) {
@@ -450,6 +481,13 @@ export default {
       } else {
         this.areaTips = "";
       }
+      if(!this.platformoldId){
+         this.$message({
+          message: '请选择管理平台',
+          type: 'warning'
+        });
+        return
+      }
       if (
         !this.schoolNameTips &&
         !this.schoolAdressTips &&
@@ -489,7 +527,8 @@ export default {
               introduction: this.introduction,
               schoolMark: this.schoolMark,
               managerName: this.managerName,
-              managerTel: this.managerTel
+              managerTel: this.managerTel,
+              systembId:this.platformoldId
             },
             { emulateJSON: true }
           )
@@ -509,7 +548,7 @@ export default {
                 });
               }
               console.log(res);
-              this.loadData();
+              this.loadData(this.palatformId);
               this.resets();
             },
             err => {
@@ -551,7 +590,7 @@ export default {
                     type: "success"
                   });
                 }
-                this.loadData();
+                this.loadData(this.palatformId);
               },
               err => {
                 console.log(err);
@@ -579,7 +618,8 @@ export default {
     // 修改信息
     changeInfo(index, row) {
       this.dialogTittle = "编辑机构信息";
-      console.log(this.dialogTittle);
+      this.platformoldId=row.systembId;
+      this.platformold=row.systembName;
       this.schoolId = row.schoolId;
       this.schoolNameTips = "";
       this.schoolAdressTips = "";
@@ -619,9 +659,7 @@ export default {
       this.schoolMark = row.schoolMark;
       this.managerName = row.managerName;
       this.managerTel = row.managerTel;
-      console.log(managerName);
-      console.log(managerTel);
-      console.log(row);
+
     },
     //地区选择
     provincesChoose() {
@@ -647,7 +685,8 @@ export default {
       console.log(this.myArea);
     },
     resets() {
-      (this.editSchool = false),
+        (this.editSchool = false),
+        (this.platformoldId = null),
         (this.schoolId = ""),
         (this.schoolName = ""),
         (this.schoolType = 1),
@@ -674,7 +713,20 @@ export default {
   },
   created() {
     this.allCity = allCites;
-    this.loadData();
+    this.loadData(-1);
+    Vue.http.headers.common["userToken"] = getCookie("userToken");
+      this.$http
+        .get(this.global.getSystembs)
+        .then(res => {
+          if (res.body.status === 200) {
+            this.platformlistold = res.body.resultObject;
+            this.platformlist = [{systembId: -1,systembName: "全部大B平台"},...res.body.resultObject] 
+          } else if (res.body.status === 511) {
+            this.$router.push({ path: "/" });
+          } else {
+            alert(res.body.errorMessage);
+          }
+        });
   }
 };
 </script>
@@ -786,5 +838,9 @@ export default {
   .iconfont-color-blue{
     font-size: 12px;
   }
+  }
+  .checkBox{
+    text-align: left;
+    margin:10px 0;
   }
 </style>
