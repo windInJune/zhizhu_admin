@@ -2,18 +2,15 @@
 <template>
   <div class="adminList">
     <ul class="navlist">
-        <li class="active">知筑魔方云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
-        <li>沃阿汇云平台</li>
+      <li
+        v-for="(item,index) in platformlistold"
+        :class="[item.systembId == systembId?'active':'']"
+        :key="index"
+        @click="choseSystem(item.systembId)"
+      >{{item.systembName}}</li>
     </ul>
     <div class="topBox">
-       <div class="sectionTitle" style="font-size: 14px;
+      <div class="sectionTitle" style="font-size: 14px;
       color: #434343;">课程列表
         <!-- <i class="el-icon-caret-right"></i> -->
       </div>
@@ -27,7 +24,7 @@
         </li>
       </ul>
     </div>
-  
+
     <div class="content">
       <div>
         <div class="content-left">
@@ -36,7 +33,6 @@
             <span class="iconfont topMin" v-show="!topAddShow" @click="handleChange">&#xe627;</span>
             <span class="all" @click="handleChange">全部学段</span>
             <i class="iconfont addGrade" @click.stop="addGrade" v-show="allShows">添加学段</i>
-         
           </p>
           <!-- <el-collapse v-model="activeNames" @change="handleChange"> -->
           <!-- <el-collapse-item title="全部学段" name="1"> -->
@@ -51,11 +47,12 @@
                 @mouseenter="gradeEnter(item.id,index)"
                 @mouseleave="gradeleave(item.id,index)"
               >
-                <span class="iconfont down" v-show="item.majoy" @click="isShow(item.id,index)" >
+                <span class="iconfont down" v-show="item.majoy" @click="isShow(item.id,index)">
                   <span>&#xe627;</span>
                   <a class="gradeName">{{item.name}}</a>
                 </span>
-                <span class="iconfont down" v-show="!item.majoy" @click="isShow(item.id,index)">&#xe628;
+                <span class="iconfont down" v-show="!item.majoy" @click="isShow(item.id,index)">
+                  &#xe628;
                   <a class="gradeName">{{item.name}}</a>
                 </span>
                 <!-- <a style="opacity:0;">{{item.name}}</a> -->
@@ -64,7 +61,6 @@
                       <span class="iconfont add" @click.stop="addClass(item.id)" v-show="iconShow[item.id]">&#xe79c;</span>
                       <span class="iconfont del" @click.stop="delGrade(item.id)" v-show="iconShow[item.id]">&#xe614;</span>
                 -->
-                
                 <span
                   class="rename more"
                   @click.stop="renameGrade(item.id,item.name)"
@@ -76,7 +72,6 @@
                   v-show="iconShow[item.id]"
                 >添加专业</span>
                 <span class="del more" @click.stop="delGrade(item.id)" v-show="iconShow[item.id]">删除</span>
-
               </p>
               <p
                 v-for="(t,i) in item.majoy"
@@ -106,14 +101,20 @@
         </div>
       </div>
       <div class="content-right" style="overflow:hidden">
-        <div class="statistics">当前条件下共有课程
+        <div class="statistics">
+          当前条件下共有课程
           <span>{{this.total}}</span> 个。
-          <div class="addSb"  @click="addCourses">＋&nbsp;&nbsp;新增课程</div>
+          <div class="addSb" @click="addCourses">＋&nbsp;&nbsp;新增课程</div>
           <!-- <el-button type="success" @click="addCourses">＋&nbsp;&nbsp;新增课程</el-button> -->
         </div>
         <!-- 表单信息 -->
-        <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"
-      style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
+        <el-table
+          :data="pageData"
+          highlight-current-row
+          :header-cell-style="headerClassFn"
+          style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
+          v-loading="loading"
+        >
           <el-table-column type="index" label="序号" width="80">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
           </el-table-column>
@@ -453,7 +454,8 @@
           <el-form-item label="任务简介：" prop="introduction">
             <el-input v-model.trim="mofangFrom.introduction" placeholder="不长于500字符" type="textarea"></el-input>
           </el-form-item>
-          <div style="position:absolute;top:50%;left:50%;color:red;" v-show="loadShow">文件上传中请稍后
+          <div style="position:absolute;top:50%;left:50%;color:red;" v-show="loadShow">
+            文件上传中请稍后
             <i class="el-icon-loading"></i>
           </div>
         </el-form>
@@ -469,7 +471,8 @@
         </div>
         <div class="detail-right">
           <h2>{{detailFrom.name}}</h2>
-          <p>开发者：
+          <p>
+            开发者：
             <span>知筑</span>专业：
             <span>{{detailFrom.professionName}}</span>任务数：
             <span>{{detailFrom.taskCount}}</span>
@@ -520,10 +523,12 @@
                   <span style="display:none">{{item.type}}</span>岗位实践类
                 </p>
                 <!-- 5种种类 -->
-                <p class="mofang-content">需时：
+                <p class="mofang-content">
+                  需时：
                   <span>{{item.time}}</span>min
                 </p>
-                <p class="mofang-content">大小：
+                <p class="mofang-content">
+                  大小：
                   <span>{{item.fileSize}}</span>
                 </p>
                 <el-button
@@ -535,16 +540,19 @@
                 <el-button type="danger" plain class="mofang-content-del" @click="Mdel(item.id)">删除</el-button>
               </div>
               <div class="bottom">
-                <p class="mofang-content">创建：
+                <p class="mofang-content">
+                  创建：
                   <span>{{item.userName}}</span>
                 </p>
                 <p class="mofang-content">
                   <span>{{item.createTime | formatDate2}}</span>
                 </p>
-                <p class="mofang-content">编号：
+                <p class="mofang-content">
+                  编号：
                   <span>{{item.number}}</span>
                 </p>
-                <p class="mofang-content">版本号：
+                <p class="mofang-content">
+                  版本号：
                   <span>{{item.versionNum}}</span>
                 </p>
                 <a class="mofang-content-yin">
@@ -708,12 +716,21 @@ export default {
       renameGradeId: "",
       renameClassId: "",
       addClassId: "",
-      systembId:null
+      systembId: null,
+      platformlistold: []
     };
   },
   methods: {
-     headerClassFn(row, column, rowIndex, columnIndex){
-      return "color:#434343;font-size:12px;"
+    choseSystem(id) {
+      this.systembId = id;
+      this.loading = true;
+      this.sectionId = "";
+      this.professionId = "";
+      this.loadData();
+      this.getSectionList();
+    },
+    headerClassFn(row, column, rowIndex, columnIndex) {
+      return "color:#434343;font-size:12px;";
     },
     // 时间戳改成时间
     dateFormat(row, column) {
@@ -735,11 +752,11 @@ export default {
       this.$http
         .get(
           this.global.getSysCourseList +
-            `?searchText=${this.searchText}&systembId=${this.systembId}&sectionId=${
-              this.sectionId
-            }&professionId=${this.professionId}&pageNum=${
-              this.currentPage
-            }&pageSize=${this.pageSize}`
+            `?searchText=${this.searchText}&systembId=${
+              this.systembId
+            }&sectionId=${this.sectionId}&professionId=${
+              this.professionId
+            }&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .then(res => {
           if (res.data.status === 200) {
@@ -822,25 +839,33 @@ export default {
       this.mofangFrom.professionId = row.professionId;
       this.imageUrl = require("../../../../assets/images/detail.png");
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSysCourseById + "?id=" + row.id + "&systembId=" + this.systembId).then(
-        res => {
-          console.log(res.data.resultObject);
-          this.detailFrom = res.data.resultObject;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+      this.$http
+        .get(
+          this.global.getSysCourseById +
+            "?id=" +
+            row.id +
+            "&systembId=" +
+            this.systembId
+        )
+        .then(
+          res => {
+            console.log(res.data.resultObject);
+            this.detailFrom = res.data.resultObject;
+          },
+          err => {
+            console.log(err);
+          }
+        );
       this.$http
         .get(
           this.global.getBoxtaskList +
-            `?syscourseId=${this.mofangFrom.id}&systembId=${this.systembId}&type=${
-              this.mofangFrom.type
-            }&taskType=${this.mofangFrom.taskType}&sectionId=${
-              this.mofangFrom.sectionId
-            }&professionId=${this.mofangFrom.professionId}&sort=0&pageNum=${
-              this.currentPage
-            }&pageSize=${this.pageSize}`
+            `?syscourseId=${this.mofangFrom.id}&systembId=${
+              this.systembId
+            }&type=${this.mofangFrom.type}&taskType=${
+              this.mofangFrom.taskType
+            }&sectionId=${this.mofangFrom.sectionId}&professionId=${
+              this.mofangFrom.professionId
+            }&sort=0&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .then(
           res => {
@@ -857,34 +882,42 @@ export default {
       this.mInfo = true;
       this.mtitle = "编辑任务";
       this.mId = e;
-      this.$http.get(this.global.getBoxtaskById + "?id=" + e + "&systembId=" + this.systembId).then(
-        res => {
-          console.log(res);
-          this.innerVisible = true;
-          this.mofangFrom.name = res.data.resultObject.name;
-          this.mofangFrom.number = res.data.resultObject.number;
-          this.mofangFrom.versionNum = res.data.resultObject.versionNum;
-          this.mofangFrom.type = res.data.resultObject.type;
-          this.mofangFrom.mold = res.data.resultObject.taskType;
-          this.mofangFrom.time = res.data.resultObject.time;
-          this.mofangFrom.docfile = [
-            {
-              name: `${res.data.resultObject.path}`,
-              url: res.data.resultObject.path
+      this.$http
+        .get(
+          this.global.getBoxtaskById +
+            "?id=" +
+            e +
+            "&systembId=" +
+            this.systembId
+        )
+        .then(
+          res => {
+            console.log(res);
+            this.innerVisible = true;
+            this.mofangFrom.name = res.data.resultObject.name;
+            this.mofangFrom.number = res.data.resultObject.number;
+            this.mofangFrom.versionNum = res.data.resultObject.versionNum;
+            this.mofangFrom.type = res.data.resultObject.type;
+            this.mofangFrom.mold = res.data.resultObject.taskType;
+            this.mofangFrom.time = res.data.resultObject.time;
+            this.mofangFrom.docfile = [
+              {
+                name: `${res.data.resultObject.path}`,
+                url: res.data.resultObject.path
+              }
+            ];
+            this.mofangFrom.introduction = res.data.resultObject.introduction;
+            if (res.data.resultObject.img) {
+              this.imageUrl =
+                this.detailFromUrl + "/" + res.data.resultObject.img;
+            } else {
+              this.imageUrl = require("../../../../assets/images/mofang.png");
             }
-          ];
-          this.mofangFrom.introduction = res.data.resultObject.introduction;
-          if (res.data.resultObject.img) {
-            this.imageUrl =
-              this.detailFromUrl + "/" + res.data.resultObject.img;
-          } else {
-            this.imageUrl = require("../../../../assets/images/mofang.png");
+          },
+          err => {
+            console.log(err);
           }
-        },
-        err => {
-          console.log(err);
-        }
-      );
+        );
     },
     addMoFangSubmit() {
       let namePattern = /^.{2,16}$/;
@@ -1002,9 +1035,9 @@ export default {
                   this.global.getBoxtaskList +
                     `?syscourseId=${this.mofangFrom.id}&type=${
                       this.mofangFrom.type
-                    }&taskType=${this.mofangFrom.taskType}&systembId=${this.systembId}&sectionId=${
-                      this.mofangFrom.sectionId
-                    }&professionId=${
+                    }&taskType=${this.mofangFrom.taskType}&systembId=${
+                      this.systembId
+                    }&sectionId=${this.mofangFrom.sectionId}&professionId=${
                       this.mofangFrom.professionId
                     }&sort=0&pageNum=${this.currentPage}&pageSize=${
                       this.pageSize
@@ -1047,17 +1080,21 @@ export default {
           console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
-            .post(this.global.deleteBoxtask, { id: e,systembId:this.systembId }, { emulateJSON: true })
+            .post(
+              this.global.deleteBoxtask,
+              { id: e, systembId: this.systembId },
+              { emulateJSON: true }
+            )
             .then(
               res => {
                 this.$http
                   .get(
                     this.global.getBoxtaskList +
-                      `?syscourseId=${this.mofangFrom.id}&systembId=${this.systembId}&type=${
-                        this.mofangFrom.type
-                      }&taskType=${this.mofangFrom.taskType}&sectionId=${
-                        this.mofangFrom.sectionId
-                      }&professionId=${
+                      `?syscourseId=${this.mofangFrom.id}&systembId=${
+                        this.systembId
+                      }&type=${this.mofangFrom.type}&taskType=${
+                        this.mofangFrom.taskType
+                      }&sectionId=${this.mofangFrom.sectionId}&professionId=${
                         this.mofangFrom.professionId
                       }&sort=0&pageNum=${this.currentPage}&pageSize=${
                         this.pageSize
@@ -1147,41 +1184,51 @@ export default {
       this.editInfo = true;
       this.editTittle = "编辑课程";
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSysCourseById + "?id=" + row.id + '&systembId=' + this.systembId).then(
-        res => {
-          // console.log(res.data.resultObject)
-          this.courseFrom.id = row.id;
-          this.courseFrom.name = res.data.resultObject.name;
-          this.courseFrom.sectionId = res.data.resultObject.sectionId;
-          this.courseFrom.professionId = res.data.resultObject.professionId;
-          this.imageUrl = require("../../../../assets/images/detail.png");
-          if (res.data.resultObject.photo) {
-            this.imageUrl =
-              this.detailFromUrl + "/" + res.data.resultObject.photo;
+      this.$http
+        .get(
+          this.global.getSysCourseById +
+            "?id=" +
+            row.id +
+            "&systembId=" +
+            this.systembId
+        )
+        .then(
+          res => {
+            // console.log(res.data.resultObject)
+            this.courseFrom.id = row.id;
+            this.courseFrom.name = res.data.resultObject.name;
+            this.courseFrom.sectionId = res.data.resultObject.sectionId;
+            this.courseFrom.professionId = res.data.resultObject.professionId;
+            this.imageUrl = require("../../../../assets/images/detail.png");
+            if (res.data.resultObject.photo) {
+              this.imageUrl =
+                this.detailFromUrl + "/" + res.data.resultObject.photo;
+            }
+            // 获取课程id
+            this.$http
+              .get(
+                this.global.getProfessionList +
+                  "?parentId=" +
+                  this.courseFrom.sectionId +
+                  "&systembId=" +
+                  this.systembId
+              )
+              .then(
+                res => {
+                  this.professionList = res.data.resultObject.data;
+                  // console.log('123')
+                  console.log(res.data.resultObject.data);
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+            // 获取课程id结束
+          },
+          err => {
+            console.log(err);
           }
-          // 获取课程id
-          this.$http
-            .get(
-              this.global.getProfessionList +
-                "?parentId=" +
-                this.courseFrom.sectionId + "&systembId=" + this.systembId
-            )
-            .then(
-              res => {
-                this.professionList = res.data.resultObject.data;
-                // console.log('123')
-                console.log(res.data.resultObject.data);
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          // 获取课程id结束
-        },
-        err => {
-          console.log(err);
-        }
-      );
+        );
     },
     // 删除
     equipDelete(index, row) {
@@ -1200,7 +1247,13 @@ export default {
           console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
-            .get(this.global.deleteSysCourseById + "?id=" + row.id +"&systembId=" + this.systembId)
+            .get(
+              this.global.deleteSysCourseById +
+                "?id=" +
+                row.id +
+                "&systembId=" +
+                this.systembId
+            )
             .then(
               res => {
                 console.log(res);
@@ -1229,11 +1282,9 @@ export default {
     // 选择专业
     getSectionList() {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSectionList).then(
+      this.$http.get(this.global.getSectionList + "?systembId=" + this.systembId).then(
         res => {
-          console.log(res);
           this.sectionList = res.data.resultObject.data;
-          console.log(this.sectionList);
         },
         err => {
           console.log(err);
@@ -1242,14 +1293,12 @@ export default {
     },
     // 选择学段
     getSectionId(e) {
-      console.log(this.courseFrom.sectionId);
-      console.log(e);
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
           this.global.getProfessionList +
             "?parentId=" +
-            this.courseFrom.sectionId
+            this.courseFrom.sectionId + "&systembId=" + this.systembId
         )
         .then(
           res => {
@@ -1440,9 +1489,17 @@ export default {
     },
     getMajoy(e, i, m) {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getProfessionList + "?parentId=" + e + "&systembId=" + this.systembId).then(
-        res => {
-          /*this.sectionList[i].majoy = res.data.resultObject.data
+      this.$http
+        .get(
+          this.global.getProfessionList +
+            "?parentId=" +
+            e +
+            "&systembId=" +
+            this.systembId
+        )
+        .then(
+          res => {
+            /*this.sectionList[i].majoy = res.data.resultObject.data
           this.sectionList=Object.assign({},this.sectionList)
           console.log(m)
 
@@ -1454,13 +1511,13 @@ export default {
             this.sectionList=Object.assign({},this.sectionList)
           }
           */
-        },
-        err => {
-          console.log(err);
-        }
-      );
+          },
+          err => {
+            console.log(err);
+          }
+        );
     },
-    chooseMajoy(e,id) {
+    chooseMajoy(e, id) {
       this.sectionId = id;
       this.professionId = e;
       this.loadData();
@@ -1480,7 +1537,7 @@ export default {
         this.$http
           .post(
             this.global.insertSectionProfession,
-            { name: this.grade,systembId:this.systembId },
+            { name: this.grade, systembId: this.systembId },
             { emulateJSON: true }
           )
           .then(
@@ -1528,7 +1585,11 @@ export default {
         this.$http
           .post(
             this.global.updateSectionProfession,
-            { name: this.grade, id: this.renameGradeId,systembId:this.systembId },
+            {
+              name: this.grade,
+              id: this.renameGradeId,
+              systembId: this.systembId
+            },
             { emulateJSON: true }
           )
           .then(
@@ -1555,7 +1616,11 @@ export default {
         this.$http
           .post(
             this.global.updateSectionProfession,
-            { name: this.grade, id: this.renameClassId,systembId:this.systembId },
+            {
+              name: this.grade,
+              id: this.renameClassId,
+              systembId: this.systembId
+            },
             { emulateJSON: true }
           )
           .then(
@@ -1582,7 +1647,11 @@ export default {
         this.$http
           .post(
             this.global.insertSectionProfession,
-            { name: this.grade, parentId: this.addClassId,systembId:this.systembId },
+            {
+              name: this.grade,
+              parentId: this.addClassId,
+              systembId: this.systembId
+            },
             { emulateJSON: true }
           )
           .then(
@@ -1602,26 +1671,34 @@ export default {
     // 班级下拉显示和隐藏
     isShow(e, i) {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getProfessionList + "?parentId=" + e + '&systembId=' + this.systembId).then(
-        res => {
-          /*this.sectionList[i].majoy = res.data.resultObject.data
+      this.$http
+        .get(
+          this.global.getProfessionList +
+            "?parentId=" +
+            e +
+            "&systembId=" +
+            this.systembId
+        )
+        .then(
+          res => {
+            /*this.sectionList[i].majoy = res.data.resultObject.data
           this.sectionList=Object.assign({},this.sectionList)
           console.log(m)
           */
-          if (this.sectionList[i].majoy == null) {
-            this.sectionList[i].majoy = res.data.resultObject.data;
-            this.sectionList = Object.assign({}, this.sectionList);
-          } else {
-            this.sectionList[i].majoy = null;
-            this.sectionList = Object.assign({}, this.sectionList);
+            if (this.sectionList[i].majoy == null) {
+              this.sectionList[i].majoy = res.data.resultObject.data;
+              this.sectionList = Object.assign({}, this.sectionList);
+            } else {
+              this.sectionList[i].majoy = null;
+              this.sectionList = Object.assign({}, this.sectionList);
+            }
+            this.sectionId = e;
+            // this.loadData()
+          },
+          err => {
+            console.log(err);
           }
-          this.sectionId = e;
-          // this.loadData()
-        },
-        err => {
-          console.log(err);
-        }
-      );
+        );
     },
     // 删除学段
     delGrade(e) {
@@ -1636,7 +1713,7 @@ export default {
           this.$http
             .post(
               this.global.deleteSectionProfession,
-              { id: e,systembId:this.systembId },
+              { id: e, systembId: this.systembId },
               { emulateJSON: true }
             )
             .then(
@@ -1679,7 +1756,7 @@ export default {
           this.$http
             .post(
               this.global.deleteSectionProfession,
-              { id: e ,systembId:this.systembId},
+              { id: e, systembId: this.systembId },
               { emulateJSON: true }
             )
             .then(
@@ -1727,35 +1804,28 @@ export default {
     }
   },
   created() {
-     this.loading = true;
-      Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http
-        .get(this.global.getSystembs)
-        .then(res => {
-          console.log(res)
-          return
-          if (res.data.status === 200) {
-            this.pageData = res.data.resultObject.data;
-            this.currentPage = res.data.resultObject.currentPage;
-            this.total = res.data.resultObject.totalCount;
-            this.pageSize = res.data.resultObject.pageSize;
-            // const {items,currentPage} = res.data.resultObject
-          } else if (res.data.status === 511) {
-            this.$router.push({ path: "/" });
-          } else {
-            alert(res.data.errorMessage);
-          }
-          this.loading = false;
-        });
-    this.loadData();
-    this.getSectionList();
+    this.loading = true;
+
+    Vue.http.headers.common["userToken"] = getCookie("userToken");
+    this.$http.get(this.global.getSystembs).then(res => {
+      if (res.body.status === 200) {
+        this.platformlistold = res.body.resultObject;
+        this.systembId = res.body.resultObject[0].systembId;
+        this.loadData();
+        this.getSectionList();
+      } else if (res.body.status === 511) {
+        this.$router.push({ path: "/" });
+      } else {
+        alert(res.body.errorMessage);
+      }
+    });
   }
 };
 </script>
 <style scoped lang="less">
 .adminList {
   padding-bottom: 80px;
-  .topBox{
+  .topBox {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1774,7 +1844,7 @@ export default {
       }
     }
   }
-  .navlist{
+  .navlist {
     height: 50px;
     width: 100%;
     overflow-x: auto;
@@ -1783,18 +1853,18 @@ export default {
     white-space: nowrap;
     margin-bottom: 30px;
     -moz-box-sizing: border-box;
-    border: 1px solid #E5E5E4;
-    li{
+    border: 1px solid #e5e5e4;
+    li {
       height: 100%;
       line-height: 50px;
-      display:inline-block;
+      display: inline-block;
       font-size: 14px;
       padding: 0 30px;
       cursor: pointer;
-      border-right: 1px solid #E5E5E4;
-      &.active{
+      border-right: 1px solid #e5e5e4;
+      &.active {
         color: #fff;
-        background: #0090FF;
+        background: #0090ff;
       }
     }
   }
@@ -1822,8 +1892,8 @@ export default {
       .addGrade {
         font-size: 12px;
         color: #fff;
-        background:rgba(243,87,23,1);
-        border:1px solid rgba(211, 74, 18, 1);
+        background: rgba(243, 87, 23, 1);
+        border: 1px solid rgba(211, 74, 18, 1);
         padding: 3px 5px;
         width: 60px;
         text-align: center;
@@ -1852,26 +1922,26 @@ export default {
         align-items: center;
         cursor: pointer;
         height: 30px;
-        padding-left:30px;
+        padding-left: 30px;
         line-height: 30px;
         .more {
           color: #fff;
           font-size: 12px;
-          width:60px;
-          height:20px;
+          width: 60px;
+          height: 20px;
           line-height: 20px;
-          background:rgba(243,87,23,1);
-          border:1px solid rgba(211, 74, 18, 1);
-          margin:0 2px;
+          background: rgba(243, 87, 23, 1);
+          border: 1px solid rgba(211, 74, 18, 1);
+          margin: 0 2px;
           position: absolute;
           left: 130px;
           top: 50%;
           margin-top: -12px;
-          z-index: 999;;
-          &.add{
+          z-index: 999;
+          &.add {
             left: 190px;
           }
-          &.del{
+          &.del {
             left: 250px;
           }
         }
@@ -1880,8 +1950,8 @@ export default {
           display: flex;
           align-items: center;
           margin-right: 6px;
-          a{
-            margin-left:6px;
+          a {
+            margin-left: 6px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -1899,7 +1969,7 @@ export default {
         }
       }
       .classList {
-        padding-left:50px;
+        padding-left: 50px;
         cursor: pointer;
         position: relative;
         display: flex;
@@ -1927,19 +1997,19 @@ export default {
         .more {
           color: #fff;
           font-size: 12px;
-          width:60px;
-          height:20px;
+          width: 60px;
+          height: 20px;
           line-height: 20px;
-          background:rgba(243,87,23,1);
-          border:1px solid rgba(211, 74, 18, 1);
-          margin:0 2px;
+          background: rgba(243, 87, 23, 1);
+          border: 1px solid rgba(211, 74, 18, 1);
+          margin: 0 2px;
           position: absolute;
           left: 180px;
           top: 50%;
           margin-top: -10px;
-          z-index: 9999;;
+          z-index: 9999;
         }
-        
+
         .del {
           position: absolute;
           left: 240px;
@@ -1975,7 +2045,7 @@ export default {
     border-radius: 2px 2px 0 0;
     font-size: 14px;
     text-align: left;
-    padding-left:20px;
+    padding-left: 20px;
     color: #999;
     overflow: hidden;
     border-bottom: 0;
@@ -2247,36 +2317,35 @@ export default {
 .addMore {
   font-size: 18px;
 }
-  .addSb{
-    width:112px;
-    line-height: 33px;
-    text-align: center;
-    color: #fff;
-    height:33px;
-    background:rgba(48,180,79,1);
-    border:1px solid rgba(15,127,3,1);
-    border-radius:4px;
-    float: right;
-    margin: 10px 10px 0 0;
-    cursor: pointer;
-  }
-    .el-table {
-    margin-top: 15px;
-    border-radius: 5px;
-  }
-  .el-pagination {
-    margin-top: 20px;
-    text-align: right;
-  }
-    .green {
-    color: #30B44F;
-  }
-  .el-table{
-    font-size: 12px;
-    border-radius: 0;
-
-  }
-  .iconfont-color-blue{
-    font-size: 12px;
-  }
+.addSb {
+  width: 112px;
+  line-height: 33px;
+  text-align: center;
+  color: #fff;
+  height: 33px;
+  background: rgba(48, 180, 79, 1);
+  border: 1px solid rgba(15, 127, 3, 1);
+  border-radius: 4px;
+  float: right;
+  margin: 10px 10px 0 0;
+  cursor: pointer;
+}
+.el-table {
+  margin-top: 15px;
+  border-radius: 5px;
+}
+.el-pagination {
+  margin-top: 20px;
+  text-align: right;
+}
+.green {
+  color: #30b44f;
+}
+.el-table {
+  font-size: 12px;
+  border-radius: 0;
+}
+.iconfont-color-blue {
+  font-size: 12px;
+}
 </style>

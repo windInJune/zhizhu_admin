@@ -23,6 +23,16 @@ Vue.use(Vuex)
 Vue.prototype.global = global
 Vue.config.productionTip = false
 /* eslint-disable no-new */
+router.beforeEach((to, from, next) => {
+  let USERTYPE = localStorage.getItem('userType');
+  // 用户类型1系统管理员  2：B (平台)管理员 0: 大后台管理员
+  if(USERTYPE == 2){
+     next({path:'/'})
+  }else{
+    next()
+  }
+});
+
 new Vue({
   el: '#app',
   store,

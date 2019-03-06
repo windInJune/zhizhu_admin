@@ -159,7 +159,7 @@ export default {
       this.$http
         .get(
           this.global.getSystemUserList +
-            `?userType=2&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
+            `?userType=0&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .then(res => {
           if (res.data.status === 200) {
@@ -237,7 +237,7 @@ export default {
           .post(
             this.global.insertUser,
             {
-              userType: 2,
+              userType: 0,
               userName: this.name,
               userLoginname: this.userLoginname,
               userSex: this.sex,

@@ -282,7 +282,7 @@ export default {
       ],
       statusValue: "",
       statusDetail: "",
-      platform: "全部大B平台",
+      platform: "",
       palatformId: -1,
       platformlist: []
     };

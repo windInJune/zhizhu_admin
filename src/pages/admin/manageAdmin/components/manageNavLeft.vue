@@ -5,20 +5,20 @@
         <div class="head">
           <div class="head-icon"></div>
           <h2>
-            {{this.userName}}
+            {{userNames || this.userName}}
             <i class="iconfont boy" v-show="this.sex == '男'">&#xe648;</i>
             <i class="iconfont gril" v-show="this.sex == '女'">&#xe757;</i>
           </h2>
-          <p>平台管理员</p>
+          <p>大B平台管理员</p>
         </div>
         <el-menu :default-active="routerPath" class="el-menu-vertical-demo">
-          <router-link :to="{path: '/manageAdmin/bigb' }">
+          <router-link :to="{path: '/manageAdmin/bigb'}" v-show="usertype!=2">
             <el-menu-item index="1" class="list">
               <!-- <i class="el-icon-setting"></i> -->
               <span slot="title">大B平台管理</span>
             </el-menu-item>
           </router-link>
-          <router-link :to="{path: '/manageAdmin/bigbadmin' }">
+          <router-link :to="{path: '/manageAdmin/bigbadmin' }" v-show="usertype!=2">
             <el-menu-item index="7" class="list">
               <!-- <i class="el-icon-setting"></i> -->
               <span slot="title">大B管理员管理</span>
@@ -60,72 +60,111 @@
   </div>
 </template>
 <script>
+import { mapState,mapGetters } from "vuex";
+
 export default {
   computed: {
-    routerPath () {
-      if (this.$route.path === '/manageAdmin/bigb'|| this.$route.path === '/manageAdmin/addbigb' || this.$route.path == '/manageAdmin/editbigb') {
-        return '1'
+    ...mapGetters(["userNames"]),
+    routerPath() {
+      if (
+        this.$route.path === "/manageAdmin/bigb" ||
+        this.$route.path === "/manageAdmin/addbigb" ||
+        this.$route.path == "/manageAdmin/editbigb"
+      ) {
+        return "1";
       }
-      if (this.$route.path === '/manageAdmin/manageList') {
-        return '2'
+      if (this.$route.path === "/manageAdmin/manageList") {
+        return "2";
       }
-      if (this.$route.path === '/manageAdmin/schoolList') {
-        return '3'
+      if (this.$route.path === "/manageAdmin/schoolList") {
+        return "3";
       }
-      if (this.$route.path === '/manageAdmin/administratorsList') {
-        return '4'
+      if (this.$route.path === "/manageAdmin/administratorsList") {
+        return "4";
       }
-      if (this.$route.path === '/manageAdmin/iboxList') {
-        return '5'
+      if (
+        this.$route.path === "/manageAdmin/iboxList" ||
+        this.$route.path === "/manageAdmin/iboxdetail"
+      ) {
+        return "5";
       }
-      if (this.$route.path === '/manageAdmin/courseList') {
-        return '6'
+      if (this.$route.path === "/manageAdmin/courseList") {
+        return "6";
       }
-      if (this.$route.path === '/manageAdmin/bigbadmin') {
-        return '7'
+      if (this.$route.path === "/manageAdmin/bigbadmin") {
+        return "7";
       }
     }
   },
-  data () {
+  data() {
     return {
-      userName: '',
-      sex: ''
-    }
+      userName: "",
+      sex: "",
+      usertype: null
+    };
   },
-  created () {
-    this.userName = localStorage.getItem('userName')
-    this.sex = localStorage.getItem('sex')
+  created() {
+    this.userName = localStorage.getItem("userName");
+    this.sex = localStorage.getItem("sex");
+    this.usertype = localStorage.getItem("userType");
   }
-}
+};
 </script>
 <style scoped lang="less">
-.el-menu{
-  border-right:0;
+.el-menu {
+  border-right: 0;
 }
-.nav-left{
-  border:1px solid #E5E5E4;margin-left:2px;height:100%;
-  .head{
-    height:208px;
-    background: #F5F5F5;
+.nav-left {
+  border: 1px solid #e5e5e4;
+  margin-left: 2px;
+  height: 100%;
+  .head {
+    height: 208px;
+    background: #f5f5f5;
     padding-top: 15px;
     box-sizing: border-box;
-    .head-icon{width:100px;height:100px;border-radius:50%;margin:0 auto;border:7px solid rgba(229,229,229,1);background: url('../../../../assets/images/head.png') no-repeat center;}
-    h2{
-      font-size:18px;margin-top:20px;font-weight:400;margin-left:10px;color:#434343;
-      i{color:rgb(255,212,219);position:relative;left:7px;top:-2px;}
+    .head-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin: 0 auto;
+      border: 7px solid rgba(229, 229, 229, 1);
+      background: url("../../../../assets/images/head.png") no-repeat center;
     }
-    p{font-size:12px;margin-top:12px;}
+    h2 {
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: 400;
+      margin-left: 10px;
+      color: #434343;
+      i {
+        color: rgb(255, 212, 219);
+        position: relative;
+        left: 7px;
+        top: -2px;
+      }
+    }
+    p {
+      font-size: 12px;
+      margin-top: 12px;
+    }
   }
-  .list{position:relative;border-top:1px solid rgb(220,220,220);}
-  .last-list{position:relative;border-bottom:1px solid rgb(220,220,220);}
-  .el-menu-item.is-active{
+  .list {
+    position: relative;
+    border-top: 1px solid rgb(220, 220, 220);
+  }
+  .last-list {
+    position: relative;
+    border-bottom: 1px solid rgb(220, 220, 220);
+  }
+  .el-menu-item.is-active {
     color: #fff;
-    background: #0090FF;
+    background: #0090ff;
   }
-  .el-menu-item{
+  .el-menu-item {
     height: 50px;
     line-height: 50px;
   }
 }
-
 </style>

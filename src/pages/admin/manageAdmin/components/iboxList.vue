@@ -169,6 +169,7 @@
           <el-button
             size="small"
             class="iconfont-color-blue"
+            @click="iboxDetailFn(scope.$index, scope.row)"
           >
             <i class="iconfont">&#xe77f;</i>监控
           </el-button>
@@ -251,7 +252,21 @@
             v-show="this.detailData.equipNumTips"
           >{{this.detailData.equipNumTips}}</span>
         </el-form-item>
+          <el-form-item label="摄像头序列号"  prop="equipNum">
+          <span class="must" style="left:-104px;">*</span>
+          <el-input
+            type="text"
+            v-model.trim="detailData.cameraNum"
+            placeholder="请输入摄像头序列号"
+            :maxlength="10"
+          ></el-input>
+          <span
+            class="wrongTips"
+            v-show="this.detailData.cameraNumTips"
+          >{{this.detailData.cameraNumTips}}</span>
+        </el-form-item>
         <el-form-item label="所属大B平台" style="text-align:left">
+          <span class="must" style="left:-100px;">*</span>
           <el-select v-model="platformold" @change="selectChangeset" placeholder="请选择管理平台">
             <el-option   v-for="(item,index) in platformlistold"
                 :key="index"
@@ -259,12 +274,8 @@
                 :value="item.systembId"></el-option>
           </el-select>
         </el-form-item>
-      
-
-
-
         <el-form-item label="所属机构" prop="schoolName" class="schoolname">
-          <span class="must">*</span>
+          <span class="must" >*</span>
           <el-select
             v-model.trim="detailData.schoolId"
             filterable
@@ -390,6 +401,8 @@ export default {
         versionTitleTips: "",
         equipNum: "",
         equipNumTips: "",
+        cameraNumTips:"",
+        cameraNum:"",
         schoolId: "",
         schoolIdTips: "",
         schoolName: "",
@@ -423,7 +436,7 @@ export default {
       provinceId: "",
       cityId: "",
       areaId: "",
-      platform: "全部大B平台",
+      platform: "",
       palatformId: -1,
       platformlist: [],
       platformlistold:[],
@@ -432,6 +445,12 @@ export default {
     };
   },
   methods: {
+    iboxDetailFn(index,row){
+        this.$router.push({
+          path: '/manageAdmin/iboxdetail',
+          query:{iboxId: row.iboxId}
+        })
+    },
      selectChangeset(val){
       this.platformoldId = val
     },
@@ -503,7 +522,9 @@ export default {
       this.detailData.versionTitle = "";
       this.detailData.versionTitleTips = "";
       this.detailData.equipNum = "";
+      this.detailData.cameraNum = "";
       this.detailData.equipNumTips = "";
+      this.detailData.cameraNumTips = "";
       this.detailData.schoolId = "";
       this.detailData.schoolIdTips = "";
       this.detailData.schoolName = "";
@@ -636,6 +657,11 @@ export default {
       } else {
         this.detailData.equipNumTips = "";
       }
+      if (this.detailData.cameraNum == "") {
+        this.detailData.cameraNumTips = "！请输入字母与数字组合不长于10位序列号";
+      } else {
+        this.detailData.cameraNumTips = "";
+      }
       if (schoolNamePattern.test(this.detailData.schoolId) == false) {
         this.detailData.schoolIdTips = "！不能为空";
       } else {
@@ -657,9 +683,11 @@ export default {
         this.detailData.equipName &&
         this.detailData.versionTitle &&
         this.detailData.equipNum &&
+        this.detailData.cameraNum &&
         this.detailData.schoolId &&
         this.detailData.equipNameTips == "" &&
         this.detailData.equipNumTips == "" &&
+        this.detailData.cameraNumTips == "" &&
         this.detailData.schoolIdTips == "" &&
         this.detailData.versionTitleTips == ""
       ) {
@@ -678,6 +706,7 @@ export default {
               iboxId: this.iboxId,
               iboxName: this.detailData.equipName,
               iboxNum: this.detailData.equipNum,
+              cameraNum:this.detailData.cameraNum,
               iboxType: this.detailData.versionTitle,
               schoolId: this.detailData.schoolId,
               managerTel: this.detailData.phone,
@@ -719,6 +748,7 @@ export default {
           console.log(res.data.resultObject);
           this.detailData.equipName = res.data.resultObject.iboxName;
           this.detailData.equipNum = res.data.resultObject.iboxNum;
+          this.detailData.cameraNum = res.data.resultObject.cameraNum;
           if (res.data.resultObject.iboxType == 1) {
             this.detailData.versionTitle = "通用型";
           }

@@ -4,6 +4,7 @@ import Admin from '@/pages/admin/index'
 import BigB from '@/pages/admin/manageAdmin/components/bigB'
 import addBigB from '@/pages/admin/manageAdmin/components/addBigB'
 import editBigB from '@/pages/admin/manageAdmin/components/editBigB'
+import iboxDetail from '@/pages/admin/manageAdmin/monitor'
 import bigBadmin from '@/pages/admin/manageAdmin/components/bigBadmin'
 import SuperAdmin from '@/pages/admin/superAdmin/superAdmin'
 import ManageAdmin from '@/pages/admin/manageAdmin/manageAdmin'
@@ -13,6 +14,7 @@ import SchoolList from '@/pages/admin/manageAdmin/components/schoolList'
 import AdministratorsList from '@/pages/admin/manageAdmin/components/administratorsList'
 import IBOXList from '@/pages/admin/manageAdmin/components/IBOXList'
 import CourseList from '@/pages/admin/manageAdmin/components/CourseList'
+import userInfo from '@/pages/admin/userinfo'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -40,6 +42,16 @@ export default new Router({
       component: ManageAdmin,
       redirect: '/manageAdmin/bigb',
       children: [
+        {
+          path: 'iboxdetail',
+          name: 'iboxdetail',
+          component: iboxDetail
+        },
+        {
+          path: 'userinfo',
+          name: 'userinfo',
+          component: userInfo
+        },
         {
           path: 'bigbadmin',
           name: 'bigbadmin',

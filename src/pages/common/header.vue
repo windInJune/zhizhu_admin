@@ -7,9 +7,9 @@
       <li class="sub_title"></li>
       <li class="user" @mouseenter="userEnter" @mouseleave="userLeave">
         <i class="iconfont">&#xe639;</i>
-        {{this.userName}}
+        {{userNames || this.userName}}
         <div class="out" v-show="userShow">
-          <p>个人中心</p>
+          <p @click="gotoUserDetail">个人中心</p>
           <p>
             <a @click="quit">退出</a>
           </p>
@@ -17,7 +17,7 @@
       </li>
       <li class="msg">
         <i class="iconfont">&#xe67d;</i>消息中心
-        <span>(2)</span>
+        <span>(0)</span>
       </li>
     </ul>
     <div class="clear_float"></div>
@@ -27,6 +27,7 @@
 /* eslint-disable */
 import { setCookie, getCookie, delCookie } from "../../assets/js/cookie.js";
 import Vue from "vue";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -34,7 +35,13 @@ export default {
       userShow: false
     };
   },
+  computed:{
+    ...mapGetters(["userNames"]),
+  },
   methods: {
+    gotoUserDetail(){
+      this.$router.push({path:'/manageAdmin/userinfo'})
+    },
     userEnter() {
       this.userShow = true;
     },
@@ -97,6 +104,7 @@ export default {
       float: right;
       position: relative;
       color: #fff;
+      cursor: pointer;
       i {
         font-size: 30px;
         position: relative;

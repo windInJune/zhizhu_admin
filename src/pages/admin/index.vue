@@ -30,6 +30,7 @@ import Vue from 'vue'
 import $ from 'jquery'
 import {setCookie, getCookie} from '../../assets/js/cookie.js'
 import Footer from '../common/footer.vue'
+import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     Footer
@@ -46,25 +47,35 @@ export default {
       wringTips: ''
     }
   },
+    computed: {
+    ...mapState(["userdata","username"])
+  },
   methods: {
+    ...mapMutations(["USERINFO","USERNAME"]),
     login () {
        this.$http.post(this.global.userlogin, {userLoginname: this.user,userPwd: this.password},{emulateJSON: true})
           .then((res) => {
             if (res.data.status === 200) {
-              console.log(res)
-              setCookie('userToken', res.data.resultObject.userToken, 1000 * 60)
-              this.userToken = res.data.resultObject.userToken
-              this.userName = res.data.resultObject.userName
-              this.sex = res.data.resultObject.userSex
-              localStorage.setItem('userName',this.userName)
-              localStorage.setItem('sex',this.sex)
-              if(res.data.resultObject.userType == '1'){
-                this.$router.push({path: '/superAdmin',query:{userToken: getCookie('userToken')}})
-              } else if(res.data.resultObject.userType == '2'){
-                this.$router.push({path:'/manageAdmin',query:{userToken: getCookie('userToken')}})
-              }
-              } else if(res.body.status == 512){
-                this.wringTips = res.body.errorMessage
+                this.USERINFO(res.data.resultObject);
+                this.USERNAME(res.data.resultObject.userName);
+                setCookie('userToken', res.data.resultObject.userToken, 1000 * 60)
+                this.userToken = res.data.resultObject.userToken
+                this.userName = res.data.resultObject.userName
+                this.sex = res.data.resultObject.userSex
+                localStorage.setItem('userName',res.data.resultObject.userName)
+                localStorage.setItem('systemName',res.data.resultObject.userLoginname)
+                localStorage.setItem('userId',res.data.resultObject.userId)
+                localStorage.setItem('sex',this.sex)
+                localStorage.setItem('userType',res.data.resultObject.userType)
+                if(res.data.resultObject.userType == '1'){
+                  this.$router.push({path: '/superAdmin',query:{userToken: getCookie('userToken')}})
+                } else if(res.data.resultObject.userType == '2'){
+                  this.$message.error('不是此平台账号！');
+                }else if(res.data.resultObject.userType == '0'){
+                  this.$router.push({path:'/manageAdmin',query:{userToken: getCookie('userToken')}})
+                }
+              } else if(res.data.status == 512){
+                this.wringTips = res.data.errorMessage
               }
               else {
                 console.log('wrong')
