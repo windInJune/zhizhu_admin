@@ -2,7 +2,7 @@
   <div class="adminList">
     <ul class="top">
       <li class="left">机构列表</li>
-      <li class="right" @click="dialogOpen">新建机构</li>
+      <!-- <li class="right" @click="dialogOpen">新建机构</li> -->
     </ul>
     <div class="checkBox">
         <el-select v-model="platform" @change="selectChange" placeholder="请选择管理平台">
@@ -66,13 +66,13 @@
           >
             <i class="iconfont">&#xe602;</i>总览
           </el-button>
-          <el-button
+          <!-- <el-button
             size="small"
             @click="changeInfo(scope.$index, scope.row)"
             class="iconfont-color-blue"
           >
             <i class="iconfont">&#xe60d;</i>编辑
-          </el-button>
+          </el-button> -->
           <el-button
             size="small"
             @click="schoolDelete(scope.$index, scope.row)"

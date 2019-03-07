@@ -349,7 +349,6 @@ export default {
             }&pageSize=${this.pageSize}`
         )
         .then(res => {
-          console.log(res);
           if (res.data.status === 200) {
             this.pageData = res.data.resultObject.data;
             this.currentPage = res.data.resultObject.currentPage;

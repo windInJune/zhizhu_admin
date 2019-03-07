@@ -3,7 +3,7 @@
 // const localAPI = 'http://121.40.210.226:4028'
 // const localAPI = 'http://172.16.1.103:8005'
 const localAPI = 'http://172.16.1.207:8005'
-const localAPIs = 'http://172.16.1.207:8005'
+// const localAPIs = 'http://172.16.1.207:8005'
 // 登录
 const userlogin = localAPI + '/user/userLogin'
 // 超管端
@@ -29,12 +29,12 @@ const deleteSchool = localAPI + '/school/deleteSchool'
 const editSchool = localAPI + '/school/editSchool'
 const getDataStatistics = localAPI + '/school/getDataStatistics'
 // 大B平台
-const getSystembList = localAPIs + '/systermb/getSystembList'
-const insertSystemb = localAPIs + '/systermb/insertSystemb'
-const deleteSystembById = localAPIs + '/systermb/deleteSystembById'
-const getSystembById = localAPIs + '/systermb/getSystembById'
-const getSystembs = localAPIs + '/systermb/getSystembs'
-const updateSystembById = localAPIs + '/systermb/updateSystembById'
+const getSystembList = localAPI + '/systermb/getSystembList'
+const insertSystemb = localAPI + '/systermb/insertSystemb'
+const deleteSystembById = localAPI + '/systermb/deleteSystembById'
+const getSystembById = localAPI + '/systermb/getSystembById'
+const getSystembs = localAPI + '/systermb/getSystembs'
+const updateSystembById = localAPI + '/systermb/updateSystembById'
 // ibox
 const getIboxList = localAPI + '/iboxInfo/getIboxList'
 const getIbox = localAPI + '/iboxInfo/getIbox'
