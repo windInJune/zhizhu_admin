@@ -6,7 +6,7 @@
       </li>
       <li class="sub_title"></li>
       <li class="user" @mouseenter="userEnter" @mouseleave="userLeave">
-        <i class="iconfont">&#xe639;</i>
+        <img  class="userIMg" :src="userImgs || userImg" alt="">
         {{userNames || this.userName}}
         <div class="out" v-show="userShow">
           <p @click="gotoUserDetail">个人中心</p>
@@ -31,12 +31,13 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      userImg: require("../../assets/images/head.png"),
       userName: "",
       userShow: false
     };
   },
   computed:{
-    ...mapGetters(["userNames"]),
+    ...mapGetters(["userNames","userImgs"]),
   },
   methods: {
     gotoUserDetail(){
@@ -75,8 +76,11 @@ export default {
       line-height: 60px;
       font-size: @title-size;
       float: left;
-      i {
-        padding-right: 10px;
+      .userIMg{
+        margin-right: 10px;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
       }
     }
     .sub_title {

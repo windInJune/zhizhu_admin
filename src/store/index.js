@@ -6,7 +6,8 @@ import actions from './action'
 import getters from './getters'
 const state = {
     userdata: {},
-    username:""
+    username:"",
+    userimg:""
 }
 export default new Vuex.Store({
     state,

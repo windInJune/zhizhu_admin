@@ -51,18 +51,20 @@ export default {
     ...mapState(["userdata","username"])
   },
   methods: {
-    ...mapMutations(["USERINFO","USERNAME"]),
+    ...mapMutations(["USERINFO","USERNAME","USERIMG"]),
     login () {
        this.$http.post(this.global.userlogin, {userLoginname: this.user,userPwd: this.password},{emulateJSON: true})
           .then((res) => {
             if (res.data.status === 200) {
                 this.USERINFO(res.data.resultObject);
                 this.USERNAME(res.data.resultObject.userName);
+                this.USERIMG('http://172.16.1.207:8005/'+res.data.resultObject.userPhoto);
                 setCookie('userToken', res.data.resultObject.userToken, 1000 * 60)
                 this.userToken = res.data.resultObject.userToken
                 this.userName = res.data.resultObject.userName
                 this.sex = res.data.resultObject.userSex
                 localStorage.setItem('userName',res.data.resultObject.userName)
+                // localStorage.setItem('userImg','http://172.16.1.207:8005/'+res.data.resultObject.userPhoto)
                 localStorage.setItem('systemName',res.data.resultObject.userLoginname)
                 localStorage.setItem('userId',res.data.resultObject.userId)
                 localStorage.setItem('sex',this.sex)
@@ -80,7 +82,6 @@ export default {
               else {
                 console.log('wrong')
               }
-            //this.$router.push({path:'/superAdmin'})
           },(err) => {
             console.log(err)
           })

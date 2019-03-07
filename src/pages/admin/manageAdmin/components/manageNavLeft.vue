@@ -3,7 +3,7 @@
     <el-row class="tac">
       <el-col :span="24">
         <div class="head">
-          <div class="head-icon"></div>
+          <img class="head-icon" :src="userImgs || userHeadSrc" alt="">
           <h2>
             {{userNames || this.userName}}
             <i class="iconfont boy" v-show="this.sex == '男'">&#xe648;</i>
@@ -64,7 +64,7 @@ import { mapState,mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["userNames"]),
+    ...mapGetters(["userNames","userImgs"]),
     routerPath() {
       if (
         this.$route.path === "/manageAdmin/bigb" ||
@@ -100,6 +100,7 @@ export default {
     return {
       userName: "",
       sex: "",
+      userHeadSrc:require('../../../../assets/images/head.png'),
       usertype: null
     };
   },
@@ -130,7 +131,6 @@ export default {
       cursor: pointer;
       margin: 0 auto;
       border: 7px solid rgba(229, 229, 229, 1);
-      background: url("../../../../assets/images/head.png") no-repeat center;
     }
     h2 {
       font-size: 18px;

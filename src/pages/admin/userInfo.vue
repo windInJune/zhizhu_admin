@@ -9,7 +9,7 @@
     <div class="detailBox">
       <h2>账号信息</h2>
       <el-tooltip class="item" effect="dark" content="点击修改头像" placement="top-end">
-        <img :src="userImg" alt class="userImg" @click="toggleShow">
+        <img :src="userImgs || userImg" alt class="userImg" @click="toggleShow">
       </el-tooltip>
       <el-form
         :model="addBigBForm"
@@ -55,14 +55,14 @@
       </el-form>
     </div>
     <my-upload
-      field="img"
+      field="file"
       @crop-success="cropSuccess"
       @crop-upload-success="cropUploadSuccess"
       @crop-upload-fail="cropUploadFail"
       v-model="show"
       :width="100"
       :height="100"
-      url="http://172.16.1.207:8005/customerUser/uploadPhoto"
+      url="http://172.16.1.207:8005/user/uploadPhoto"
       :params="params"
       :headers="headers"
       img-format="png"
@@ -74,7 +74,7 @@ import Vue from "vue";
 import { setCookie, getCookie } from "../../assets/js/cookie.js";
 import openy from "../../assets/images/openeye.png";
 import closey from "../../assets/images/closeeye.png";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations,mapGetters } from "vuex";
 import myUpload from "vue-image-crop-upload";
 export default {
   data() {
@@ -205,11 +205,12 @@ export default {
     "my-upload": myUpload
   },
   computed: {
+    ...mapGetters(['userImgs']),
     ...mapState(["userdata"])
   },
 
   methods: {
-    ...mapMutations(["USERINFO", "USERNAME"]),
+    ...mapMutations(["USERINFO", "USERNAME","USERIMG"]),
     submitForm(formName) {
       this.$refs[formName].validate(res => {
         if (res) {
@@ -282,12 +283,9 @@ export default {
       this.show = !this.show;
     },
     cropSuccess(imgDataUrl, field) {
-      console.log("-------- crop success --------");
       this.imgDataUrl = imgDataUrl;
     },
     cropUploadSuccess(jsonData, field) {
-      console.log("-------- upload success --------");
-      console.log(jsonData);
       if (jsonData.status != 200) {
         this.show = false;
         this.$message.error(`${jsonData.errorMessage}`);
@@ -295,15 +293,14 @@ export default {
       }
       this.show = false;
       this.userImg = this.imgDataUrl;
+      this.USERIMG(this.imgDataUrl);
       this.$message({
         message: "头像修改成功",
         type: "success"
       });
     },
     cropUploadFail(status, field) {
-      console.log("-------- upload fail --------");
-      console.log(status);
-      console.log("field: " + field);
+      
     }
   }
 };

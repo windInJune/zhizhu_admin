@@ -1,10 +1,10 @@
 <template>
   <div class="iboxseting">
-    <div class="iboxstatus" v-show="iboxObj.iboxStatus!=2">
+    <div class="iboxstatus" v-show="iboxObj.iboxStatus=2">
       <img src="../../../../assets/images/ibox3.png">
       <span>当前设备已离线，暂不能设置</span>
     </div>
-    <div class="sucstatus" v-show="iboxObj.iboxStatus==2">
+    <div class="sucstatus" v-show="iboxObj.iboxStatus!=2">
       <ul>
         <li>
           <span class="iboxsta">开关机</span>
