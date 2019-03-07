@@ -66,14 +66,14 @@
           >
             <i class="iconfont">&#xe602;</i>总览
           </el-button>
-          <!-- <el-button
+          <el-button
             size="small"
             @click="changeInfo(scope.$index, scope.row)"
             class="iconfont-color-blue"
           >
-            <i class="iconfont">&#xe60d;</i>编辑
-          </el-button> -->
-          <el-button
+            <i class="iconfont">&#xe60d;</i>查看详情
+          </el-button>
+          <!-- <el-button
             size="small"
             @click="schoolDelete(scope.$index, scope.row)"
             v-show="scope.row.isDisable == 1"
@@ -87,7 +87,7 @@
             class="iconfont-color-blue iconfont-color-black"
           >
             <i class="iconfont">&#xe600;</i>删除
-          </el-button>
+          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -110,6 +110,7 @@
         <el-form-item label="机构名称">
           <span class="must">*</span>
           <el-input
+            disabled
             type="text"
             v-model.trim="schoolName"
             placeholder="不超过20字"
@@ -119,7 +120,7 @@
         </el-form-item>
         <el-form-item label="所属大B平台" style="text-align:left">
         <el-select v-model="platformold" @change="selectChangeset" placeholder="请选择管理平台">
-          <el-option   v-for="(item,index) in platformlistold"
+          <el-option disabled   v-for="(item,index) in platformlistold"
               :key="index"
               :label="item.systembName"
               :value="item.systembId"></el-option>
@@ -129,7 +130,7 @@
         <el-form-item label="机构类型">
           <span class="must">*</span>
           <div class="identity">
-            <el-radio-group v-model.trim="schoolType">
+            <el-radio-group v-model.trim="schoolType" disabled>
               <el-radio :label="1">公立</el-radio>
               <el-radio :label="2">私立</el-radio>
               <el-radio :label="3">公私合作</el-radio>
@@ -141,7 +142,7 @@
         <el-form-item label="机构学段">
           <span class="must">*</span>
           <div class="identity level">
-            <el-radio-group v-model.trim="schoolSection" style="display:flex;flex-wrap:wrap">
+            <el-radio-group v-model.trim="schoolSection" style="display:flex;flex-wrap:wrap" disabled>
               <el-radio :label="1">小学</el-radio>
               <el-radio :label="2">初中</el-radio>
               <el-radio :label="3">高中</el-radio>
@@ -165,6 +166,7 @@
               v-model.trim="province"
               :placeholder="editorProvince"
               @change="provincesChoose()"
+              disabled
             >
               <el-option
                 v-for="(item,index) in allCity"
@@ -173,7 +175,7 @@
                 :value="index"
               ></el-option>
             </el-select>
-            <el-select v-model.trim="city" :placeholder="editorCity" @change="citiesChoose">
+            <el-select v-model.trim="city" :placeholder="editorCity" @change="citiesChoose" disabled>
               <el-option
                 v-for="(item,index) in cities.child"
                 :key="index"
@@ -181,7 +183,7 @@
                 :value="index"
               ></el-option>
             </el-select>
-            <el-select v-model.trim="area" :placeholder="editorArea" @change="areasChoose">
+            <el-select v-model.trim="area" :placeholder="editorArea" @change="areasChoose" disabled>
               <el-option
                 v-for="(key,value) in areas.child"
                 :key="value"
@@ -195,6 +197,7 @@
         <!-- 详细地址等 -->
         <el-form-item label="详细地址">
           <el-input
+            disabled
             type="text"
             v-model.trim="schoolAdress"
             placeholder="不超过30字"
@@ -205,6 +208,7 @@
         <el-form-item label="负责人">
           <span class="must2">*</span>
           <el-input
+            disabled
             type="text"
             v-model.trim="managerName"
             placeholder="不超过6字"
@@ -215,6 +219,7 @@
         <el-form-item label="手机号">
           <span class="must2">*</span>
           <el-input
+            disabled
             type="text"
             v-model.trim="managerTel"
             placeholder="请输入您的手机号"
@@ -225,6 +230,7 @@
         <el-form-item label="机构邮箱">
           <el-input
             type="text"
+            disabled
             v-model.trim="schoolEmail"
             placeholder="请输入您的邮箱"
             @change="schoolEmailPattern"
@@ -232,17 +238,17 @@
           <span class="wrongTips" v-show="this.schoolEmailTips">{{this.schoolEmailTips}}</span>
         </el-form-item>
         <el-form-item label="机构简介">
-          <el-input type="textarea" v-model.trim="introduction" placeholder="不超过800字"></el-input>
+          <el-input type="textarea" v-model.trim="introduction" placeholder="不超过800字" disabled></el-input>
           <span class="wrongTips" v-show="this.introductionTips">{{this.introductionTips}}</span>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input type="textarea" v-model.trim="schoolMark" placeholder="不超过200字"></el-input>
+          <el-input type="textarea" v-model.trim="schoolMark" placeholder="不超过200字" disabled></el-input>
           <span class="wrongTips" v-show="this.schoolMarkTips">{{this.schoolMarkTips}}</span>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addUser = false">取 消</el-button>
-        <el-button type="primary" @click="addUsers">确 定</el-button>
+        <!-- <el-button type="primary" @click="addUsers">确 定</el-button> -->
       </span>
     </el-dialog>
     <!-- 数据总览 -->
