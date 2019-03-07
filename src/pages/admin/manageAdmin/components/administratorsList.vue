@@ -525,8 +525,10 @@ export default {
   .search {
     overflow: hidden;
     margin-top: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     li {
-      float: left;
       margin-left: 10px;
     }
     li:first-child {

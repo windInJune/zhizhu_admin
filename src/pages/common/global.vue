@@ -2,8 +2,8 @@
 // 服务器地址
 // const localAPI = 'http://121.40.210.226:4028'
 // const localAPI = 'http://172.16.1.103:8005'
-const localAPI = 'http://172.16.1.73:8005'
-const localAPIs = 'http://172.16.1.73:8005'
+const localAPI = 'http://172.16.1.207:8005'
+const localAPIs = 'http://172.16.1.207:8005'
 // 登录
 const userlogin = localAPI + '/user/userLogin'
 // 超管端

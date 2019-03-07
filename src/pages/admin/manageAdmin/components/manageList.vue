@@ -247,7 +247,7 @@
     </el-dialog>
     <!-- 数据总览 -->
     <el-dialog title="数据总览" :visible.sync="dialogInfo" width="30%" class="dialogInfo">
-      <ul>
+      <ul class="alertUl">
         <li>开通用户总数：
           <span>{{dataScreen.userTotalCount}}</span>
         </li>
@@ -809,16 +809,17 @@ export default {
       padding: 0 10px;
     }
     li {
-      flex-basis: 50%;
+      width: 50%;
       text-align: left;
       height: 50px;
-      line-height: 50px;
       font-size: 16px;
-      text-indent: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       span {
         color: #409eff;
         font-weight: bolder;
-        margin-left: 20px;
+        margin-right: 20px;
       }
     }
   }
