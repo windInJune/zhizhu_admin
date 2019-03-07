@@ -58,7 +58,11 @@ export default {
             if (res.data.status === 200) {
                 this.USERINFO(res.data.resultObject);
                 this.USERNAME(res.data.resultObject.userName);
-                this.USERIMG('http://172.16.1.207:8005/'+res.data.resultObject.userPhoto);
+                if(res.data.resultObject.userPhoto){
+                  this.USERIMG('http://172.16.1.207:8005/'+res.data.resultObject.userPhoto);
+                }else{
+                  this.USERIMG("");
+                }
                 setCookie('userToken', res.data.resultObject.userToken, 1000 * 60)
                 this.userToken = res.data.resultObject.userToken
                 this.userName = res.data.resultObject.userName
