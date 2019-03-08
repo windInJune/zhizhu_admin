@@ -14,9 +14,12 @@
     </div>
     <!-- 表单信息 -->
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
+         <el-table-column type="index" label="序号" width="80">
+            <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
+      </el-table-column>
       <el-table-column prop="schoolName" label="机构名称" width="165"></el-table-column>
       <el-table-column prop="schoolId" label="机构ID"></el-table-column>
-      <el-table-column prop="systembId" label="所属大B平台"></el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台"></el-table-column>
       <el-table-column prop="schoolType" label="类型">
         <template slot-scope="scope">
           <span v-show="scope.row.schoolType == 1">公立</span>
@@ -53,8 +56,8 @@
       <el-table-column prop="createUsername" label="创建人"></el-table-column>
       <el-table-column prop="isDisable" label="状态">
         <template slot-scope="scope">
-          <span v-show="scope.row.isDisable == 1" class="yellow">未激活</span>
-          <span v-show="scope.row.isDisable == 0" class="green">已激活</span>
+          <span v-show="scope.row.isDisable == 0" class="yellow">未激活</span>
+          <span v-show="scope.row.isDisable == 1" class="green">已激活</span>
         </template>
       </el-table-column>
       <el-table-column prop="subjectType" label="操作" width="280">

@@ -245,7 +245,7 @@ export default {
             Vue.http.headers.common["userToken"] = getCookie("userToken");
             this.$http
               .post(
-                this.global.insertSystemb,
+                this.global.updateSystembById,
                 {
                   systembName: this.addBigBForm.systembName,
                   systembDomain: this.addBigBForm.systembDomain,

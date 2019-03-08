@@ -17,6 +17,9 @@
       v-loading="loading"
       :default-sort="{prop: 'pageData', order: 'descending'}"
     >
+       <el-table-column type="index" label="序号" width="80">
+            <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
+      </el-table-column>
       <!--<el-table-column prop="userId" label="序号" width="180"></el-table-column> -->
       <el-table-column prop="userName" label="姓名" width="180"></el-table-column>
       <el-table-column prop="userLoginname" label="用户名"></el-table-column>

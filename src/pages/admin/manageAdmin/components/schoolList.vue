@@ -59,6 +59,9 @@
       style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
       v-loading="loading"
     >
+       <el-table-column type="index" label="序号" width="80">
+            <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
+      </el-table-column>
       <el-table-column prop="userName" label="姓名" width="60"></el-table-column>
       <el-table-column prop="userZhinum" label="知号"></el-table-column>
       <el-table-column prop="userSex" label="性别" width="60">

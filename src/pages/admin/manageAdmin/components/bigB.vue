@@ -5,6 +5,9 @@
       <li class="right" @click="addBigb">新建大B平台</li>
     </ul>
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1);margin-top:20px;text-agline"  v-loading="loading">
+        <el-table-column type="index" label="序号" width="80">
+            <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
+      </el-table-column>
       <el-table-column prop="systembName" label="平台名称" width="160"></el-table-column>
       <el-table-column prop="systembDomain" label="平台域名" width="160"></el-table-column>
       <el-table-column prop="systembIndustry" label="所属行业"></el-table-column>

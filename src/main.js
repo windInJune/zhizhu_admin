@@ -28,6 +28,12 @@ router.beforeEach((to, from, next) => {
   // 用户类型1系统管理员  2：B (平台)管理员 0: 大后台管理员
   if(USERTYPE == 2){
      next({path:'/'})
+  }else if(USERTYPE == 1){
+    if(to.redirectedFrom == "/superAdmin"){
+      next()
+    }else{
+      next({path:'/superAdmin',replace: true})
+    }
   }else{
     next()
   }

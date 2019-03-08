@@ -51,9 +51,10 @@ export default {
     },
     quit() {
       delCookie("userToken");
-      this.$router.push("/");
       localStorage.removeItem("userName");
+      localStorage.removeItem("userType");
       localStorage.removeItem("sex");
+      this.$router.push("/");
     }
   },
   created() {

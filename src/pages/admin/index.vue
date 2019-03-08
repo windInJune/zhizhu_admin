@@ -71,7 +71,7 @@ export default {
                 // localStorage.setItem('userImg','http://172.16.1.207:8005/'+res.data.resultObject.userPhoto)
                 localStorage.setItem('systemName',res.data.resultObject.userLoginname)
                 localStorage.setItem('userId',res.data.resultObject.userId)
-                localStorage.setItem('sex',this.sex)
+                localStorage.setItem('sex',res.data.resultObject.userSex)
                 localStorage.setItem('userType',res.data.resultObject.userType)
                 if(res.data.resultObject.userType == '1'){
                   this.$router.push({path: '/superAdmin',query:{userToken: getCookie('userToken')}})
