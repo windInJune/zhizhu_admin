@@ -761,9 +761,9 @@ export default {
         .then(res => {
           if (res.data.status === 200) {
             this.pageData = res.data.resultObject.data;
-            this.currentPage = res.data.resultObject.currentPage;
+            // this.currentPage = res.data.resultObject.currentPage;
             this.total = res.data.resultObject.totalCount;
-            this.pageSize = res.data.resultObject.pageSize;
+            // this.pageSize = res.data.resultObject.pageSize;
             // const {items,currentPage} = res.data.resultObject
           } else if (res.data.status === 511) {
             this.$router.push({ path: "/" });

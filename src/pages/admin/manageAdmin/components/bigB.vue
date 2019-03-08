@@ -60,7 +60,7 @@ export default{
       loading: false,
       total:0,
       currentPage: 1,
-      pageSize: 8,
+      pageSize: 10,
       pageData:[]
     }
   },
@@ -88,9 +88,7 @@ export default{
         .then(res => {
           if (res.status === 200) {
             this.pageData = res.body.data;
-            this.currentPage = res.body.currentPage;
             this.total = res.body.totalCount;
-            this.pageSize = res.body.pageSize;
           } else if (res.status === 511) {
             this.$router.push({ path: "/" });
           } else {

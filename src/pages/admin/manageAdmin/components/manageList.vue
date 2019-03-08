@@ -300,7 +300,7 @@ export default {
     return {
       total: 0,
       currentPage: 1,
-      pageSize: 8,
+      pageSize: 10,
       pageData: [],
       loading: false,
       addUser: false,
