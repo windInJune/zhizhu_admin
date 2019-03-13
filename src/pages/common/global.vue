@@ -1,10 +1,13 @@
 <script type="text/javascript">
 // 服务器地址
-// const localAPI = 'http://121.40.210.226:4028'
-// const localAPI = 'http://172.16.1.103:8005'
-const localAPI = 'http://172.16.1.5:8005'
-// const localAPIs = 'http://172.16.1.207:8005'
+let localAPI;
 // 登录
+if (process.env.NODE_ENV == 'development') {
+    localAPI = 'http://172.16.1.165/ibox';
+} else {
+    localAPI = 'http://172.16.1.165/ibox';
+    // localAPI = 'http://47.110.226.59/ibox'; //线上url
+}
 const userlogin = localAPI + '/user/userLogin'
 // 超管端
 const getSystemUserList = localAPI + '/user/getSystemUserList'
@@ -21,6 +24,7 @@ const getCustomUserById = localAPI + '/customerUser/getCustomUserById'
 const modifyCustomerUserById = localAPI + '/customerUser/modifyCustomerUserById'
 const modifyPassword = localAPI + '/customerUser/modifyPassword'
 const getSchools = localAPI + '/school/getSchools'
+const getSchoolsDrowDown = localAPI + '/school/getSchoolsDrowDown'
 const getGrades = localAPI + '/school/getGrades'
 const getClass = localAPI + '/school/getClass'
 
@@ -95,6 +99,7 @@ export default
   modifyCustomerUserById,
   modifyPassword,
   getSchools,
+  getSchoolsDrowDown,
   getGrades,
   getClass,
   getDataStatistics,

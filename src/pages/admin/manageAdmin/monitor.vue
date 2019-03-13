@@ -19,6 +19,15 @@
               <span>{{iboxObj.iboxName}}</span>
             </li>
             <li class="textell">
+						<span class="iboxtext">型号：</span><span>{{iboxObj.iboxType==1?'通用型':'/'}}</span>
+					</li>
+					<li class="textell">
+						<span class="iboxtext">编号：</span><span>{{iboxObj.iboxNum || '/'}}</span>
+					</li>
+					<li class="textell">
+						<span class="iboxtext">所在地区：</span><span>{{iboxObj.iboxRegion || '/'}}</span>
+					</li>
+            <!-- <li class="textell">
               <span class="iboxtext">型号：</span>
               <span>{{iboxObj.iboxName}}</span>
             </li>
@@ -29,7 +38,7 @@
             <li class="textell">
               <span class="iboxtext">所在地区：</span>
               <span>{{iboxObj.iboxName}}</span>
-            </li>
+            </li> -->
             <li class="textell">
               <span class="iboxtext">所属机构：</span>
               <span>{{iboxObj.schoolName}}</span>
@@ -48,7 +57,7 @@
             </li>
             <li class="textell">
               <span class="iboxtext">使用人次：</span>
-              <span>{{iboxObj.useringTotalCount}}</span>
+              <span>{{iboxObj.useringTotalCount || '/'}}</span>
             </li>
             <li class="textell">
               <span class="iboxtext">最近使用时间：</span>
@@ -104,6 +113,9 @@ export default {
     },
   created() {
     Vue.http.headers.common["userToken"] = getCookie("userToken");
+    if(this.$route.query.isSet){
+       this.showind = 3
+    }
     this.$http
       .get(this.global.getIbox + `?iboxId=${this.$route.query.iboxId}`)
       .then(res => {

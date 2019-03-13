@@ -30,41 +30,67 @@ export default {
     };
   },
   created() {
-    this.userName = localStorage.getItem("userName");
-    this.sex = localStorage.getItem("sex");
+    this.userName = localStorage.getItem("userNameBig");
+    this.sex = localStorage.getItem("sexBig");
   }
 };
 </script>
 <style scoped lang="less">
 @import "~@/assets/styles/common.less";
-.el-menu{
-  border-right:0;
+.el-menu {
+  border-right: 0;
 }
-.nav-left{
-  border:1px solid #E5E5E4;margin-left:2px;height:100%;
+.nav-left {
+  border: 1px solid #e5e5e4;
+  margin-left: 2px;
+  height: 100%;
   margin-top: 20px;
-  .head{
-    height:208px;
-    background: #F5F5F5;
+  .head {
+    height: 208px;
+    background: #f5f5f5;
     padding-top: 15px;
     box-sizing: border-box;
-    .head-icon{width:100px;height:100px;border-radius:50%;margin:0 auto;border:7px solid rgba(229,229,229,1);background: url('../../../../assets/images/head.png') no-repeat center;}
-    h2{
-      font-size:18px;margin-top:20px;font-weight:400;margin-left:10px;color:#434343;
-      i{color:rgb(255,212,219);position:relative;left:7px;top:-2px;}
+    .head-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto;
+      border: 7px solid rgba(229, 229, 229, 1);
+      background: url("../../../../assets/images/head.png") no-repeat center;
     }
-    p{font-size:12px;margin-top:12px;}
+    h2 {
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: 400;
+      margin-left: 10px;
+      color: #434343;
+      i {
+        color: rgb(255, 212, 219);
+        position: relative;
+        left: 7px;
+        top: -2px;
+      }
+    }
+    p {
+      font-size: 12px;
+      margin-top: 12px;
+    }
   }
-  .list{position:relative;border-top:1px solid rgb(220,220,220);}
-  .last-list{position:relative;border-bottom:1px solid rgb(220,220,220);}
-  .el-menu-item.is-active{
+  .list {
+    position: relative;
+    border-top: 1px solid rgb(220, 220, 220);
+  }
+  .last-list {
+    position: relative;
+    border-bottom: 1px solid rgb(220, 220, 220);
+  }
+  .el-menu-item.is-active {
     color: #fff;
-    background: #0090FF;
+    background: #0090ff;
   }
-  .el-menu-item{
+  .el-menu-item {
     height: 50px;
     line-height: 50px;
   }
 }
-
 </style>

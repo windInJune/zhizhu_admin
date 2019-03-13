@@ -27,7 +27,7 @@
 /* eslint-disable */
 import { setCookie, getCookie, delCookie } from "../../assets/js/cookie.js";
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters  } from "vuex";
 export default {
   data() {
     return {
@@ -51,14 +51,15 @@ export default {
     },
     quit() {
       delCookie("userToken");
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userType");
-      localStorage.removeItem("sex");
+      localStorage.removeItem("userNameBig");
+      localStorage.removeItem("userTypeBig");
+      localStorage.removeItem("sexBig");
       this.$router.push("/");
     }
   },
   created() {
-    this.userName = localStorage.getItem("userName");
+    console.log()
+    this.userName = localStorage.getItem("userNameBig");
   }
 };
 </script>
@@ -122,7 +123,7 @@ export default {
         position: absolute;
         top: 50px;
         left: 0;
-        z-index: 10;
+        z-index: 1000000;
         background-color: #fff;
         p {
           height: 40px;

@@ -9,7 +9,7 @@
             <i class="iconfont boy" v-show="this.sex == '男'">&#xe648;</i>
             <i class="iconfont gril" v-show="this.sex == '女'">&#xe757;</i>
           </h2>
-          <p>大B平台管理员</p>
+          <p>大平台管理员</p>
         </div>
         <el-menu :default-active="routerPath" class="el-menu-vertical-demo">
           <router-link :to="{path: '/manageAdmin/bigb'}" v-show="usertype!=2">
@@ -105,9 +105,9 @@ export default {
     };
   },
   created() {
-    this.userName = localStorage.getItem("userName");
-    this.sex = localStorage.getItem("sex");
-    this.usertype = localStorage.getItem("userType");
+    this.userName = localStorage.getItem("userNameBig");
+    this.sex = localStorage.getItem("sexBig");
+    this.usertype = localStorage.getItem("userTypeBig");
   }
 };
 </script>
@@ -165,6 +165,9 @@ export default {
   .el-menu-item {
     height: 50px;
     line-height: 50px;
+  }
+  .boy{
+    color:#0090ff !important;
   }
 }
 </style>

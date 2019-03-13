@@ -59,7 +59,7 @@ export default {
                 this.USERINFO(res.data.resultObject);
                 this.USERNAME(res.data.resultObject.userName);
                 if(res.data.resultObject.userPhoto){
-                  this.USERIMG('http://172.16.1.207:8005/'+res.data.resultObject.userPhoto);
+                  this.USERIMG(res.data.resultObject.userPhoto);
                 }else{
                   this.USERIMG("");
                 }
@@ -67,12 +67,12 @@ export default {
                 this.userToken = res.data.resultObject.userToken
                 this.userName = res.data.resultObject.userName
                 this.sex = res.data.resultObject.userSex
-                localStorage.setItem('userName',res.data.resultObject.userName)
-                // localStorage.setItem('userImg','http://172.16.1.207:8005/'+res.data.resultObject.userPhoto)
-                localStorage.setItem('systemName',res.data.resultObject.userLoginname)
-                localStorage.setItem('userId',res.data.resultObject.userId)
-                localStorage.setItem('sex',res.data.resultObject.userSex)
-                localStorage.setItem('userType',res.data.resultObject.userType)
+                localStorage.setItem('userNameBig',res.data.resultObject.userName)
+                // localStorage.setItem('userImg','http://172.16.1.165/'+res.data.resultObject.userPhoto)
+                localStorage.setItem('systemNameBig',res.data.resultObject.userLoginname)
+                localStorage.setItem('userIdBig',res.data.resultObject.userId)
+                localStorage.setItem('sexBig',res.data.resultObject.userSex)
+                localStorage.setItem('userTypeBig',res.data.resultObject.userType)
                 if(res.data.resultObject.userType == '1'){
                   this.$router.push({path: '/superAdmin',query:{userToken: getCookie('userToken')}})
                 } else if(res.data.resultObject.userType == '2'){

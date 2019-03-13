@@ -25,7 +25,7 @@
           <el-input placeholder="不长于20字" :maxlength="20" v-model="addBigBForm.systembIndustry"></el-input>
         </el-form-item>
         <el-form-item prop="systembCompany" label="归属公司：">
-          <el-input placeholder="不长于20字" :maxlength="30" v-model="addBigBForm.systembCompany"></el-input>
+          <el-input placeholder="不长于20字" :maxlength="20" v-model="addBigBForm.systembCompany"></el-input>
         </el-form-item>
         <el-form-item label="所在地区：" prop="areas">
           <div class="identity">
@@ -60,7 +60,7 @@
           </div>
         </el-form-item>
         <el-form-item  label="详细地址：">
-          <el-input placeholder="不长于30字" :maxlength="20" v-model="addBigBForm.adress"></el-input>
+          <el-input placeholder="不长于30字" :maxlength="30" v-model="addBigBForm.adress"></el-input>
         </el-form-item>
         <el-form-item prop="managerName"  label="负责人：">
           <el-input placeholder="不长于6字" :maxlength="6" v-model="addBigBForm.managerName"></el-input>
@@ -75,8 +75,7 @@
           prop="email"
           label="邮箱："
           :rules="[
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
           ]"
         >
           <el-input v-model="addBigBForm.email"></el-input>
@@ -160,7 +159,7 @@ export default {
           { min: 1, max: 20, message: "！请输入平台归属公司", trigger: "blur" }
         ],
         systembDomain: [
-          { required: true, message: "！请输入平台名称", trigger: "blur" }
+          { required: true, message: "！请输入平台域名", trigger: "blur" }
         ],
         managerName:[
             { required: true, message: "！请输入平台负责人", trigger: "blur" },

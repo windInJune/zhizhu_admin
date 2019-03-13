@@ -46,7 +46,7 @@
             class="iconfont-color-blue"
             @click="changePassword(scope.$index, scope.row)"
           ><i class="iconfont">&#xe60d;</i>修改密码</el-button>
-          <el-button size="small" class="iconfont-color-blue" @click="userDelete(scope.$index, scope.row)"><i class="iconfont">&#xe600;</i>删除</el-button>
+          <el-button size="small" class="iconfont-color-blue iconfont-color-red" @click="userDelete(scope.$index, scope.row)"><i class="iconfont">&#xe600;</i>删除</el-button>
         </template>
       </el-table-column>
     </el-table>

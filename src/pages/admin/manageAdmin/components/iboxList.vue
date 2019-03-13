@@ -111,6 +111,16 @@
           </el-popover>-->
         </template>
       </el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台" width="100">
+        <template slot-scope="scope">
+          <p>{{ scope.row.systembName }}</p>
+          <!-- <el-popover trigger="hover" placement="top">
+            <div slot="reference" >
+              <el-tag size="medium" class="readMore">{{ scope.row.schoolName}}</el-tag>
+            </div>
+          </el-popover>-->
+        </template>
+      </el-table-column>
       <el-table-column prop="schoolName" label="所属机构" width="100">
         <template slot-scope="scope">
           <p>{{ scope.row.schoolName }}</p>
@@ -135,7 +145,7 @@
           <span v-show="scope.row.useringTotalCount != ''">{{scope.row.useringTotalCount}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="useringTotalTime" label="累计使用时长" width="120">
+      <el-table-column prop="useringTotalTime" label="累计使用时长" width="100">
         <template slot-scope="scope">
           <span v-show="scope.row.useringTotalTime == ''">--</span>
           <span
@@ -151,7 +161,7 @@
         </template>
       </el-table-column>
       -->
-      <el-table-column prop="latestTime" label="最近使用" width="160">
+      <el-table-column prop="latestTime" label="最近使用" width="100">
         <template slot-scope="scope">
           <span v-show="scope.row.latestTime == ''">--</span>
           <span v-show="scope.row.latestTime != ''">{{scope.row.latestTime | formatDate2}}</span>
@@ -173,17 +183,19 @@
           >
             <i class="iconfont">&#xe77f;</i>监控
           </el-button>
-          <el-button
-            size="small"
-            class="iconfont-color-blue"
-          >
-            <i class="iconfont">&#xe608;</i>设置
-          </el-button>
-          <el-button
-            size="small"
-            @click="equipDelete(scope.$index, scope.row)"
-            class="iconfont-color-blue iconfont-color-red"
-          >
+            <el-button
+              size="small"
+              class="iconfont-color-blue"
+               @click="iboxDetailSet(scope.$index, scope.row)"
+
+            >
+              <i class="iconfont">&#xe608;</i>设置
+            </el-button>
+            <el-button
+              size="small"
+              @click="equipDelete(scope.$index, scope.row)"
+              class="iconfont-color-blue iconfont-color-red"
+            >
             <i class="iconfont">&#xe600;</i>删除
           </el-button>
         </template>
@@ -205,7 +217,7 @@
       width="40%"
       class="detail"
     >
-      <el-form status-icon label-width="100px" class="demo-ruleForm" :model="detailData">
+      <el-form status-icon label-width="100px" class="demo-ruleForm" id="alertIbox" :model="detailData">
         <el-form-item label="设备名称" prop="equipName">
           <span class="must">*</span>
           <el-input
@@ -284,8 +296,8 @@
             @change="schoolNamePattern"
           >
             <el-option
-              v-for="item in schoolList"
-              :key="item.schoolId"
+              v-for="(item,index)  in schoolList1"
+              :key="index"
               :label="item.schoolName"
               :value="item.schoolId"
             ></el-option>
@@ -299,7 +311,8 @@
           <el-input
             type="text"
             v-model.trim="detailData.userName"
-            placeholder="请输入不长于6字负责人姓名"
+            placeholder="请输入不长于6个字负责人姓名"
+            maxlength="6"
             @change="userNamePattern"
           ></el-input>
           <span
@@ -414,7 +427,9 @@ export default {
       },
       //刷选条件
       schoolList: "",
+      schoolList1:"",
       schoolValue: "",
+      schoolValue1:"",
       serarchValue: "",
       statusValue: "",
       statusList: [
@@ -441,10 +456,16 @@ export default {
       platformlist: [],
       platformlistold:[],
       platformold:"",
-      platformoldId:null //编辑里面的平台选择id
+      platformoldId:-1 //编辑里面的平台选择id
     };
   },
   methods: {
+    iboxDetailSet(index,row){
+      this.$router.push({
+          path: '/manageAdmin/iboxdetail',
+          query:{iboxId: row.iboxId,isSet:true}
+        })
+    },
     iboxDetailFn(index,row){
         this.$router.push({
           path: '/manageAdmin/iboxdetail',
@@ -453,12 +474,17 @@ export default {
     },
      selectChangeset(val){
       this.platformoldId = val
+      this.schoolValue1 = "";
+      this.detailData.schoolId = "";
+      this.getSchoolsOne()
     },
       selectChange(val) {
       this.palatformId = val;
+      this.schoolValue = "";
+      this.getSchools()
       this.loadData(val);
     },
-        // 处理页号改变
+    // 处理页号改变
     headerClassFn(row, column, rowIndex, columnIndex){
       return "color:#434343;font-size:12px;border-radius:0;"
     },
@@ -514,8 +540,9 @@ export default {
     // 重置
     resect() {
       this.detailData.equipName = "";
-        (this.platformoldId = null),
-
+      this.platformold = "";
+      this.platformoldId = null;
+      this.schoolList1 = [];
       this.detailData.equipNameTips = "";
       this.detailData.versionID = "";
       this.detailData.versionTitle = "";
@@ -536,9 +563,19 @@ export default {
     // 全部学校
     getSchools() {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSchools).then(res => {
+      let _url = this.global.getSchools+'?systembId='+ this.palatformId;
+      this.$http.get(_url).then(res => {
         if (res.data.status === 200) {
           this.schoolList = res.data.resultObject.data;
+        }
+      });
+    },
+    getSchoolsOne() {
+      Vue.http.headers.common["userToken"] = getCookie("userToken");
+      let _url = this.global.getSchoolsDrowDown+'?systembId='+ this.platformoldId;
+      this.$http.get(_url).then(res => {
+        if (res.data.status === 200) {
+          this.schoolList1 = res.data.resultObject.data;
         }
       });
     },
@@ -636,16 +673,17 @@ export default {
     creatEquip() {
       this.detaildialog = true;
       this.editEquip = false;
+      this.equipTitle = "新增设备";
       this.resect();
     },
     insertIbox() {
-      this.equipTitle = "新增设备";
       let equipPattern = /^.{2,16}$/;
       let equipNumPattern = /^.{10,20}$/;
       let schoolNamePattern = /^.{2,16}$/;
       let versionTitlePatterm = /^.{1,16}$/;
       let userNamePattern = /^.{1,6}$/;
       let phonePatter = /^1[34578]\d{9}$/;
+      let cameraNumPatter = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{1,10}$/;
       if (equipPattern.test(this.detailData.equipName) == false) {
         this.detailData.equipNameTips = "！名称限2-16个字符。";
       } else {
@@ -656,7 +694,7 @@ export default {
       } else {
         this.detailData.equipNumTips = "";
       }
-      if (this.detailData.cameraNum == "") {
+      if (cameraNumPatter.test(this.detailData.cameraNum) == false) {
         this.detailData.cameraNumTips = "！请输入字母与数字组合不长于10位序列号";
       } else {
         this.detailData.cameraNumTips = "";
@@ -741,6 +779,7 @@ export default {
       this.iboxId = row.iboxId;
       this.platformoldId=row.systembId;
       this.platformold=row.systembName;
+      this.getSchoolsOne();
       console.log(this.equipOperate);
       this.$http.get(this.global.getIbox + "?iboxId=" + row.iboxId).then(
         res => {
@@ -948,6 +987,8 @@ export default {
       text-align: left;
       color: #f56c6c;
       width: 100%;
+      height: 30px;
+      line-height: 30px;
     }
     .must {
       color: red;
@@ -993,6 +1034,9 @@ export default {
     float: right;
     margin: 10px 10px 0 0;
     cursor: pointer;
+  }
+  #alertIbox .el-form-item{
+    margin-bottom: 18px;
   }
 }
 </style>

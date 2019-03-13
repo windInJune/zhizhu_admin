@@ -18,18 +18,18 @@
         class="addBigBForm"
         label-width="100px"
       >
-        <el-form-item prop="userName" label="用户名：">
+        <el-form-item prop="systemName" label="用户名：">
           <el-input
-            placeholder="！姓名限16个字符，不可有英文与汉字之外的字符。"
-            :maxlength="20"
-            v-model="addBigBForm.userName"
+            placeholder="用户名限2~16个字符，不可有英文与数字之外的字符。"
+            :maxlength="16"
+            v-model="addBigBForm.systemName"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="systemName" label="姓名：">
+        <el-form-item prop="userName" label="姓名：">
           <el-input
-            placeholder="！姓名限16个字符，不可有英文与汉字之外的字符。"
-            :maxlength="20"
-            v-model="addBigBForm.systemName"
+            placeholder="姓名限2~16个字符，不可有英文与汉字之外的字符。"
+            :maxlength="16"
+            v-model="addBigBForm.userName"
           ></el-input>
         </el-form-item>
         <h2>修改密码</h2>
@@ -62,7 +62,7 @@
       v-model="show"
       :width="100"
       :height="100"
-      url="http://172.16.1.207:8005/user/uploadPhoto"
+      url="http://172.16.1.165/ibox/user/uploadPhoto"
       :params="params"
       :headers="headers"
       img-format="png"
@@ -74,19 +74,28 @@ import Vue from "vue";
 import { setCookie, getCookie } from "../../assets/js/cookie.js";
 import openy from "../../assets/images/openeye.png";
 import closey from "../../assets/images/closeeye.png";
-import { mapState, mapMutations,mapGetters } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 import myUpload from "vue-image-crop-upload";
-export default {
-  data() {
     let testUserName = str => {
-      let reg = /^[a-zA-Z\u4e00-\u9fa5\s]+$/;
+      let reg = /^[a-zA-Z\u4e00-\u9fa5\s]{2,16}$/;
       if (str) {
         return reg.test(str);
       } else {
         return true;
       }
     };
-    let validatePass = (rule, value, callback) => {
+    let testSystemName = str => {
+      let reg = /^[a-zA-Z0-9\s]{2,16}$/;
+      if (str) {
+        return reg.test(str);
+      } else {
+        return true;
+      }
+    };
+ 
+export default {
+  data() {
+       let validatePass = (rule, value, callback) => {
       if (!value || value === "") {
         callback(new Error("请输入新密码"));
       } else {
@@ -99,6 +108,7 @@ export default {
     let testpwd = str => {
       let reg = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)+$/;
       if (str) {
+        console.log(str)
         return reg.test(str);
       } else {
         return true;
@@ -143,7 +153,7 @@ export default {
           {
             validator: function(obj, str, callback) {
               if (!testUserName(str)) {
-                callback(new Error("只能包含汉字和英文"));
+                callback(new Error("只能包含英文和汉字"));
                 return;
               } else {
                 callback();
@@ -153,12 +163,12 @@ export default {
           }
         ],
         systemName: [
-          { required: true, message: "姓名不能为空", trigger: "blur" },
+          { required: true, message: "用户名不能为空", trigger: "blur" },
           { min: 2, max: 16, message: "长度为2-16个字符", trigger: "blur" },
           {
             validator: function(obj, str, callback) {
-              if (!testUserName(str)) {
-                callback(new Error("只能包含汉字和英文"));
+              if (!testSystemName(str)) {
+                callback(new Error("只能包含英文和数字"));
                 return;
               } else {
                 callback();
@@ -198,28 +208,37 @@ export default {
     };
   },
   created() {
-    this.addBigBForm.userName = localStorage.getItem("userName");
-    this.addBigBForm.systemName = localStorage.getItem("systemName");
+    this.addBigBForm.userName = localStorage.getItem("userNameBig");
+    this.addBigBForm.systemName = localStorage.getItem("systemNameBig");
   },
   components: {
     "my-upload": myUpload
   },
   computed: {
-    ...mapGetters(['userImgs']),
+    ...mapGetters(["userImgs"]),
     ...mapState(["userdata"])
   },
 
   methods: {
-    ...mapMutations(["USERINFO", "USERNAME","USERIMG"]),
+    ...mapMutations(["USERINFO", "USERNAME", "USERIMG"]),
     submitForm(formName) {
-      this.$refs[formName].validate(res => {
-        if (res) {
+      let regNum = /^[a-zA-Z0-9\s]{2,16}$/;
+      let regName = /^[a-zA-Z\u4e00-\u9fa5\s]{2,16}$/;
+      if (
+        this.addBigBForm.enterPwd == "" &&
+        this.addBigBForm.oldPwd == "" &&
+        this.addBigBForm.newPwd == ""
+      ) {
+        if (
+          regNum.test(this.addBigBForm.systemName) &&
+          regName.test(this.addBigBForm.userName)
+        ) {
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .post(
               this.global.editSystemUser,
               {
-                userId: localStorage.getItem("userId"),
+                userId: localStorage.getItem("userIdBig"),
                 userName: this.addBigBForm.userName,
                 userLoginname: this.addBigBForm.systemName
               },
@@ -235,7 +254,46 @@ export default {
                 this.userdata.userLoginname = this.addBigBForm.systemName;
                 this.USERINFO(this.userdata);
                 this.USERNAME(this.addBigBForm.userName);
-                localStorage.setItem("userName", this.addBigBForm.userName);
+                localStorage.setItem("userNameBig", this.addBigBForm.userName);
+                localStorage.setItem("systemNameBig", this.addBigBForm.systemName);
+              } else {
+                this.$message({
+                  message: `${res.body.resultObject}`,
+                  type: "warning"
+                });
+              }
+            });
+        }else{
+          this.$refs[formName].validateField(["systemName","userName"])
+        }
+        return;
+
+      }
+      this.$refs[formName].validate(res => {
+        if (res) {
+          Vue.http.headers.common["userToken"] = getCookie("userToken");
+          this.$http
+            .post(
+              this.global.editSystemUser,
+              {
+                userId: localStorage.getItem("userIdBig"),
+                userName: this.addBigBForm.userName,
+                userLoginname: this.addBigBForm.systemName
+              },
+              { emulateJSON: true }
+            )
+            .then(res => {
+              if (res.body.status == 200) {
+                this.$message({
+                  message: `用户信息修改成功`,
+                  type: "success"
+                });
+                this.userdata.userName = this.addBigBForm.userName;
+                this.userdata.userLoginname = this.addBigBForm.systemName;
+                this.USERINFO(this.userdata);
+                this.USERNAME(this.addBigBForm.userName);
+                localStorage.setItem("userNameBig", this.addBigBForm.userName);
+                localStorage.setItem("systemNameBig", this.addBigBForm.systemName);
               } else {
                 this.$message({
                   message: `${res.body.resultObject}`,
@@ -247,7 +305,7 @@ export default {
             .post(
               this.global.modifyUserPwd,
               {
-                userId: localStorage.getItem("userId"),
+                userId: localStorage.getItem("userIdBig"),
                 userPwd: this.addBigBForm.newPwd
               },
               { emulateJSON: true }
@@ -299,9 +357,7 @@ export default {
         type: "success"
       });
     },
-    cropUploadFail(status, field) {
-      
-    }
+    cropUploadFail(status, field) {}
   }
 };
 </script>

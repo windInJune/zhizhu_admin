@@ -1,14 +1,22 @@
 <!-- eslint-disable -->
 <template>
   <div class="adminList">
-    <ul class="navlist">
-      <li
-        v-for="(item,index) in platformlistold"
-        :class="[item.systembId == systembId?'active':'']"
-        :key="index"
-        @click="choseSystem(item.systembId)"
-      >{{item.systembName}}</li>
-    </ul>
+    <div class="navBox">
+      <div class="scrollLeft" @click="navListScrollLeft">
+        <div class="leftfont"></div>
+      </div>
+         <ul class="navlist" ref="navlist">
+            <li
+              v-for="(item,index) in platformlistold"
+              :class="[item.systembId == systembId?'active':'']"
+              :key="index"
+              @click="choseSystem(item.systembId)"
+            >{{item.systembName}}</li>
+          </ul>
+      <div class="scrollRight" @click="navListScrollRight">
+        <div class="rightfont"></div>
+      </div>
+    </div>
     <div class="topBox">
       <div class="sectionTitle" style="font-size: 14px;
       color: #434343;">课程列表
@@ -222,7 +230,7 @@
         <el-form-item label="课程封面：" prop="photo" class="photo">
           <el-upload
             class="avatar-uploader"
-            action="http://172.16.1.207:8005/sysCourse/insertSysCourse"
+            action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept="image/png, image/jpeg, image/jpg"
@@ -404,7 +412,7 @@
             <span class="must">*</span>
             <el-upload
               class="upload-demo"
-              action="http://172.16.1.207:8005/sysCourse/insertSysCourse"
+              action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
               :on-remove="handleRemoveOne"
               :before-upload="beforeAvatarUpload2"
               :limit="1"
@@ -420,7 +428,7 @@
             <span class="must">*</span>
             <el-upload
               class="upload-demo"
-              action="http://172.16.1.207:8005/sysCourse/insertSysCourse"
+              action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
               :on-remove="handleRemoveTwo"
               :before-upload="beforeAvatarUpload3"
               :limit="1"
@@ -435,7 +443,7 @@
             <span class="must">*</span>
             <el-upload
               class="avatar-uploader"
-              action="http://172.16.1.207:8005/sysCourse/insertSysCourse"
+              action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               accept="image/png, image/jpeg, image/jpg"
@@ -466,7 +474,7 @@
       </el-dialog>
       <div class="detail-content">
         <div class="detail-left">
-          <img :src="detailFromUrl+'/'+detailFrom.photo" v-show="detailFrom.photo">
+          <img :src="detailFrom.photo" v-show="detailFrom.photo">
           <img src="../../../../assets/images/detail.png" v-show="!detailFrom.photo">
         </div>
         <div class="detail-right">
@@ -492,7 +500,6 @@
           <li v-for="(item,index) in BoxtaskList" :key="index">
             <div class="detail-mofang-content">
               <div class="top">
-                <!--<img :src="detailFromUrl+'/'+item.img" class="mofang-content">-->
                 <img
                   src="../../../../assets/images/vr.png"
                   v-show="item.taskType == 1"
@@ -693,7 +700,6 @@ export default {
       iconShow2: [],
       BoxtaskList: "",
       detailFrom: "",
-      detailFromUrl: this.global.localAPI,
       editInfo: false,
       mInfo: false,
       mId: "",
@@ -721,6 +727,12 @@ export default {
     };
   },
   methods: {
+    navListScrollLeft(){
+      this.$refs.navlist.scrollLeft <= 0?this.$refs.navlist.scrollLeft == 0 : this.$refs.navlist.scrollLeft = this.$refs.navlist.scrollLeft - 100
+    },
+    navListScrollRight(){
+      this.$refs.navlist.scrollLeft = this.$refs.navlist.scrollLeft + 100
+    },
     choseSystem(id) {
       this.systembId = id;
       this.loading = true;
@@ -908,8 +920,7 @@ export default {
             ];
             this.mofangFrom.introduction = res.data.resultObject.introduction;
             if (res.data.resultObject.img) {
-              this.imageUrl =
-                this.detailFromUrl + "/" + res.data.resultObject.img;
+              this.imageUrl =  res.data.resultObject.img;
             } else {
               this.imageUrl = require("../../../../assets/images/mofang.png");
             }
@@ -1201,8 +1212,7 @@ export default {
             this.courseFrom.professionId = res.data.resultObject.professionId;
             this.imageUrl = require("../../../../assets/images/detail.png");
             if (res.data.resultObject.photo) {
-              this.imageUrl =
-                this.detailFromUrl + "/" + res.data.resultObject.photo;
+              this.imageUrl = res.data.resultObject.photo;
             }
             // 获取课程id
             this.$http
@@ -1401,7 +1411,6 @@ export default {
         this.addMore.submit = "继续添加";
       }
       let newName = this.courseFrom.name.replace(/\s*/g, "");
-      console.log(newName);
       this.formData = new FormData();
       this.formData.append("file", this.mofangFrom.imgfile);
       this.formData.append("name", newName);
@@ -1844,30 +1853,75 @@ export default {
       }
     }
   }
-  .navlist {
-    height: 50px;
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    text-align: left;
-    white-space: nowrap;
-    margin-bottom: 30px;
-    -moz-box-sizing: border-box;
-    border: 1px solid #e5e5e4;
-    li {
+  .navBox{
+    position: relative;
+    .scrollLeft{
+      position: absolute;
       height: 100%;
-      line-height: 50px;
-      display: inline-block;
-      font-size: 14px;
-      padding: 0 30px;
+      left: 0;
+      top: 0;
+      width: 28px;
       cursor: pointer;
-      border-right: 1px solid #e5e5e4;
-      &.active {
-        color: #fff;
-        background: #0090ff;
+      z-index: 999;
+      display:flex;
+      align-items:center;
+      background:rgba(238,238,238,1);
+      .leftfont{
+        width:18px;
+        height:16px;
+        margin-left:8px;
+        background: url("../../../../assets/images/left.png") no-repeat center;
+      }
+    }
+    .scrollRight{
+      position: absolute;
+      height: 100%;
+      right: 0;
+      top: 0;
+      width: 28px;
+      cursor: pointer;
+      z-index: 999;
+      display:flex;
+      align-items:center;
+      background:rgba(238,238,238,1);
+      .rightfont{
+         width:18px;
+        height:16px;
+        background: url("../../../../assets/images/right.png") no-repeat center;
+      }
+    }
+    .navlist {
+      width: 100%;
+      padding:12px 30px 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      text-align: left;
+      white-space: nowrap;
+      margin-bottom: 30px;
+      -moz-box-sizing: border-box;
+      background:rgba(245,245,245,1);
+      border:1px solid rgba(229,229,228,1);
+      position: relative;
+      box-sizing: border-box;
+      li {
+        background:rgba(255,255,255,1);
+        border:1px solid rgba(201,201,201,1);
+        border-radius:10px;
+        display: inline-block;
+        font-size: 14px;
+        margin-left: 5px;
+        padding: 10px 20px;;
+        margin-bottom: 12px;
+        cursor: pointer;
+        &.active {
+          color: #fff;
+          background: #0090ff;
+          border:0;
+        }
       }
     }
   }
+  
   .content {
     display: flex;
     .content-left {

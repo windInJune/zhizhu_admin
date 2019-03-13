@@ -78,17 +78,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="userCard" label="身份证" width="140"></el-table-column>
-      <el-table-column prop="systembName" label="所属大B平台" width="100"></el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台"></el-table-column>
 
-      <el-table-column prop="schoolName" label="机构" width="120">
-        <template slot-scope="scope">
-          <p>{{ scope.row.schoolName }}</p>
-          <!-- <el-popover trigger="hover" placement="top">
-            <div slot="reference" >
-              <el-tag size="medium">{{ scope.row.schoolName}}</el-tag>
-            </div>
-          </el-popover>-->
-        </template>
+      <el-table-column prop="schoolName" label="机构" >
       </el-table-column>
       <el-table-column prop="gradeName" label="年级"></el-table-column>
       <el-table-column prop="className" label="班级"></el-table-column>
@@ -117,7 +109,7 @@
           >已停用</span>
         </template>
       </el-table-column>
-      <el-table-column prop="subjectType" label="操作" width="310">
+      <el-table-column prop="subjectType" label="操作" width="300">
         <template slot-scope="scope" class="handle">
           <el-button
             size="small"
@@ -293,12 +285,6 @@ export default {
   computed: {
     computedIsDisable() {
       return this.statusDetail;
-      /*
-      if(this.detailData.isDisable = 0){return '未激活'}
-      if(this.detailData.isDisable = 1){return '已激活'}
-      if(this.detailData.isDisable = 2){return '冻结'}
-      if(this.detailData.isDisable = 3){return '停用'}
-      */
     },
     computedUserType() {
       if (this.detailData.userType == 0) {
@@ -327,6 +313,7 @@ export default {
     selectChange(val) {
       this.palatformId = val;
       this.loadData(val);
+      this.getSchools();
     },
     headerClassFn(row, column, rowIndex, columnIndex) {
       return "color:#434343;background:rgba(245,245,245,1);font-size:12px;";
@@ -445,7 +432,6 @@ export default {
     changePassword(index, row) {
       this.dialogRePassword = true;
       this.useId = row.userId;
-      console.log(this.useId);
     },
     dialogRePasswordSubmit() {
       let passwordPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,15}$/;
@@ -487,16 +473,17 @@ export default {
           );
       }
     },
-    getSchools() {
+    getSchools(systemId) {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSchools).then(res => {
+      let _url = this.global.getSchools+'?systembId='+ this.palatformId
+      this.$http.get(_url).then(res => {
         if (res.data.status === 200) {
+          this.schoolValue = "";
           this.schoolList = res.data.resultObject.data;
         }
       });
     },
     schoolChange() {
-      console.log(this.schoolValue);
       this.GradeValue = "";
       this.classValue = "";
       Vue.http.headers.common["userToken"] = getCookie("userToken");
@@ -504,26 +491,21 @@ export default {
         .get(this.global.getGrades + "?schoolId=" + this.schoolValue)
         .then(res => {
           if (res.data.status === 200) {
-            console.log(res);
             this.GradeValue = "";
             this.classValue = "";
             this.GradeList = res.data.resultObject.data;
-            console.log(this.GradeList);
           }
         });
       this.loadData();
     },
     GradeChange() {
-      console.log(this.schoolValue);
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(this.global.getClass + "?userGradeid=" + this.GradeValue)
         .then(res => {
           if (res.data.status === 200) {
-            console.log(res);
             this.classValue = "";
             this.classList = res.data.resultObject.data;
-            console.log(this.classList);
           }
         });
       this.loadData();

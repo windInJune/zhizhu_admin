@@ -75,8 +75,7 @@
           prop="email"
           label="邮箱："
           :rules="[
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
           ]"
         >
           <el-input v-model="addBigBForm.email"></el-input>
@@ -198,10 +197,10 @@ export default {
               var ci = _data.cityId;
               var ar = _data.areaId;
               /* 默认的联级选择 */
-              this.province = this.allCity[pr].name;
-              this.city = this.allCity[pr].child[ci].name;
+              this.province = pr;
+              this.city = ci;
+              this.area = ar;
               this.myCity = this.allCity[pr].child[ci].name;
-              this.area = this.allCity[pr].child[ci].child[ar];
               this.myArea = this.allCity[pr].child[ci].child[ar];
               this.myProvince = this.allCity[pr].name;
               this.cities = this.allCity[pr].child[ci].name;
@@ -243,10 +242,12 @@ export default {
         this.$refs[formName].validate(res => {
           if(res){
             Vue.http.headers.common["userToken"] = getCookie("userToken");
+            console.log()
             this.$http
               .post(
                 this.global.updateSystembById,
                 {
+                  systembId:this.$route.query.systemId,
                   systembName: this.addBigBForm.systembName,
                   systembDomain: this.addBigBForm.systembDomain,
                   systembIndustry: this.addBigBForm.systembIndustry,
@@ -271,7 +272,7 @@ export default {
                 if (res.body.status === 200) {
                   this.$message('保存成功');
                   this.$refs[formName].resetFields();
-                  this.$router.push({ path: "/manageAdmin/bigB" });
+                  this.$router.push({ path: "/manageAdmin/bigb" });
                 } else if (res.status === 511) {
                   this.$router.push({ path: "/" });
                 } else {

@@ -17,7 +17,7 @@
          <el-table-column type="index" label="序号" width="80">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
-      <el-table-column prop="schoolName" label="机构名称" width="165"></el-table-column>
+      <el-table-column prop="schoolName" label="机构名称" width="150"></el-table-column>
       <el-table-column prop="schoolId" label="机构ID"></el-table-column>
       <el-table-column prop="systembName" label="所属大B平台"></el-table-column>
       <el-table-column prop="schoolType" label="类型">
@@ -48,19 +48,15 @@
       <el-table-column prop="managerName" label="负责人"></el-table-column>
       <el-table-column prop="zhiNumber" label="知号"></el-table-column>
       <el-table-column prop="managerTel" label="联系电话" width="120"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="130">
-        <template slot-scope="scope">
-          <span class="creatTime">{{scope.row.createTime}}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="120"></el-table-column>
       <el-table-column prop="createUsername" label="创建人"></el-table-column>
       <el-table-column prop="isDisable" label="状态">
         <template slot-scope="scope">
-          <span v-show="scope.row.isDisable == 0" class="yellow">未激活</span>
-          <span v-show="scope.row.isDisable == 1" class="green">已激活</span>
+          <span v-show="scope.row.isDisable == 1" class="yellow">未激活</span>
+          <span v-show="scope.row.isDisable == 0" class="green">已激活</span>
         </template>
       </el-table-column>
-      <el-table-column prop="subjectType" label="操作" width="280">
+      <el-table-column prop="subjectType" label="操作" width="210">
         <template slot-scope="scope" class="handle">
           <el-button
             size="small"

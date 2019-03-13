@@ -70,13 +70,11 @@
           <span v-show="scope.row.userPhone != ''">{{scope.row.userPhone}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="userPosition" label="职位"></el-table-column>
-      <!-- <el-table-column prop="userEmial" label="邮箱">
+      <el-table-column prop="userPosition" label="职位">
         <template slot-scope="scope">
-          <span v-show="scope.row.userEmial == ''">--</span>
-          <span v-show="scope.row.userEmial != ''">{{scope.row.userEmial}}</span>
+          <span>{{scope.row.userPosition || '--'}}</span>
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column prop="userBirthday" label="生日">
         <template slot-scope="scope">
           <span v-show="scope.row.userBirthday == ''">--</span>
@@ -296,6 +294,8 @@ export default {
   methods: {
      selectChange(val) {
       this.palatformId = val;
+      this.schoolValue = "";
+      this.getSchools();
       this.loadData(val);
     },
      headerClassFn(row, column, rowIndex, columnIndex){
@@ -461,7 +461,7 @@ export default {
     },
     getSchools() {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      this.$http.get(this.global.getSchools).then(res => {
+      this.$http.get(this.global.getSchools+'?systembId='+ this.palatformId).then(res => {
         if (res.data.status === 200) {
           this.schoolList = res.data.resultObject.data;
         }
