@@ -119,7 +119,6 @@ export default{
             )
             .then(
               res => {
-                console.log(res);
                  that.$message({
                   type: 'success',
                   message: '删除成功!'
@@ -127,7 +126,6 @@ export default{
                that.loadData()
               },
               err => {
-                console.log(err);
               }
             );
       

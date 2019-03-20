@@ -3,7 +3,7 @@
     <el-row class="tac">
       <el-col :span="24">
         <div class="head">
-          <img class="head-icon" :src="userImgs || userHeadSrc" alt="">
+          <img class="head-icon" :src="userImgs == 'undefined' || !userImgs? userHeadSrc :  userImgs" alt="">
           <h2>
             {{userNames || this.userName}}
             <i class="iconfont boy" v-show="this.sex == '男'">&#xe648;</i>

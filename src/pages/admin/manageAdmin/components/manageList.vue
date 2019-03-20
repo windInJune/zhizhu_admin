@@ -14,12 +14,12 @@
     </div>
     <!-- 表单信息 -->
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
-         <el-table-column type="index" label="序号" width="80">
+         <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
-      <el-table-column prop="schoolName" label="机构名称" width="150"></el-table-column>
+      <el-table-column prop="schoolName" label="机构名称" ></el-table-column>
       <el-table-column prop="schoolId" label="机构ID"></el-table-column>
-      <el-table-column prop="systembName" label="所属大B平台"></el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台" width="140"></el-table-column>
       <el-table-column prop="schoolType" label="类型">
         <template slot-scope="scope">
           <span v-show="scope.row.schoolType == 1">公立</span>
@@ -48,7 +48,7 @@
       <el-table-column prop="managerName" label="负责人"></el-table-column>
       <el-table-column prop="zhiNumber" label="知号"></el-table-column>
       <el-table-column prop="managerTel" label="联系电话" width="120"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" width="120"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="140"></el-table-column>
       <el-table-column prop="createUsername" label="创建人"></el-table-column>
       <el-table-column prop="isDisable" label="状态">
         <template slot-scope="scope">
@@ -512,7 +512,6 @@ export default {
         if (this.editSchool) {
           schoolApi = this.global.editSchool;
         }
-        console.log(schoolApi);
         this.$http
           .post(
             schoolApi,
@@ -552,7 +551,6 @@ export default {
                   type: "success"
                 });
               }
-              console.log(res);
               this.loadData(this.palatformId);
               this.resets();
             },
@@ -561,8 +559,6 @@ export default {
             }
           );
         this.loading = false;
-      } else {
-        console.log("no");
       }
     },
     // 删除机构
@@ -612,7 +608,6 @@ export default {
         .get(this.global.getDataStatistics + "?schoolId=" + row.schoolId)
         .then(
           res => {
-            console.log(res);
             this.dataScreen = res.data.resultObject;
           },
           err => {
@@ -622,7 +617,7 @@ export default {
     },
     // 修改信息
     changeInfo(index, row) {
-      this.dialogTittle = "编辑机构信息";
+      this.dialogTittle = "机构详情";
       this.platformoldId=row.systembId;
       this.platformold=row.systembName;
       this.schoolId = row.schoolId;
@@ -669,25 +664,19 @@ export default {
     //地区选择
     provincesChoose() {
       /* 省的编号 + 省的名字 */
-      console.log(this.province);
       this.myProvince = this.allCity[this.province].name;
-      console.log(this.myProvince);
       /* 该省的下级 */
       this.cities = this.allCity[this.province];
     },
     citiesChoose() {
       /* 城市的编号 + 城市的名字 */
-      console.log(this.city);
       this.myCity = this.cities.child[this.city].name;
-      console.log(this.myCity);
       /* 该城市的下级 */
       this.areas = this.cities.child[this.city];
     },
     areasChoose() {
       /* 区的编号 + 区的名字 */
-      console.log(this.area);
       this.myArea = this.areas.child[this.area];
-      console.log(this.myArea);
     },
     resets() {
         (this.editSchool = false),

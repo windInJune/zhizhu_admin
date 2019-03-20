@@ -111,7 +111,7 @@ export default{
 			Object.assign(obj,this.pageObj);
 			 Vue.http.headers.common["userToken"] = getCookie("userToken");
     	this.$http
-      .get(this.global.getUserRecord + `?pageNum=1&pageSize=10&searchText=${this.userName}&iboxId=${this.$route.query.iboxId}`)
+      .get(this.global.getUserRecord + `?pageNum=${this.pageObj.pageNum}&pageSize=${this.pageObj.pageSize}&searchText=${this.userName}&iboxId=${this.$route.query.iboxId}`)
       .then(res => {
         if (res.body.status === 200) {
           	this.tableData=res.body.resultObject.data;
@@ -123,10 +123,6 @@ export default{
         }
         this.loading = false;
       });
-			getUserRecord(obj).then(res=>{
-				this.tableData=res.resultObject.data;
-				this.total=res.resultObject.totalCount;
-			})
 		},
 		handleSizeChange(val){
 	   		this.pageObj['pageSize']=val;
@@ -137,7 +133,6 @@ export default{
 	   		this.search();
 	   	},
 	   	seeplayback(obj){
-	   		console.log(obj)
 	   		this.$emit('seeplack',obj)
 	   	}
 	}	

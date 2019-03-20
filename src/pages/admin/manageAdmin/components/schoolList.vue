@@ -59,7 +59,7 @@
       style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
       v-loading="loading"
     >
-       <el-table-column type="index" label="序号" width="80">
+       <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
       <el-table-column prop="userName" label="姓名" width="60"></el-table-column>
@@ -78,7 +78,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="userCard" label="身份证" width="140"></el-table-column>
-      <el-table-column prop="systembName" label="所属大B平台"></el-table-column>
+      <el-table-column prop="systembName" label="所属大B平台" width="120"></el-table-column>
 
       <el-table-column prop="schoolName" label="机构" >
       </el-table-column>
@@ -90,7 +90,7 @@
           <span v-show="scope.row.userMajor != ''" class="yellow">{{scope.row.userMajor}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="userPhone" label="手机号码" width="120">
+      <el-table-column prop="userPhone" label="手机号码" width="110">
         <template slot-scope="scope">
           <span v-show="scope.row.userPhone == ''" class="yellow">--</span>
           <span v-show="scope.row.userPhone != ''" class="yellow">{{scope.row.userPhone}}</span>
@@ -399,7 +399,6 @@ export default {
         type: "warning"
       })
         .then(() => {
-          console.log(row.isDisable);
           var isDisableNum;
           if (row.isDisable == 0) {
             isDisableNum = 1;
@@ -408,7 +407,6 @@ export default {
           } else if (row.isDisable == 1 && row.isFreeze == 0) {
             isDisableNum = 2;
           }
-          console.log(isDisableNum);
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .post(
@@ -418,7 +416,6 @@ export default {
             )
             .then(
               res => {
-                console.log(res);
                 this.loadData();
               },
               err => {
@@ -447,7 +444,6 @@ export default {
           )
           .then(
             res => {
-              console.log(res);
               if (res.body.status == 512) {
                 this.$notify({
                   title: "警告",
@@ -514,7 +510,6 @@ export default {
       this.loadData();
     },
     statusChange() {
-      console.log(this.statusValue);
       this.loadData();
     },
     searchSubmit() {

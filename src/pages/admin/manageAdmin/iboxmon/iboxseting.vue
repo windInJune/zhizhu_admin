@@ -1,6 +1,6 @@
 <template>
   <div class="iboxseting">
-    <div class="iboxstatus" v-show="iboxObj.iboxStatus=2">
+    <div class="iboxstatus" v-show="iboxObj.iboxStatus==2">
       <img src="../../../../assets/images/ibox3.png">
       <span>当前设备已离线，暂不能设置</span>
     </div>
@@ -252,7 +252,6 @@ export default {
   methods: {
     setIboxs(obj) {
       this.newObj = Object.assign({}, this.newObj);
-      // console.log(obj)
       let newobj = obj;
       if (obj.isOff) {
         newobj["isOff"] = 0;
@@ -277,17 +276,15 @@ export default {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
      this.$http
         .post(this.global.updateIboxSettingInfo, newobj, { emulateJSON: true }).then(res => {
-					console.log(res)
 				})
     },
     getiboxstatus() {
-      let obj = { iboxNum: this.$route.query.iboxNum };
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
-        .post(this.global.getIboxSettingInfo, obj, { emulateJSON: true })
+        .get(this.global.getIboxSettingInfo + `?iboxNum=${this.$route.query.iboxNum}`)
         .then(res => {
-          if (res.status == 200) {
-            this.iboxstatusObj = res.resultObject;
+          if (res.body.status == 200) {
+            this.iboxstatusObj = res.body.resultObject;
             if (this.iboxstatusObj.isOff == 0) {
               this.newObj["isOff"] = true;
             } else {
@@ -313,7 +310,6 @@ export default {
             } else {
               this.newObj["isLight"] = true;
             }
-            console.log(this.newObj);
           }
         });
     }

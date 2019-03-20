@@ -66,7 +66,7 @@
     <el-dialog title="新增用户" :visible.sync="addUser" width="30%" :close-on-click-modal="false">
       <el-form status-icon label-width="100px" class="demo-ruleForm">
         <el-form-item label="身份">
-          <p class="identity">平台管理员</p>
+          <p class="identity">大平台管理员</p>
         </el-form-item>
         <el-form-item label="性别">
           <div class="identity">
@@ -316,7 +316,6 @@ export default {
     changePassword(index, row) {
       this.dialogRePassword = true;
       this.useId = row.userId;
-      console.log(this.useId);
     },
     dialogRePasswordSubmit() {
       let passwordPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,15}$/;
@@ -359,14 +358,12 @@ export default {
     },
     // 冻结
     userFrozen(index, row) {
-      console.log(row.isDisable);
       var isDisableNum;
       if (row.isDisable == 0) {
         isDisableNum = 1;
       } else {
         isDisableNum = 0;
       }
-      console.log(isDisableNum);
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .post(
@@ -376,7 +373,6 @@ export default {
         )
         .then(
           res => {
-            // console.log(res)
             this.loadData();
           },
           err => {

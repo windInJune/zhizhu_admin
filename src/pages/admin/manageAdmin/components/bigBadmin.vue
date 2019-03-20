@@ -277,7 +277,6 @@ export default {
               }
             },
             err => {
-              console.log(err);
             }
           );
         this.addUser = false;
@@ -317,7 +316,6 @@ export default {
                 this.loadData();
               },
               err => {
-                console.log(err);
               }
             );
         })
@@ -327,7 +325,6 @@ export default {
     changePassword(index, row) {
       this.dialogRePassword = true;
       this.useId = row.userId;
-      console.log(this.useId);
     },
     dialogRePasswordSubmit() {
       let passwordPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,15}$/;
@@ -363,21 +360,18 @@ export default {
               }
             },
             err => {
-              console.log(err);
             }
           );
       }
     },
     // 冻结
     userFrozen(index, row) {
-      console.log(row.isDisable);
       var isDisableNum;
       if (row.isDisable == 0) {
         isDisableNum = 1;
       } else {
         isDisableNum = 0;
       }
-      console.log(isDisableNum);
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .post(
@@ -387,7 +381,6 @@ export default {
         )
         .then(
           res => {
-            // console.log(res)
             this.loadData();
           },
           err => {

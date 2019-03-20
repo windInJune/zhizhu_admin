@@ -68,7 +68,7 @@ export default {
                 this.userName = res.data.resultObject.userName
                 this.sex = res.data.resultObject.userSex
                 localStorage.setItem('userNameBig',res.data.resultObject.userName)
-                // localStorage.setItem('userImg','http://172.16.1.165/'+res.data.resultObject.userPhoto)
+                // localStorage.setItem('userImg','http://47.110.226.59/'+res.data.resultObject.userPhoto)
                 localStorage.setItem('systemNameBig',res.data.resultObject.userLoginname)
                 localStorage.setItem('userIdBig',res.data.resultObject.userId)
                 localStorage.setItem('sexBig',res.data.resultObject.userSex)

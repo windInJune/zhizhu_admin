@@ -32,11 +32,11 @@ export default{
 }
 </script>
 <style scoped lang="less">
-@import '~@/assets/styles/common.less';
-.superAdmin{
-  height:100%;overflow:hidden;
-  .el-container{height:100%;}
-  .el-header{padding:0;}
-  .el-aside{width:232px !important;margin-top:1px;height:100%;overflow:hidden;}
-}
+  @import '~@/assets/styles/common.less';
+  .superAdmin{
+    height:100%;overflow:hidden;
+    .el-container{height:100%;}
+    .el-header{padding:0;}
+    .el-aside{width:232px !important;margin-top:1px;height:100%;overflow:hidden;}
+  }
 </style>

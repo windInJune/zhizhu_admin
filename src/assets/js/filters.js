@@ -42,7 +42,6 @@ const getiboxstatus = value => {
 	}
 }
 const gettaskstatus = value => {
-	// console.log(value==0)
 	if(value==''){
 		return '未知'
 	}else if (value==0){

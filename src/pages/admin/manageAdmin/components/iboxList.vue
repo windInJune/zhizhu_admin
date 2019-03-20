@@ -91,7 +91,7 @@
     </div>
     <!-- 表单 -->
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
-      <el-table-column type="index" label="序号" width="80">
+      <el-table-column type="index" label="序号">
         <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
       <el-table-column prop="iboxName" label="名称" width="120"></el-table-column>
@@ -133,10 +133,10 @@
       </el-table-column>
       <el-table-column prop="iboxStatus" label="状态">
         <template slot-scope="scope">
-          <span v-show="scope.row.iboxStatus == 0">空闲</span>
-          <span v-show="scope.row.iboxStatus == 1">忙碌</span>
+          <span v-show="scope.row.iboxStatus == 0" class="green">空闲</span>
+          <span v-show="scope.row.iboxStatus == 1" class="red">忙碌</span>
           <span v-show="scope.row.iboxStatus == 2">离线</span>
-          <span v-show="scope.row.iboxStatus == 3">警报</span>
+          <span v-show="scope.row.iboxStatus == 3" class="yellow">警报</span>
         </template>
       </el-table-column>
       <el-table-column prop="useringTotalCount" label="使用人次">
@@ -463,13 +463,13 @@ export default {
     iboxDetailSet(index,row){
       this.$router.push({
           path: '/manageAdmin/iboxdetail',
-          query:{iboxId: row.iboxId,isSet:true}
+          query:{iboxId: row.iboxId,isSet:true,iboxNum:row.iboxNum}
         })
     },
     iboxDetailFn(index,row){
         this.$router.push({
           path: '/manageAdmin/iboxdetail',
-          query:{iboxId: row.iboxId}
+          query:{iboxId: row.iboxId,iboxNum:row.iboxNum}
         })
     },
      selectChangeset(val){
@@ -509,7 +509,6 @@ export default {
             }&pageSize=${this.pageSize}`
         )
         .then(res => {
-          console.log(res);
           if (res.data.status === 200) {
             this.pageData = res.data.resultObject.data;
             this.total = res.data.resultObject.totalCount;
@@ -530,7 +529,6 @@ export default {
       this.$http.get(this.global.getSearchTexts).then(
         res => {
           this.options = res.data.resultObject;
-          console.log(this.options);
         },
         err => {
           console.log(err);
@@ -591,7 +589,6 @@ export default {
       this.loadData();
     },
     statusChange() {
-      console.log(this.statusValue);
       this.loadData();
     },
     searchSubmit() {
@@ -599,9 +596,7 @@ export default {
     },
     // 城市选择
     provchange(key) {
-      console.log(key);
       this.provinceId = key;
-      console.log(this.city[key].name);
       this.cityarrs = this.city[key].child;
       //this.changeObj['provinceName']=this.city[key].name;
       this.arearrs = [];
@@ -610,18 +605,14 @@ export default {
       this.loadData();
     },
     citychange(key) {
-      console.log(key);
       this.cityId = key;
-      console.log(this.cityarrs[key].name);
       this.arearrs = this.cityarrs[key].child;
       //this.changeObj['cityName']=this.cityarrs[key].name;
       this.changeObj.areaId = "";
       this.loadData();
     },
     areachange(key) {
-      console.log(key);
       this.areaId = key;
-      console.log(this.arearrs[key]);
       this.changeObj["areaName"] = this.arearrs[key];
       this.changeObj = Object.assign({}, this.changeObj);
       this.loadData();
@@ -766,9 +757,7 @@ export default {
               console.log(err);
             }
           );
-      } else {
-        console.log("no");
-      }
+      } 
     },
     // 编辑
     detail(index, row) {
@@ -780,10 +769,8 @@ export default {
       this.platformoldId=row.systembId;
       this.platformold=row.systembName;
       this.getSchoolsOne();
-      console.log(this.equipOperate);
       this.$http.get(this.global.getIbox + "?iboxId=" + row.iboxId).then(
         res => {
-          console.log(res.data.resultObject);
           this.detailData.equipName = res.data.resultObject.iboxName;
           this.detailData.equipNum = res.data.resultObject.iboxNum;
           this.detailData.cameraNum = res.data.resultObject.cameraNum;
@@ -803,7 +790,6 @@ export default {
     },
     // 设备型号
     versionChange() {
-      console.log(this.detailData.versionTitle);
       let versionTitlePatterm = /^.{1,16}$/;
       if (versionTitlePatterm.test(this.detailData.versionTitle) == false) {
         this.detailData.versionTitleTips = "！不能为空";

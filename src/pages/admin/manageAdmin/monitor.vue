@@ -71,10 +71,10 @@
               <i class="iconfont icon-live_icon"></i>
               <span>实况直播</span>
             </li>
-            <!-- <li class="cur" @click="showcent(1);showind=1;" :class="showind==1?'checkedol':''">
+            <li class="cur" @click="showcent(1);showind=1;" :class="showind==1?'checkedol':''">
               <i class="iconfont icon-zhibohuifang"></i>
               <span>视频回放</span>
-            </li> -->
+            </li>
             <li class="cur" @click="showcent(2);showind=2;" :class="showind==2?'checkedol':''">
               <i class="iconfont icon-icon-test"></i>
               <span>使用记录</span>
@@ -85,7 +85,7 @@
             </li>
           </ol>
           <livebroadcast v-if="showind==0"></livebroadcast>
-				<!-- <playback v-if="showind==1" :timedata='timedata'></playback> -->
+				<playback v-if="showind==1" :timedata='timedata' :iboxObj="iboxObj"></playback>
 			  	<uselist v-if="showind==2" @seeplack="seeplack"></uselist>
           <iboxseting v-if="showind==3" :iboxObj="iboxObj"></iboxseting>
         </div>
@@ -141,6 +141,7 @@ export default {
 </script>
 <style scoped lang="less">
 .adminList {
+  font-size: 16px;
   .top {
     display: flex;
     justify-content: space-between;

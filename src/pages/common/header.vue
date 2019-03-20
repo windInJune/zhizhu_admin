@@ -6,7 +6,7 @@
       </li>
       <li class="sub_title"></li>
       <li class="user" @mouseenter="userEnter" @mouseleave="userLeave">
-        <img  class="userIMg" :src="userImgs || userImg" alt="">
+        <img  class="userIMg" :src="userImgs == 'undefined' || !userImgs? userHeadSrc :  userImgs" alt="">
         {{userNames || this.userName}}
         <div class="out" v-show="userShow">
           <p @click="gotoUserDetail">个人中心</p>
@@ -31,7 +31,7 @@ import { mapGetters  } from "vuex";
 export default {
   data() {
     return {
-      userImg: require("../../assets/images/head.png"),
+      userHeadSrc: require("../../assets/images/head.png"),
       userName: "",
       userShow: false
     };
@@ -58,7 +58,6 @@ export default {
     }
   },
   created() {
-    console.log()
     this.userName = localStorage.getItem("userNameBig");
   }
 };

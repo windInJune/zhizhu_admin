@@ -3,9 +3,10 @@
 let localAPI;
 // 登录
 if (process.env.NODE_ENV == 'development') {
-    localAPI = 'http://172.16.1.165/ibox';
+    localAPI = 'http://47.110.226.59/ibox';
+    // localAPI = 'http://172.16.1.5:8005';
 } else {
-    localAPI = 'http://172.16.1.165/ibox';
+    localAPI = 'http://47.110.226.59/ibox';
     // localAPI = 'http://47.110.226.59/ibox'; //线上url
 }
 const userlogin = localAPI + '/user/userLogin'
@@ -69,9 +70,13 @@ const editSystemUser = localAPI + '/user/editSystemUser'
 const getIboxSettingInfo = localAPI + '/iboxInfo/getIboxSettingInfo'
  //设置设备状态
 const updateIboxSettingInfo = localAPI + '/iboxInfo/updateIboxSettingInfo'
-
+//查看回放记录
+const getVideo = localAPI + '/httpClient/getVideo'
+const modifyUserPwdByOldPwd = localAPI + '/user/modifyUserPwdByOldPwd'
 export default
 {
+  modifyUserPwdByOldPwd,
+  getVideo,
   getIboxSettingInfo,
   updateIboxSettingInfo,
   editSystemUser,

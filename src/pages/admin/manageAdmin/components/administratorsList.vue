@@ -42,7 +42,7 @@
       </li>
     </ul>
     <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
-        <el-table-column type="index" label="序号" width="80">
+        <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
       <el-table-column prop="userName" label="姓名" width="100"></el-table-column>
@@ -393,7 +393,6 @@ export default {
           if (row.isDisable == 1 && row.isFreeze == 0) {
             isDisableNum = 2;
           }
-          console.log(isDisableNum);
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .post(
@@ -403,7 +402,6 @@ export default {
             )
             .then(
               res => {
-                console.log(res);
                 this.loadData();
               },
               err => {
@@ -417,7 +415,6 @@ export default {
     changePassword(index, row) {
       this.dialogRePassword = true;
       this.useId = row.userId;
-      console.log(this.useId);
     },
     dialogRePasswordSubmit() {
       let passwordPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,15}$/;
@@ -433,7 +430,6 @@ export default {
           )
           .then(
             res => {
-              console.log(res);
               if (res.body.status == 512) {
                 this.$notify({
                   title: "警告",
@@ -468,21 +464,17 @@ export default {
       });
     },
     schoolChange() {
-      console.log(this.schoolValue);
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(this.global.getGrades + "?schoolId=" + this.schoolValue)
         .then(res => {
           if (res.data.status === 200) {
-            console.log(res);
             this.GradeList = res.data.resultObject.data;
-            console.log(this.GradeList);
           }
         });
       this.loadData();
     },
     statusChange() {
-      console.log(this.statusValue);
       this.loadData();
     },
     searchSubmit() {

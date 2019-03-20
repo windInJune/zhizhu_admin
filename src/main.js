@@ -36,6 +36,12 @@ router.beforeEach((to, from, next) => {
       }else{
         next({path:'/superAdmin',replace: true})
       }
+    }else if(USERTYPE == 0){
+      if(to.fullPath == "/superAdmin/adminList"){
+        next({path:from.fullPath,replace: true})
+      }else{
+        next()
+      }
     }else{
       next()
     }

@@ -9,7 +9,7 @@
     <div class="detailBox">
       <h2>账号信息</h2>
       <el-tooltip class="item" effect="dark" content="点击修改头像" placement="top-end">
-        <img :src="userImgs || userImg" alt class="userImg" @click="toggleShow">
+        <img :src="userImgs == 'undefined' || !userImgs? userHeadSrc :  userImgs" alt class="userImg" @click="toggleShow">
       </el-tooltip>
       <el-form
         :model="addBigBForm"
@@ -62,7 +62,7 @@
       v-model="show"
       :width="100"
       :height="100"
-      url="http://172.16.1.165/ibox/user/uploadPhoto"
+      url="http://47.110.226.59/ibox/user/uploadPhoto"
       :params="params"
       :headers="headers"
       img-format="png"
@@ -108,7 +108,6 @@ export default {
     let testpwd = str => {
       let reg = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)+$/;
       if (str) {
-        console.log(str)
         return reg.test(str);
       } else {
         return true;
@@ -133,7 +132,7 @@ export default {
     return {
       openy,
       closey,
-      userImg: require("../../assets/images/head.png"),
+      userHeadSrc: require("../../assets/images/head.png"),
       addBigBForm: {
         userName: "",
         systemName: "",
@@ -247,7 +246,7 @@ export default {
             .then(res => {
               if (res.body.status == 200) {
                 this.$message({
-                  message: `用户信息修改成功`,
+                  message: `账户信息修改成功`,
                   type: "success"
                 });
                 this.userdata.userName = this.addBigBForm.userName;
@@ -284,10 +283,10 @@ export default {
             )
             .then(res => {
               if (res.body.status == 200) {
-                this.$message({
-                  message: `用户信息修改成功`,
-                  type: "success"
-                });
+                // this.$message({
+                //   message: `用户信息修改成功`,
+                //   type: "success"
+                // });
                 this.userdata.userName = this.addBigBForm.userName;
                 this.userdata.userLoginname = this.addBigBForm.systemName;
                 this.USERINFO(this.userdata);
@@ -303,10 +302,11 @@ export default {
             });
           this.$http
             .post(
-              this.global.modifyUserPwd,
+              this.global.modifyUserPwdByOldPwd,
               {
                 userId: localStorage.getItem("userIdBig"),
-                userPwd: this.addBigBForm.newPwd
+                userNewPwd: this.addBigBForm.newPwd,
+                userOldPwd: this.addBigBForm.oldPwd
               },
               { emulateJSON: true }
             )
@@ -318,7 +318,7 @@ export default {
                 });
               } else {
                 this.$message({
-                  message: `${res.body.resultObject}`,
+                  message: `${res.body.errorMessage}`,
                   type: "warning"
                 });
               }

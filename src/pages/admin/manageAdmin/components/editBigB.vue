@@ -41,6 +41,7 @@
                 :value="index"
               ></el-option>
             </el-select>
+               
             <el-select v-model.trim="city" :placeholder="editorCity" @change="citiesChoose">
               <el-option
                 v-for="(item,index) in cities.child"
@@ -51,10 +52,10 @@
             </el-select>
             <el-select v-model.trim="area" :placeholder="editorArea" @change="areasChoose">
               <el-option
-                v-for="(key,value) in areas.child"
-                :key="value"
-                :label="key"
-                :value="value"
+                v-for="(item,index) in areas.child"
+                :key="index"
+                :label="item"
+                :value="index"
               ></el-option>
             </el-select>
           </div>
@@ -200,11 +201,16 @@ export default {
               this.province = pr;
               this.city = ci;
               this.area = ar;
-              this.myCity = this.allCity[pr].child[ci].name;
-              this.myArea = this.allCity[pr].child[ci].child[ar];
-              this.myProvince = this.allCity[pr].name;
-              this.cities = this.allCity[pr].child[ci].name;
-              this.areas = this.allCity[pr].child[ci].child[ar];
+              this.myProvince = allCites[pr].name;
+              this.myCity = allCites[pr].child[ci].name;
+              this.myArea = allCites[pr].child[ci].child[ar];
+
+              this.cities = allCites[pr];
+              this.areas = allCites[pr].child[ci];
+              
+              console.log(this.myCity,this.myArea,this.myProvince,this.cities,this.areas)
+              console.log(this.cities)
+              console.log(this.areas)
             }else{
               this.$router.go(-1);
             }
@@ -217,32 +223,30 @@ export default {
   methods: {
     //地区选择
     provincesChoose() {
+      console.log(this.province)
       /* 省的编号 + 省的名字 */
-      console.log(this.province);
       this.myProvince = this.allCity[this.province].name;
-      console.log(this.myProvince);
       /* 该省的下级 */
       this.cities = this.allCity[this.province];
     },
     citiesChoose() {
+      console.log(this.city)
+
       /* 城市的编号 + 城市的名字 */
-      console.log(this.city);
       this.myCity = this.cities.child[this.city].name;
-      console.log(this.myCity);
       /* 该城市的下级 */
       this.areas = this.cities.child[this.city];
     },
     areasChoose() {
+      console.log(this.area)
+
       /* 区的编号 + 区的名字 */
-      console.log(this.area);
       this.myArea = this.areas.child[this.area];
-      console.log(this.myArea);
     },
     submitForm(formName) {
         this.$refs[formName].validate(res => {
           if(res){
             Vue.http.headers.common["userToken"] = getCookie("userToken");
-            console.log()
             this.$http
               .post(
                 this.global.updateSystembById,

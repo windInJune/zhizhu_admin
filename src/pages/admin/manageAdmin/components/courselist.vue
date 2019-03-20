@@ -37,9 +37,9 @@
       <div>
         <div class="content-left">
           <p class="top" @mouseenter="allShow" @mouseleave="allUshow">
-            <span class="iconfont topAdd" v-show="topAddShow" @click="handleChange">&#xe628;</span>
-            <span class="iconfont topMin" v-show="!topAddShow" @click="handleChange">&#xe627;</span>
-            <span class="all" @click="handleChange">全部学段</span>
+            <span class="iconfont topAdd" v-show="topAddShow" @click="handleChange"></span>
+            <span class="iconfont topTwo" v-show="!topAddShow" @click="handleChange"></span>
+            <span class="all" @click.stop="handleChange">全部学段</span>
             <i class="iconfont addGrade" @click.stop="addGrade" v-show="allShows">添加学段</i>
           </p>
           <!-- <el-collapse v-model="activeNames" @change="handleChange"> -->
@@ -48,27 +48,18 @@
             <div
               v-for="(item,index) in sectionList"
               :key="index+1"
-              @click="getMajoy(item.id,index,item.majoy)"
             >
               <p
                 class="sectionTitle"
                 @mouseenter="gradeEnter(item.id,index)"
                 @mouseleave="gradeleave(item.id,index)"
+                @click.stop="isShow(item.id,index)"
               >
-                <span class="iconfont down" v-show="item.majoy" @click="isShow(item.id,index)">
-                  <span>&#xe627;</span>
+                <span class="iconfont down">
+                  <span :class="[item.majoy?'topTwo':'topAdd']"></span>
+                  <!-- <span class="topTwo"></span> -->
                   <a class="gradeName">{{item.name}}</a>
                 </span>
-                <span class="iconfont down" v-show="!item.majoy" @click="isShow(item.id,index)">
-                  &#xe628;
-                  <a class="gradeName">{{item.name}}</a>
-                </span>
-                <!-- <a style="opacity:0;">{{item.name}}</a> -->
-                <!--
-                      <span class="iconfont rename" @click.stop="renameGrade(item.id,item.name)" v-show="iconShow[item.id]">&#xe705;</span>
-                      <span class="iconfont add" @click.stop="addClass(item.id)" v-show="iconShow[item.id]">&#xe79c;</span>
-                      <span class="iconfont del" @click.stop="delGrade(item.id)" v-show="iconShow[item.id]">&#xe614;</span>
-                -->
                 <span
                   class="rename more"
                   @click.stop="renameGrade(item.id,item.name)"
@@ -84,17 +75,14 @@
               <p
                 v-for="(t,i) in item.majoy"
                 :key="i"
-                @click="chooseMajoy(t.id,item.id)"
+                @click.stop="chooseMajoy(t.id,item.id)"
                 class="classList"
                 @mouseenter="classEnter(t.id)"
                 @mouseleave="classleave(t.id)"
               >
-                <span class="iconfont down2" v-show="item.majoy">&#xe627;</span>
-                <span class="content">{{t.name}}</span>
-                <!--
-                      <span class="iconfont rename" @click.stop="renameClass(t.id,t.name)" v-show="iconShow2[t.id]">&#xe705;</span>
-                      <span class="iconfont del" @click.stop="delClass(t.id)" v-show="iconShow2[t.id]">&#xe614;</span>
-                -->
+                <span class="topMin" v-if="t.id == professionId && sectionId == item.id"></span>
+                <span class="topTwo" v-else></span>
+                <span class="content" :style="t.id == professionId && sectionId == item.id ?'color:#409eff':''">{{t.name}}</span>
                 <span
                   class="rename more"
                   @click.stop="renameClass(t.id,t.name)"
@@ -112,7 +100,7 @@
         <div class="statistics">
           当前条件下共有课程
           <span>{{this.total}}</span> 个。
-          <div class="addSb" @click="addCourses">＋&nbsp;&nbsp;新增课程</div>
+          <div class="addSb" @click.stop="addCourses">＋&nbsp;&nbsp;新增课程</div>
           <!-- <el-button type="success" @click="addCourses">＋&nbsp;&nbsp;新增课程</el-button> -->
         </div>
         <!-- 表单信息 -->
@@ -123,7 +111,7 @@
           style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
           v-loading="loading"
         >
-          <el-table-column type="index" label="序号" width="80">
+          <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
           </el-table-column>
           <el-table-column prop="name" label="课程名称"></el-table-column>
@@ -230,7 +218,7 @@
         <el-form-item label="课程封面：" prop="photo" class="photo">
           <el-upload
             class="avatar-uploader"
-            action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
+            action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept="image/png, image/jpeg, image/jpg"
@@ -412,7 +400,7 @@
             <span class="must">*</span>
             <el-upload
               class="upload-demo"
-              action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
+              action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
               :on-remove="handleRemoveOne"
               :before-upload="beforeAvatarUpload2"
               :limit="1"
@@ -428,7 +416,7 @@
             <span class="must">*</span>
             <el-upload
               class="upload-demo"
-              action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
+              action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
               :on-remove="handleRemoveTwo"
               :before-upload="beforeAvatarUpload3"
               :limit="1"
@@ -443,7 +431,7 @@
             <span class="must">*</span>
             <el-upload
               class="avatar-uploader"
-              action="http://172.16.1.165/ibox/sysCourse/insertSysCourse"
+              action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               accept="image/png, image/jpeg, image/jpg"
@@ -632,6 +620,7 @@ export default {
   },
   data() {
     return {
+      parentId:0,
       total: 0,
       currentPage: 1,
       pageSize: 10,
@@ -861,7 +850,6 @@ export default {
         )
         .then(
           res => {
-            console.log(res.data.resultObject);
             this.detailFrom = res.data.resultObject;
           },
           err => {
@@ -904,7 +892,6 @@ export default {
         )
         .then(
           res => {
-            console.log(res);
             this.innerVisible = true;
             this.mofangFrom.name = res.data.resultObject.name;
             this.mofangFrom.number = res.data.resultObject.number;
@@ -1023,7 +1010,6 @@ export default {
         this.mofangFrom.timeTips == ""
       ) {
         Vue.http.headers.common["userToken"] = getCookie("userToken");
-        console.log(this.mofangFrom.imgfile);
         this.loadShow = true;
         this.$http.post(mofangApi, this.formData2).then(
           res => {
@@ -1040,7 +1026,6 @@ export default {
               this.mresect();
               this.formData2 = null;
               this.loadShow = false;
-              console.log(res);
               this.$http
                 .get(
                   this.global.getBoxtaskList +
@@ -1072,8 +1057,6 @@ export default {
             console.log(err);
           }
         );
-      } else {
-        console.log("no");
       }
     },
     // 删除魔方任务
@@ -1088,7 +1071,6 @@ export default {
         }
       )
         .then(() => {
-          console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .post(
@@ -1205,11 +1187,11 @@ export default {
         )
         .then(
           res => {
-            // console.log(res.data.resultObject)
             this.courseFrom.id = row.id;
             this.courseFrom.name = res.data.resultObject.name;
             this.courseFrom.sectionId = res.data.resultObject.sectionId;
             this.courseFrom.professionId = res.data.resultObject.professionId;
+            this.courseFrom.introduction = res.data.resultObject.introduction;
             this.imageUrl = require("../../../../assets/images/detail.png");
             if (res.data.resultObject.photo) {
               this.imageUrl = res.data.resultObject.photo;
@@ -1226,11 +1208,8 @@ export default {
               .then(
                 res => {
                   this.professionList = res.data.resultObject.data;
-                  // console.log('123')
-                  console.log(res.data.resultObject.data);
                 },
                 err => {
-                  console.log(err);
                 }
               );
             // 获取课程id结束
@@ -1254,7 +1233,6 @@ export default {
         }
       )
         .then(() => {
-          console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .get(
@@ -1266,7 +1244,6 @@ export default {
             )
             .then(
               res => {
-                console.log(res);
                 if (res.body.status == 512) {
                   this.$notify({
                     title: "警告",
@@ -1313,6 +1290,7 @@ export default {
         .then(
           res => {
             this.professionList = res.data.resultObject.data;
+            this.courseFrom.professionId = "";
           },
           err => {
             console.log(err);
@@ -1326,7 +1304,6 @@ export default {
       }
     },
     getProfessionId() {
-      console.log(this.courseFrom.professionId);
       let professionIdPattern = /^.{1,15}$/;
       if (professionIdPattern.test(this.courseFrom.professionId) == false) {
         this.courseFrom.professionIdTips = "！不能为空";
@@ -1337,8 +1314,6 @@ export default {
     // 图片你上传
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(this.imageUrl);
-      // console.log(res)
     },
     beforeAvatarUpload(file) {
       let isLt2M = file.size / 1024 / 1024 < 1;
@@ -1350,7 +1325,6 @@ export default {
         return false;
       }
       this.mofangFrom.imgfile = file;
-      console.log(this.mofangFrom.imgfile);
     },
     beforeAvatarUpload1(file) {
       let isLt2M = file.size / 1024 / 1024 < 2;
@@ -1362,7 +1336,6 @@ export default {
         return false;
       }
       this.mofangFrom.imgfile = file;
-      console.log(this.mofangFrom.imgfile);
     },
     // 文件上传
     handleRemoveOne(file, fileList) {
@@ -1373,11 +1346,9 @@ export default {
     },
     beforeAvatarUpload2(file) {
       this.mofangFrom.docfile = file;
-      console.log(this.mofangFrom.docfile);
     },
     beforeAvatarUpload3(file) {
       this.mofangFrom.docfile2 = file;
-      console.log(this.mofangFrom.docfile2);
     },
     // 新建课程
     // 添加课程
@@ -1440,15 +1411,12 @@ export default {
               type: 'success'
             })
             */
-            console.log(res);
           },
           err => {
             console.log(err);
           }
         );
-      } else {
-        console.log("no");
-      }
+      } 
     },
     // 课程继续添加
     addMoreDialogs() {
@@ -1497,6 +1465,12 @@ export default {
       this.allShows = false;
     },
     getMajoy(e, i, m) {
+      console.log(e, i, m)
+      if(this.parentId == e){
+        this.parentId = 0;
+        return;
+      }
+      this.parentId = e
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
@@ -1508,9 +1482,9 @@ export default {
         )
         .then(
           res => {
+            console.log(res.body.resultObject.data)
             /*this.sectionList[i].majoy = res.data.resultObject.data
           this.sectionList=Object.assign({},this.sectionList)
-          console.log(m)
 
           if(this.sectionList[i].majoy == null){
             this.sectionList[i].majoy = res.data.resultObject.data
@@ -1551,7 +1525,6 @@ export default {
           )
           .then(
             res => {
-              console.log(res);
               this.addGradeDialog = false;
               this.loadData();
               this.getSectionList();
@@ -1603,7 +1576,6 @@ export default {
           )
           .then(
             res => {
-              console.log(res);
               this.renameGradeDialog = false;
               this.loadData();
               this.getSectionList();
@@ -1634,7 +1606,6 @@ export default {
           )
           .then(
             res => {
-              console.log(res);
               this.renameClassDialog = false;
               this.loadData();
               this.getSectionList();
@@ -1665,7 +1636,6 @@ export default {
           )
           .then(
             res => {
-              console.log(res);
               this.addClassDialog = false;
               this.loadData();
               this.getSectionList();
@@ -1679,6 +1649,7 @@ export default {
     },
     // 班级下拉显示和隐藏
     isShow(e, i) {
+      
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
@@ -1690,19 +1661,22 @@ export default {
         )
         .then(
           res => {
-            /*this.sectionList[i].majoy = res.data.resultObject.data
-          this.sectionList=Object.assign({},this.sectionList)
-          console.log(m)
-          */
             if (this.sectionList[i].majoy == null) {
+              // this.sectionList[this.parentId].majoy = null;
               this.sectionList[i].majoy = res.data.resultObject.data;
               this.sectionList = Object.assign({}, this.sectionList);
+              // this.sectionList = Object.assign({}, this.sectionList);
             } else {
               this.sectionList[i].majoy = null;
+              // this.sectionList[this.parentId].majoy = null;
               this.sectionList = Object.assign({}, this.sectionList);
             }
-            this.sectionId = e;
-            // this.loadData()
+            // if(this.sectionId == e){
+            //   this.sectionId = 0;
+            //   return;
+            // }
+            // this.parentId = i;
+            this.sectionId = e
           },
           err => {
             console.log(err);
@@ -1711,7 +1685,6 @@ export default {
     },
     // 删除学段
     delGrade(e) {
-      console.log(e);
       this.$confirm("你确定删除学段及其专业？", "删除学段", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -1727,7 +1700,6 @@ export default {
             )
             .then(
               res => {
-                console.log(res);
                 if (res.body.status == 512) {
                   this.$notify({
                     title: "警告",
@@ -1753,14 +1725,12 @@ export default {
     },
     // 删除班级
     delClass(e) {
-      console.log(e);
       this.$confirm("你确定删除该专业？", "删除专业", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          console.log("123");
           Vue.http.headers.common["userToken"] = getCookie("userToken");
           this.$http
             .post(
@@ -1770,7 +1740,6 @@ export default {
             )
             .then(
               res => {
-                console.log(res);
                 if (res.body.status == 512) {
                   this.$notify({
                     title: "警告",
@@ -1940,8 +1909,9 @@ export default {
         margin: 10px 0 0 0;
         text-align: left;
         height: 30px;
-        line-height: 30px;
         cursor: pointer;
+        display:flex;
+        align-items: center;
       }
       .addGrade {
         font-size: 12px;
@@ -1964,10 +1934,46 @@ export default {
         color: #666;
       }
       .topAdd {
+        width: 16px;
+        height: 16px;
         margin-left: 10px;
+        display: inline-block;
+        background: url('../../../../assets/images/add2.png') no-repeat;
+        background-size: 100% 100%;
       }
       .topMin {
+        width: 16px;
+        height: 16px;
         margin-left: 10px;
+        display: inline-block;
+        background: url('../../../../assets/images/add4.png') no-repeat;
+        background-size: 100% 100%;
+
+      }
+      .topOne {
+        width: 16px;
+        height: 16px;
+        margin-left: 10px;
+        display: inline-block;
+        background: url('../../../../assets/images/add1.png') no-repeat;
+        background-size: 100% 100%;
+
+      }
+      .topTwo {
+        width: 16px;
+        height: 16px;
+        margin-left: 10px;
+        display: inline-block;
+        background: url('../../../../assets/images/add3.png') no-repeat;
+        background-size: 100% 100%;
+
+      }
+      .all{
+        margin-left: 4px;
+      }
+      .all_active{
+        margin-left: 4px;
+        color: #409eff;
       }
       .sectionTitle {
         color: #409eff;
