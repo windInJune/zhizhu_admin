@@ -16,7 +16,7 @@
           placeholder="请选择省份"
           @change="provchange(changeObj.provinceId)"
         >
-          <el-option v-for="(item,index) in city" :key="index" :label="item.name" :value="index"></el-option>
+        <el-option v-for="(item,index) in city" :key="index" :label="item.name" :value="index"></el-option>
         </el-select>
       </li>
       <li>

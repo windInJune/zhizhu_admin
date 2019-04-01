@@ -184,12 +184,18 @@ export default {
       this.myProvince = this.allCity[this.province].name;
       /* 该省的下级 */
       this.cities = this.allCity[this.province];
+      this.city = "";
+      this.myCity = "";
+      this.area = "";
+      this.myArea = "";
     },
     citiesChoose() {
       /* 城市的编号 + 城市的名字 */
       this.myCity = this.cities.child[this.city].name;
       /* 该城市的下级 */
       this.areas = this.cities.child[this.city];
+      this.area = "";
+      this.myArea = "";
     },
     areasChoose() {
       /* 区的编号 + 区的名字 */

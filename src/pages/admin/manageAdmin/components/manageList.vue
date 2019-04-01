@@ -811,7 +811,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       span {
-        color: #409eff;
+        color: #0090ff;
         font-weight: bolder;
         margin-right: 20px;
       }

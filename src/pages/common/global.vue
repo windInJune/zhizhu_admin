@@ -3,11 +3,9 @@
 let localAPI;
 // 登录
 if (process.env.NODE_ENV == 'development') {
-    localAPI = 'http://47.110.226.59/ibox';
-    // localAPI = 'http://172.16.1.5:8005';
+    localAPI = 'http://172.16.1.165/ibox'; //线上url
 } else {
-    localAPI = 'http://47.110.226.59/ibox';
-    // localAPI = 'http://47.110.226.59/ibox'; //线上url
+    localAPI = 'http://172.16.1.165/ibox'; //线上url
 }
 const userlogin = localAPI + '/user/userLogin'
 // 超管端

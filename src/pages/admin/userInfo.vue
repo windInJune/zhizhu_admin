@@ -62,7 +62,7 @@
       v-model="show"
       :width="100"
       :height="100"
-      url="http://47.110.226.59/ibox/user/uploadPhoto"
+      url="http://www.zz-w.cn/ibox/user/uploadPhoto"
       :params="params"
       :headers="headers"
       img-format="png"

@@ -82,7 +82,7 @@
               >
                 <span class="topMin" v-if="t.id == professionId && sectionId == item.id"></span>
                 <span class="topTwo" v-else></span>
-                <span class="content" :style="t.id == professionId && sectionId == item.id ?'color:#409eff':''">{{t.name}}</span>
+                <span class="content" :style="t.id == professionId && sectionId == item.id ?'color:#0090ff':''">{{t.name}}</span>
                 <span
                   class="rename more"
                   @click.stop="renameClass(t.id,t.name)"
@@ -218,7 +218,7 @@
         <el-form-item label="课程封面：" prop="photo" class="photo">
           <el-upload
             class="avatar-uploader"
-            action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
+            action="http://www.zz-w.cn/ibox/sysCourse/insertSysCourse"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             accept="image/png, image/jpeg, image/jpg"
@@ -228,7 +228,7 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <p>温馨提示：
-            <br>1、建议上传540*320像素，大小不超过1M，
+            <br>1、建议上传276*180像素，大小不超过1M，
             <br>格式为JPG、JPEG、PNG的图片；
             <br>2.如果没有上传图片，将采用默认图片。
           </p>
@@ -400,11 +400,11 @@
             <span class="must">*</span>
             <el-upload
               class="upload-demo"
-              action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
+              action="http://www.zz-w.cn/ibox/sysCourse/insertSysCourse"
               :on-remove="handleRemoveOne"
               :before-upload="beforeAvatarUpload2"
               :limit="1"
-              :file-list="this.mofangFrom.docfile"
+              :file-list="outerFile"
               ref="uploadFileOne"
             >
               <el-button size="small" type="primary">点击上传</el-button>
@@ -416,7 +416,7 @@
             <span class="must">*</span>
             <el-upload
               class="upload-demo"
-              action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
+              action="http://www.zz-w.cn/ibox/sysCourse/insertSysCourse"
               :on-remove="handleRemoveTwo"
               :before-upload="beforeAvatarUpload3"
               :limit="1"
@@ -431,7 +431,7 @@
             <span class="must">*</span>
             <el-upload
               class="avatar-uploader"
-              action="http://47.110.226.59/ibox/sysCourse/insertSysCourse"
+              action="http://www.zz-w.cn/ibox/sysCourse/insertSysCourse"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               accept="image/png, image/jpeg, image/jpg"
@@ -450,9 +450,9 @@
           <el-form-item label="任务简介：" prop="introduction">
             <el-input v-model.trim="mofangFrom.introduction" placeholder="不长于500字符" type="textarea"></el-input>
           </el-form-item>
-          <div style="position:absolute;top:50%;left:50%;color:red;" v-show="loadShow">
-            文件上传中请稍后
+          <div  class="pubCover" v-show="loadShow">
             <i class="el-icon-loading"></i>
+            <span>正在提交，由于文件较大，请稍后...</span>
           </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -620,6 +620,7 @@ export default {
   },
   data() {
     return {
+      outerFile:[],
       parentId:0,
       total: 0,
       currentPage: 1,
@@ -696,7 +697,6 @@ export default {
       professionList: "",
       imageUrl: require("../../../../assets/images/detail.png"),
       fileUrl: "",
-      fileList: [],
       majoyList: {},
       // 新增学段
       addGradeDialog: false,
@@ -794,9 +794,20 @@ export default {
       this.mofangFrom.mold = "";
       this.mofangFrom.moldTips = "";
       this.mofangFrom.type = "";
+      this.mofangFrom.typeTips = "";
       this.mofangFrom.time = "";
       this.mofangFrom.imgfile = "";
       this.mofangFrom.introduction = "";
+      this.mofangFrom.timeTips = "";
+    },
+    editmresect() {
+      this.mofangFrom.nameTips = "";
+      this.mofangFrom.numberTips = "";
+      this.mofangFrom.versionNumTips = "";
+      this.mofangFrom.moldTips = "";
+      this.mofangFrom.typeTips = "";
+      this.mofangFrom.time = "";
+      this.mofangFrom.timeTips = "";
     },
     searchSubmit() {
       this.sectionId = "";
@@ -880,6 +891,7 @@ export default {
     // 编辑魔方任务
     medit(e) {
       this.mInfo = true;
+      this.editmresect()
       this.mtitle = "编辑任务";
       this.mId = e;
       this.$http
@@ -899,6 +911,10 @@ export default {
             this.mofangFrom.type = res.data.resultObject.type;
             this.mofangFrom.mold = res.data.resultObject.taskType;
             this.mofangFrom.time = res.data.resultObject.time;
+            this.outerFile = [{
+                name: `${res.data.resultObject.path}`,
+                url: res.data.resultObject.path
+              }]
             this.mofangFrom.docfile = [
               {
                 name: `${res.data.resultObject.path}`,
@@ -1176,6 +1192,7 @@ export default {
       this.addCourseDialog = true;
       this.editInfo = true;
       this.editTittle = "编辑课程";
+      this.resect();
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
@@ -1311,7 +1328,7 @@ export default {
         this.courseFrom.professionIdTips = "";
       }
     },
-    // 图片你上传
+    // 图片上传
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -1338,10 +1355,10 @@ export default {
       this.mofangFrom.imgfile = file;
     },
     // 文件上传
-    handleRemoveOne(file, fileList) {
+    handleRemoveOne(file) {
       this.mofangFrom.docfile = [];
     },
-    handleRemoveTwo(file, fileList) {
+    handleRemoveTwo(file) {
       this.mofangFrom.docfile2 = [];
     },
     beforeAvatarUpload2(file) {
@@ -1483,17 +1500,6 @@ export default {
         .then(
           res => {
             console.log(res.body.resultObject.data)
-            /*this.sectionList[i].majoy = res.data.resultObject.data
-          this.sectionList=Object.assign({},this.sectionList)
-
-          if(this.sectionList[i].majoy == null){
-            this.sectionList[i].majoy = res.data.resultObject.data
-            this.sectionList=Object.assign({},this.sectionList)
-          }else{
-            this.sectionList[i].majoy = null
-            this.sectionList=Object.assign({},this.sectionList)
-          }
-          */
           },
           err => {
             console.log(err);
@@ -1649,7 +1655,6 @@ export default {
     },
     // 班级下拉显示和隐藏
     isShow(e, i) {
-      
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(
@@ -1662,20 +1667,12 @@ export default {
         .then(
           res => {
             if (this.sectionList[i].majoy == null) {
-              // this.sectionList[this.parentId].majoy = null;
               this.sectionList[i].majoy = res.data.resultObject.data;
               this.sectionList = Object.assign({}, this.sectionList);
-              // this.sectionList = Object.assign({}, this.sectionList);
             } else {
               this.sectionList[i].majoy = null;
-              // this.sectionList[this.parentId].majoy = null;
               this.sectionList = Object.assign({}, this.sectionList);
             }
-            // if(this.sectionId == e){
-            //   this.sectionId = 0;
-            //   return;
-            // }
-            // this.parentId = i;
             this.sectionId = e
           },
           err => {
@@ -1783,7 +1780,6 @@ export default {
   },
   created() {
     this.loading = true;
-
     Vue.http.headers.common["userToken"] = getCookie("userToken");
     this.$http.get(this.global.getSystembs).then(res => {
       if (res.body.status === 200) {
@@ -1973,10 +1969,10 @@ export default {
       }
       .all_active{
         margin-left: 4px;
-        color: #409eff;
+        color: #0090ff;
       }
       .sectionTitle {
-        color: #409eff;
+        color: #0090ff;
         position: relative;
         display: flex;
         align-items: center;
@@ -2025,7 +2021,7 @@ export default {
           z-index: 99;
         }
         .gradeName:hover {
-          color: #409eff;
+          color: #0090ff;
         }
       }
       .classList {
@@ -2052,7 +2048,7 @@ export default {
           // display: inline-block;
         }
         .content:hover {
-          color: #409eff;
+          color: #0090ff;
         }
         .more {
           color: #fff;
@@ -2113,7 +2109,7 @@ export default {
     span {
       padding: 0 3px;
       font-weight: bolder;
-      color: #409eff;
+      color: #0090ff;
     }
     .green {
       color: rgb(80, 181, 132);
@@ -2329,7 +2325,7 @@ export default {
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+  border-color: #0090ff;
 }
 .avatar-uploader-icon {
   font-size: 28px;
@@ -2340,8 +2336,8 @@ export default {
   text-align: center;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
+  width: 276px;
+  height: 180px;
   display: block;
 }
 .must {
@@ -2363,7 +2359,7 @@ export default {
 .mofangPhoto .upimg {
   position: relative;
   top: -20px;
-  left: 40px;
+  left: 0px;
 }
 .el-dialog__header {
   text-align: center;
@@ -2407,5 +2403,18 @@ export default {
 }
 .iconfont-color-blue {
   font-size: 12px;
+}
+.pubCover{
+  height:100%;
+  width: 100%;
+  position: fixed;
+  z-index: 99999999999999999999;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 </style>

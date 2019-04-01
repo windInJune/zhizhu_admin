@@ -40,7 +40,7 @@ export default {
     return {
       searchdata: {},
       urlobj: {
-        url: "http://47.110.226.59/ibox/EZUIKit_Demo.html",
+        url: "http://www.zz-w.cn/ibox/EZUIKit_Demo.html",
         appmes: ""
       },
       resultObject: {}
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     download() {
-      window.open('http://47.110.226.59/ibox/EZUIKit.exe');
+      window.open('http://www.zz-w.cn/ibox/EZUIKit.exe');
     },
     copymes(ref) {
       let tag = this.$refs[ref];

@@ -548,7 +548,7 @@ export default {
     h2 {
       text-align: left;
       font-size: 18px;
-      color: #409eff;
+      color: #0090ff;
       margin-bottom: 20px;
       text-indent: 20px;
     }

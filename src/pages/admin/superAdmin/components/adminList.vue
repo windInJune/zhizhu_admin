@@ -390,6 +390,9 @@ export default {
 };
 </script>
 <style scoped lang="less">
+.el-pagination{
+  text-align: right;
+}
 .adminList {
   ul {
     display: flex;

@@ -312,8 +312,11 @@ export default {
   methods: {
     selectChange(val) {
       this.palatformId = val;
-      this.loadData(val);
+      this.schoolValue = "";
+      this.GradeValue = "";
+      this.classValue = "";
       this.getSchools();
+      this.loadData(val);
     },
     headerClassFn(row, column, rowIndex, columnIndex) {
       return "color:#434343;background:rgba(245,245,245,1);font-size:12px;";
@@ -487,20 +490,18 @@ export default {
         .get(this.global.getGrades + "?schoolId=" + this.schoolValue)
         .then(res => {
           if (res.data.status === 200) {
-            this.GradeValue = "";
-            this.classValue = "";
             this.GradeList = res.data.resultObject.data;
           }
         });
       this.loadData();
     },
     GradeChange() {
+      this.classValue = "";
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(this.global.getClass + "?userGradeid=" + this.GradeValue)
         .then(res => {
           if (res.data.status === 200) {
-            this.classValue = "";
             this.classList = res.data.resultObject.data;
           }
         });
@@ -584,7 +585,7 @@ export default {
     h2 {
       text-align: left;
       font-size: 18px;
-      color: #409eff;
+      color: #0090ff;
       margin-bottom: 20px;
       text-indent: 20px;
     }

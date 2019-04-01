@@ -84,7 +84,7 @@
               <span>设置</span>
             </li>
           </ol>
-          <livebroadcast v-if="showind==0"></livebroadcast>
+          <livebroadcast v-if="showind==0" :iboxObj="iboxObj"></livebroadcast>
 				<playback v-if="showind==1" :timedata='timedata' :iboxObj="iboxObj"></playback>
 			  	<uselist v-if="showind==2" @seeplack="seeplack"></uselist>
           <iboxseting v-if="showind==3" :iboxObj="iboxObj"></iboxseting>
@@ -103,7 +103,7 @@ export default {
   name: "monitor",
   data() {
     return {
-      showind: 0,
+      showind: 4,
       iboxObj: {},
       timedata: {}
     };
@@ -113,14 +113,16 @@ export default {
     },
   created() {
     Vue.http.headers.common["userToken"] = getCookie("userToken");
-    if(this.$route.query.isSet){
-       this.showind = 3
-    }
     this.$http
       .get(this.global.getIbox + `?iboxId=${this.$route.query.iboxId}`)
       .then(res => {
         if (res.body.status === 200) {
           this.iboxObj = res.body.resultObject;
+           if(this.$route.query.isSet){
+            this.showind = 3
+          }else{
+            this.showind = 0;
+          }
         } else if (res.body.status === 511) {
           this.$router.push({ path: "/" });
         } else {

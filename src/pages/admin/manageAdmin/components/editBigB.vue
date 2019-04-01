@@ -228,6 +228,10 @@ export default {
       this.myProvince = this.allCity[this.province].name;
       /* 该省的下级 */
       this.cities = this.allCity[this.province];
+       this.city = "";
+      this.myCity = "";
+      this.area = "";
+      this.myArea = "";
     },
     citiesChoose() {
       console.log(this.city)
@@ -236,6 +240,8 @@ export default {
       this.myCity = this.cities.child[this.city].name;
       /* 该城市的下级 */
       this.areas = this.cities.child[this.city];
+          this.area = "";
+      this.myArea = "";
     },
     areasChoose() {
       console.log(this.area)
