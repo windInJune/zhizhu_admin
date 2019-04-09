@@ -723,6 +723,8 @@ export default {
         let equipApi = this.global.insertIbox;
         if (this.editEquip) {
           equipApi = this.global.editIbox;
+        }else{
+          this.iboxId = "";
         }
         if ((this.detailData.versionTitle = "通用型")) {
           this.detailData.versionTitle = 1;
@@ -731,7 +733,7 @@ export default {
           .post(
             equipApi,
             {
-              iboxId: this.iboxId,
+              iboxId:this.iboxId,
               iboxName: this.detailData.equipName,
               iboxNum: this.detailData.equipNum,
               cameraNum:this.detailData.cameraNum,

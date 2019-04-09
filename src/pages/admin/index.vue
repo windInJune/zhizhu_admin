@@ -27,6 +27,7 @@
 <script>
 /*eslint-disable */
 import Vue from 'vue'
+import { Base64 } from 'js-base64';
 import $ from 'jquery'
 import {setCookie, getCookie} from '../../assets/js/cookie.js'
 import Footer from '../common/footer.vue'
@@ -53,7 +54,7 @@ export default {
   methods: {
     ...mapMutations(["USERINFO","USERNAME","USERIMG"]),
     login () {
-       this.$http.post(this.global.userlogin, {userLoginname: this.user,userPwd: this.password},{emulateJSON: true})
+       this.$http.post(this.global.userlogin, {userLoginname: this.user,userPwd: Base64.encode(this.password)},{emulateJSON: true})
           .then((res) => {
             if (res.data.status === 200) {
                 this.USERINFO(res.data.resultObject);
@@ -206,7 +207,7 @@ export default {
   .el-container{
     height:100%;position:absolute;top:0;left:0;width:100%;
     .el-header{
-      line-height:60px;height:60px;text-align:left;box-shadow: 0 0 8px #b4b4b4;background-color:#66b1ff;
+      line-height:60px;height:60px;text-align:left;box-shadow: 0 0 8px #b4b4b4;background-color:#0090ff;
       img{margin-right:15px;}
       span{font-size:16px;color:#fff;position:relative;margin-left:15px;}
       span:before{content:'';position:absolute;top:-5px;left:-15px;width:2px;height:25px;background-color:#fff;}

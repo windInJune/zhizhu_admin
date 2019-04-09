@@ -19,6 +19,7 @@
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.1.0",
     "jquery": "^3.3.1",
+    "js-base64": "^2.5.1",
     "moment": "^2.24.0",
     "px2rem": "^0.5.0",
     "px2rem-loader": "^0.1.9",
