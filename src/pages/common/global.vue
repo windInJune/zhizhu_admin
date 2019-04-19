@@ -3,9 +3,11 @@
 let localAPI;
 // 登录
 if (process.env.NODE_ENV == 'development') {
-    localAPI = 'http://172.16.1.165/ibox'; //线上url
+    localAPI = 'http://www.zz-w.cn/ibox'; //线上url
+    // localAPI = 'http://172.16.1.165/ibox'; //线上url
 } else {
-    localAPI = 'http://172.16.1.165/ibox'; //线上url
+    localAPI = 'http://www.zz-w.cn/ibox'; //线上url
+    // localAPI = 'http://172.16.1.165/ibox'; //线上url
 }
 const userlogin = localAPI + '/user/userLogin'
 // 超管端

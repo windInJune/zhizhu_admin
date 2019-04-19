@@ -4,7 +4,7 @@
       <li class="left">大B平台列表</li>
       <li class="right" @click="addBigb">新建大B平台</li>
     </ul>
-    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1);margin-top:20px;text-agline"  v-loading="loading">
+    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1);margin-top:20px;text-agline">
         <el-table-column type="index" label="序号" width="80">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>

@@ -13,7 +13,7 @@
         </el-select>
     </div>
     <!-- 表单信息 -->
-    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
+    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)">
          <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
@@ -103,7 +103,8 @@
       :title="this.dialogTittle"
       :visible.sync="addUser"
       width="800px"
-      :close-on-click-modal="false"
+      top="2vh"
+      class="detailDialog"
     >
       <el-form status-icon label-width="100px" class="demo-ruleForm">
         <el-form-item label="机构名称">
@@ -245,10 +246,9 @@
           <span class="wrongTips" v-show="this.schoolMarkTips">{{this.schoolMarkTips}}</span>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="addUser = false">取 消</el-button>
-        <!-- <el-button type="primary" @click="addUsers">确 定</el-button> -->
-      </span>
+      </span> -->
     </el-dialog>
     <!-- 数据总览 -->
     <el-dialog title="数据总览" :visible.sync="dialogInfo" width="30%" class="dialogInfo">
@@ -278,10 +278,10 @@
           <span>{{dataScreen.taskCount}}</span>
         </li>
       </ul>
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="dialogInfo = false">取 消</el-button>
         <el-button type="primary" @click="dialogInfo = false">确 定</el-button>
-      </span>
+      </span> -->
     </el-dialog>
   </div>
 </template>

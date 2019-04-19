@@ -10,7 +10,6 @@
       highlight-current-row
       :header-cell-style="headerClassFn"
       style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
-      v-loading="loading"
       :default-sort="{prop: 'pageData', order: 'descending'}"
     >
       <el-table-column type="index" label="序号" width="80">

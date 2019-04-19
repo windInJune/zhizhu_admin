@@ -273,6 +273,7 @@ export default {
       } else if (obj.isAir === false) {
         newobj["isAir"] = 0;
       }
+      newobj["iboxNum"] = this.$route.query.iboxNum;
       Vue.http.headers.common["userToken"] = getCookie("userToken");
      this.$http
         .post(this.global.updateIboxSettingInfo, newobj, { emulateJSON: true }).then(res => {

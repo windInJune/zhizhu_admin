@@ -109,7 +109,6 @@
           highlight-current-row
           :header-cell-style="headerClassFn"
           style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
-          v-loading="loading"
         >
           <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>

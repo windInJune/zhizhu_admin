@@ -57,7 +57,6 @@
       highlight-current-row
       :header-cell-style="headerClassFn"
       style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
-      v-loading="loading"
     >
        <el-table-column type="index" label="序号">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
@@ -164,8 +163,7 @@
     <el-dialog
       title="学员详情"
       :visible.sync="detaildialog"
-      :close-on-click-modal="false"
-      width="50%"
+      width="800px"
       class="detailData"
     >
       <h2>账号信息</h2>

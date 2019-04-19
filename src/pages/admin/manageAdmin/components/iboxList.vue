@@ -5,7 +5,8 @@
     <!-- 表单信息 -->
     <ul class="title-icon">
       <li style="font-size: 14px;
-      color: #434343;">IBOX列表
+      color: #434343;">
+        IBOX列表
         <!-- <i class="el-icon-caret-right"></i> -->
       </li>
     </ul>
@@ -16,7 +17,7 @@
           placeholder="请选择省份"
           @change="provchange(changeObj.provinceId)"
         >
-        <el-option v-for="(item,index) in city" :key="index" :label="item.name" :value="index"></el-option>
+          <el-option v-for="(item,index) in city" :key="index" :label="item.name" :value="index"></el-option>
         </el-select>
       </li>
       <li>
@@ -77,10 +78,11 @@
           <el-option v-for="(item,index) in options" :key="index" :label="item" :value="item"></el-option>
         </el-select>
       </li>
-        <div class="searchs_btn" @click="searchSubmit">查找</div>
-        <!-- <el-button type="primary" plain class="search-button" @click="searchSubmit">查找</el-button> -->
+      <li class="searchs_btn" @click="searchSubmit">查找</li>
+      <!-- <el-button type="primary" plain class="search-button" @click="searchSubmit">查找</el-button> -->
     </ul>
-    <div class="statistics">当前条件下共有IBOX
+    <div class="statistics">
+      当前条件下共有IBOX
       <span>{{this.IBOXStatus[4]}}</span> 台，其中空闲
       <span class="green">{{this.IBOXStatus[0]}}</span>台，忙碌
       <span class="yellow">{{this.IBOXStatus[1]}}</span>台，离线
@@ -90,7 +92,12 @@
       <!-- <el-button type="success"  @click="creatEquip"></el-button> -->
     </div>
     <!-- 表单 -->
-    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn"  style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
+    <el-table
+      :data="pageData"
+      highlight-current-row
+      :header-cell-style="headerClassFn"
+      style="width: 100%;border:1px solid rgba(229, 229, 228, 1)"
+    >
       <el-table-column type="index" label="序号">
         <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
@@ -183,19 +190,18 @@
           >
             <i class="iconfont">&#xe77f;</i>监控
           </el-button>
-            <el-button
-              size="small"
-              class="iconfont-color-blue"
-               @click="iboxDetailSet(scope.$index, scope.row)"
-
-            >
-              <i class="iconfont">&#xe608;</i>设置
-            </el-button>
-            <el-button
-              size="small"
-              @click="equipDelete(scope.$index, scope.row)"
-              class="iconfont-color-blue iconfont-color-red"
-            >
+          <el-button
+            size="small"
+            class="iconfont-color-blue"
+            @click="iboxDetailSet(scope.$index, scope.row)"
+          >
+            <i class="iconfont">&#xe608;</i>设置
+          </el-button>
+          <el-button
+            size="small"
+            @click="equipDelete(scope.$index, scope.row)"
+            class="iconfont-color-blue iconfont-color-red"
+          >
             <i class="iconfont">&#xe600;</i>删除
           </el-button>
         </template>
@@ -214,10 +220,17 @@
       :title="equipTitle"
       :visible.sync="detaildialog"
       :close-on-click-modal="false"
-      width="40%"
+      width="800px"
+      top="10vh"
       class="detail"
     >
-      <el-form status-icon label-width="100px" class="demo-ruleForm" id="alertIbox" :model="detailData">
+      <el-form
+        status-icon
+        label-width="100px"
+        class="demo-ruleForm"
+        id="alertIbox"
+        :model="detailData"
+      >
         <el-form-item label="设备名称" prop="equipName">
           <span class="must">*</span>
           <el-input
@@ -264,7 +277,7 @@
             v-show="this.detailData.equipNumTips"
           >{{this.detailData.equipNumTips}}</span>
         </el-form-item>
-          <el-form-item label="摄像头序列号"  prop="equipNum">
+        <el-form-item label="摄像头序列号" prop="equipNum">
           <span class="must" style="left:-104px;">*</span>
           <el-input
             type="text"
@@ -280,14 +293,16 @@
         <el-form-item label="所属大B平台" style="text-align:left">
           <span class="must" style="left:-100px;">*</span>
           <el-select v-model="platformold" @change="selectChangeset" placeholder="请选择管理平台">
-            <el-option   v-for="(item,index) in platformlistold"
-                :key="index"
-                :label="item.systembName"
-                :value="item.systembId"></el-option>
+            <el-option
+              v-for="(item,index) in platformlistold"
+              :key="index"
+              :label="item.systembName"
+              :value="item.systembId"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="所属机构" prop="schoolName" class="schoolname">
-          <span class="must" >*</span>
+          <span class="must">*</span>
           <el-select
             v-model.trim="detailData.schoolId"
             filterable
@@ -414,8 +429,8 @@ export default {
         versionTitleTips: "",
         equipNum: "",
         equipNumTips: "",
-        cameraNumTips:"",
-        cameraNum:"",
+        cameraNumTips: "",
+        cameraNum: "",
         schoolId: "",
         schoolIdTips: "",
         schoolName: "",
@@ -427,9 +442,9 @@ export default {
       },
       //刷选条件
       schoolList: "",
-      schoolList1:"",
+      schoolList1: "",
       schoolValue: "",
-      schoolValue1:"",
+      schoolValue1: "",
       serarchValue: "",
       statusValue: "",
       statusList: [
@@ -454,39 +469,39 @@ export default {
       platform: "",
       palatformId: -1,
       platformlist: [],
-      platformlistold:[],
-      platformold:"",
-      platformoldId:-1 //编辑里面的平台选择id
+      platformlistold: [],
+      platformold: "",
+      platformoldId: -1 //编辑里面的平台选择id
     };
   },
   methods: {
-    iboxDetailSet(index,row){
+    iboxDetailSet(index, row) {
       this.$router.push({
-          path: '/manageAdmin/iboxdetail',
-          query:{iboxId: row.iboxId,isSet:true,iboxNum:row.iboxNum}
-        })
+        path: "/manageAdmin/iboxdetail",
+        query: { iboxId: row.iboxId, isSet: true, iboxNum: row.iboxNum }
+      });
     },
-    iboxDetailFn(index,row){
-        this.$router.push({
-          path: '/manageAdmin/iboxdetail',
-          query:{iboxId: row.iboxId,iboxNum:row.iboxNum}
-        })
+    iboxDetailFn(index, row) {
+      this.$router.push({
+        path: "/manageAdmin/iboxdetail",
+        query: { iboxId: row.iboxId, iboxNum: row.iboxNum }
+      });
     },
-     selectChangeset(val){
-      this.platformoldId = val
+    selectChangeset(val) {
+      this.platformoldId = val;
       this.schoolValue1 = "";
       this.detailData.schoolId = "";
-      this.getSchoolsOne()
+      this.getSchoolsOne();
     },
-      selectChange(val) {
+    selectChange(val) {
       this.palatformId = val;
       this.schoolValue = "";
-      this.getSchools()
+      this.getSchools();
       this.loadData(val);
     },
     // 处理页号改变
-    headerClassFn(row, column, rowIndex, columnIndex){
-      return "color:#434343;font-size:12px;border-radius:0;"
+    headerClassFn(row, column, rowIndex, columnIndex) {
+      return "color:#434343;font-size:12px;border-radius:0;";
     },
     // 处理页号改变
     handleCurrentChange(currentPage) {
@@ -502,11 +517,11 @@ export default {
           this.global.getIboxList +
             `?schoolId=${this.schoolValue}&iboxStatus=${
               this.statusValue
-            }&systembId=${this.palatformId}&provinceId=${this.provinceId}&cityId=${this.cityId}&areaId=${
-              this.areaId
-            }&searchText=${this.searchText}&pageNum=${
-              this.currentPage
-            }&pageSize=${this.pageSize}`
+            }&systembId=${this.palatformId}&provinceId=${
+              this.provinceId
+            }&cityId=${this.cityId}&areaId=${this.areaId}&searchText=${
+              this.searchText
+            }&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .then(res => {
           if (res.data.status === 200) {
@@ -561,7 +576,7 @@ export default {
     // 全部学校
     getSchools() {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      let _url = this.global.getSchools+'?systembId='+ this.palatformId;
+      let _url = this.global.getSchools + "?systembId=" + this.palatformId;
       this.$http.get(_url).then(res => {
         if (res.data.status === 200) {
           this.schoolList = res.data.resultObject.data;
@@ -570,7 +585,8 @@ export default {
     },
     getSchoolsOne() {
       Vue.http.headers.common["userToken"] = getCookie("userToken");
-      let _url = this.global.getSchoolsDrowDown+'?systembId='+ this.platformoldId;
+      let _url =
+        this.global.getSchoolsDrowDown + "?systembId=" + this.platformoldId;
       this.$http.get(_url).then(res => {
         if (res.data.status === 200) {
           this.schoolList1 = res.data.resultObject.data;
@@ -686,7 +702,8 @@ export default {
         this.detailData.equipNumTips = "";
       }
       if (cameraNumPatter.test(this.detailData.cameraNum) == false) {
-        this.detailData.cameraNumTips = "！请输入字母与数字组合不长于10位序列号";
+        this.detailData.cameraNumTips =
+          "！请输入字母与数字组合不长于10位序列号";
       } else {
         this.detailData.cameraNumTips = "";
       }
@@ -700,12 +717,12 @@ export default {
       } else {
         this.detailData.versionTitleTips = "";
       }
-       if(!this.platformoldId){
-         this.$message({
-          message: '请选择管理平台',
-          type: 'warning'
+      if (!this.platformoldId) {
+        this.$message({
+          message: "请选择管理平台",
+          type: "warning"
         });
-        return
+        return;
       }
       if (
         this.detailData.equipName &&
@@ -723,7 +740,7 @@ export default {
         let equipApi = this.global.insertIbox;
         if (this.editEquip) {
           equipApi = this.global.editIbox;
-        }else{
+        } else {
           this.iboxId = "";
         }
         if ((this.detailData.versionTitle = "通用型")) {
@@ -733,16 +750,16 @@ export default {
           .post(
             equipApi,
             {
-              iboxId:this.iboxId,
+              iboxId: this.iboxId,
               iboxName: this.detailData.equipName,
               iboxNum: this.detailData.equipNum,
-              cameraNum:this.detailData.cameraNum,
+              cameraNum: this.detailData.cameraNum,
               iboxType: this.detailData.versionTitle,
               schoolId: this.detailData.schoolId,
               managerTel: this.detailData.phone,
               managerName: this.detailData.userName,
               iboxRemark: this.detailData.schoolMark,
-              systembId:this.platformoldId
+              systembId: this.platformoldId
             },
             { emulateJSON: true }
           )
@@ -759,7 +776,7 @@ export default {
               console.log(err);
             }
           );
-      } 
+      }
     },
     // 编辑
     detail(index, row) {
@@ -768,8 +785,8 @@ export default {
       this.equipTitle = "编辑设备";
       this.editEquip = true;
       this.iboxId = row.iboxId;
-      this.platformoldId=row.systembId;
-      this.platformold=row.systembName;
+      this.platformoldId = row.systembId;
+      this.platformold = row.systembName;
       this.getSchoolsOne();
       this.$http.get(this.global.getIbox + "?iboxId=" + row.iboxId).then(
         res => {
@@ -885,24 +902,34 @@ export default {
     justify-content: space-between;
     li {
       margin-left: 10px;
-      flex: 1;
       position: relative;
     }
     li:first-child {
       margin-left: 0px;
     }
-    li:last-child {
-      text-align: right;
-    }
+    // li:last-child {
+    //   text-align: right;
+    // }
     .serarchValue {
       width: 250px;
     }
+    .searchs_btn {
+      width: 120px ;
+      font-size: 16px;
+      color: #fff;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      background: rgba(0, 144, 255, 1);
+      border-radius: 2px;
+      cursor: pointer;
+    }
     .search-button {
       width: 110px;
-      height:40px;
+      height: 40px;
       line-height: 40px;
-      background:rgba(0,144,255,1);
-      border-radius:2px;
+      background: rgba(0, 144, 255, 1);
+      border-radius: 2px;
       font-size: 14px;
       text-align: center;
       line-height: 40px;
@@ -944,19 +971,19 @@ export default {
     color: #999;
     overflow: hidden;
     border-bottom: 0;
-    background-color: rgba(245,245,245,1);
+    background-color: rgba(245, 245, 245, 1);
     span {
       padding: 0 3px;
       font-weight: bolder;
     }
     .green {
-      color: #30B44F;
+      color: #30b44f;
     }
     .yellow {
-      color:#F2A218;
+      color: #f2a218;
     }
     .red {
-      color: #DA373B;
+      color: #da373b;
     }
     .el-button {
       float: right;
@@ -999,31 +1026,30 @@ export default {
     margin-top: 20px;
     text-align: right;
   }
-    .green {
-    color: #30B44F;
+  .green {
+    color: #30b44f;
   }
-  .el-table{
+  .el-table {
     font-size: 12px;
     border-radius: 0;
-
   }
-  .iconfont-color-blue{
+  .iconfont-color-blue {
     font-size: 12px;
   }
-  .addSb{
-    width:112px;
+  .addSb {
+    width: 112px;
     line-height: 33px;
     text-align: center;
     color: #fff;
-    height:33px;
-    background:rgba(48,180,79,1);
-    border:1px solid rgba(15,127,3,1);
-    border-radius:4px;
+    height: 33px;
+    background: rgba(48, 180, 79, 1);
+    border: 1px solid rgba(15, 127, 3, 1);
+    border-radius: 4px;
     float: right;
     margin: 10px 10px 0 0;
     cursor: pointer;
   }
-  #alertIbox .el-form-item{
+  #alertIbox .el-form-item {
     margin-bottom: 18px;
   }
 }

@@ -68,7 +68,10 @@ export default {
   height: 60px;
   box-shadow: @box-shadow;
   padding: 0 50px;
-  background-color: @main-color;
+  background: -webkit-linear-gradient(to top, #0090ff , #0d42ba); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(to top, #0090ff , #0d42ba); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(to top, #0090ff , #0d42ba); /* Firefox 3.6 - 15 */
+  background: linear-gradient( to top, #0090ff , #0d42ba); /* 标准的语法 */
   ul {
     clear: both;
     height: 60px;

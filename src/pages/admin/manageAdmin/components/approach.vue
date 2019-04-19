@@ -41,7 +41,7 @@
         <!-- <el-button type="primary" class="searchs_btn" @click="searchSubmit">查找</el-button> -->
       </li>
     </ul>
-    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1)" v-loading="loading">
+    <el-table :data="pageData" highlight-current-row :header-cell-style="headerClassFn" style="width: 100%;border:1px solid rgba(229, 229, 228, 1)">
         <el-table-column type="index" label="序号" width="80">
             <template slot-scope="scope">{{scope.$index + 1 + (currentPage-1)*10}}</template>
       </el-table-column>
@@ -563,7 +563,7 @@ export default {
     font-size: 12px;
   }
   .el-button--primary{
-    background: #0090FF;
+    background: #0090ff;
   }
 }
 </style>
