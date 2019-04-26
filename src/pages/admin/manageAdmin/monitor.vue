@@ -9,9 +9,11 @@
     <div class="monitor">
         <div class="iboxlf">
           <h4>基本信息</h4>
-          <img v-show="iboxObj.iboxStatus==0" src="../../../assets/images/ibox1.png">
+          <!-- <img v-show="iboxObj.iboxStatus==0" src="../../../assets/images/ibox1.png">
           <img v-show="iboxObj.iboxStatus==1" src="../../../assets/images/ibox2.png">
-          <img v-show="iboxObj.iboxStatus==2" src="../../../assets/images/ibox3.png">
+          <img v-show="iboxObj.iboxStatus==2" src="../../../assets/images/ibox3.png"> -->
+          <img v-if="this.$route.query.iboxId==59" src="../../../assets/images/ibox2.png">
+          <img v-else src="../../../assets/images/ibox3.png">
           <!-- <img src="../../../assets/img/ibox1.png"> -->
           <ul>
             <li class="textell">

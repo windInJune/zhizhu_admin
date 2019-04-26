@@ -295,6 +295,7 @@ export default {
      selectChange(val) {
       this.palatformId = val;
       this.schoolValue = "";
+      this.currentPage = 1;
       this.getSchools();
       this.loadData(val);
     },
@@ -464,6 +465,7 @@ export default {
       });
     },
     schoolChange() {
+      this.currentPage = 1;
       Vue.http.headers.common["userToken"] = getCookie("userToken");
       this.$http
         .get(this.global.getGrades + "?schoolId=" + this.schoolValue)
@@ -475,9 +477,11 @@ export default {
       this.loadData();
     },
     statusChange() {
+      this.currentPage = 1;
       this.loadData();
     },
     searchSubmit() {
+      this.currentPage = 1;
       this.loadData();
     }
   },

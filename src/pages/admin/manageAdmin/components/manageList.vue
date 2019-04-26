@@ -349,6 +349,7 @@ export default {
     },
     selectChange(val){
       this.palatformId = val
+      this.currentPage = 1
       this.loadData(val)
     },
     // 处理页号改变

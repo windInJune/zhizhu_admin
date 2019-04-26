@@ -723,6 +723,7 @@ export default {
     },
     choseSystem(id) {
       this.systembId = id;
+      this.currentPage = 1;
       this.loading = true;
       this.sectionId = "";
       this.professionId = "";
@@ -875,7 +876,7 @@ export default {
               this.mofangFrom.taskType
             }&sectionId=${this.mofangFrom.sectionId}&professionId=${
               this.mofangFrom.professionId
-            }&sort=0&pageNum=${this.currentPage}&pageSize=${this.pageSize}`
+            }&sort=0&pageNum=1&pageSize=1000`
         )
         .then(
           res => {
@@ -1050,9 +1051,7 @@ export default {
                       this.systembId
                     }&sectionId=${this.mofangFrom.sectionId}&professionId=${
                       this.mofangFrom.professionId
-                    }&sort=0&pageNum=${this.currentPage}&pageSize=${
-                      this.pageSize
-                    }`
+                    }&sort=0&pageNum=1&pageSize=1000`
                 )
                 .then(
                   res => {
@@ -1104,9 +1103,7 @@ export default {
                         this.mofangFrom.taskType
                       }&sectionId=${this.mofangFrom.sectionId}&professionId=${
                         this.mofangFrom.professionId
-                      }&sort=0&pageNum=${this.currentPage}&pageSize=${
-                        this.pageSize
-                      }`
+                      }&sort=0&pageNum=1&pageSize=1000`
                   )
                   .then(
                     res => {
@@ -1508,6 +1505,7 @@ export default {
     chooseMajoy(e, id) {
       this.sectionId = id;
       this.professionId = e;
+      this.currentPage = 1;
       this.loadData();
     },
     // 新增和提交学段
@@ -1993,11 +1991,14 @@ export default {
           top: 50%;
           margin-top: -12px;
           z-index: 999;
+          &.rename{
+            left: 170px !important;
+          }
           &.add {
-            left: 190px;
+            left: 230px;
           }
           &.del {
-            left: 250px;
+            left: 290px;
           }
         }
         .down {
@@ -2035,7 +2036,7 @@ export default {
           height: 30px;
           z-index: 99;
           font-size: 14px;
-          width: 100px;
+          width: 120px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -2064,10 +2065,12 @@ export default {
           margin-top: -10px;
           z-index: 9999;
         }
-
+        .rename{
+          left: 200px !important;
+        }
         .del {
           position: absolute;
-          left: 240px;
+          left: 260px;
         }
         .down2 {
           color: #999;

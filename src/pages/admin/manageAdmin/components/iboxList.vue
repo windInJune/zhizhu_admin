@@ -491,11 +491,13 @@ export default {
       this.platformoldId = val;
       this.schoolValue1 = "";
       this.detailData.schoolId = "";
+      this.currentPage = 1;
       this.getSchoolsOne();
     },
     selectChange(val) {
       this.palatformId = val;
       this.schoolValue = "";
+      this.currentPage = 1;
       this.getSchools();
       this.loadData(val);
     },
@@ -594,6 +596,7 @@ export default {
       });
     },
     schoolChange() {
+      this.currentPage = 1;
       this.loadData();
     },
     // 搜索keyword
@@ -605,9 +608,11 @@ export default {
       this.loadData();
     },
     statusChange() {
+      this.currentPage = 1;
       this.loadData();
     },
     searchSubmit() {
+      this.currentPage = 1;
       this.loadData();
     },
     // 城市选择
@@ -618,6 +623,7 @@ export default {
       this.arearrs = [];
       this.changeObj.cityId = "";
       this.changeObj.areaId = "";
+      this.currentPage = 1;
       this.loadData();
     },
     citychange(key) {
@@ -625,10 +631,12 @@ export default {
       this.arearrs = this.cityarrs[key].child;
       //this.changeObj['cityName']=this.cityarrs[key].name;
       this.changeObj.areaId = "";
+      this.currentPage = 1;
       this.loadData();
     },
     areachange(key) {
       this.areaId = key;
+      this.currentPage = 1;
       this.changeObj["areaName"] = this.arearrs[key];
       this.changeObj = Object.assign({}, this.changeObj);
       this.loadData();
